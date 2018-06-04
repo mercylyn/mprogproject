@@ -2,7 +2,7 @@
 
 Mercylyn Wiemer
 
-## Travel CO2 meter
+## Travel CO2 emission meter
 
 Observe the air pollution of your travel in Europe by car, train and airplane. Also, perceive the effect of the climate change on the temperature of the country.
 
@@ -15,13 +15,15 @@ What is the impact of the current aviation on the environment? Are there alterna
 1) https://www.nu.nl/weekend/5137661/klm-topman-als-lelystad-niet-opengaat-moet-schiphol-uitbreiden.html
 
 ## Solution ##
-Show the emission CO2 of the travel to a country of choice in Europe.
+Show the CO2 emission of the travel to a country of choice in Europe.
 ![](https://github.com/mercylyn/mprogproject/blob/master/mprog_sketch.png)
 
 ### main features ###
 * select country to travel to in Europe
-* show: emission CO2 travel by train, car and airplane
+* show: CO2 emission travel by train, car and airplane
 * show: temperature change of selected country
+
+The CO2 emission is the minimum viable product (MVP).
 
 ## Prerequisities ##
 
