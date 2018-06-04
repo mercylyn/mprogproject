@@ -15,7 +15,8 @@ What is the impact of the current aviation on the environment? Are there alterna
 1) https://www.nu.nl/weekend/5137661/klm-topman-als-lelystad-niet-opengaat-moet-schiphol-uitbreiden.html
 
 ## Solution ##
-Show the CO2 emission of the travel to a country of choice in Europe.
+Visualizing the CO2 emission of the travel by train, car and airplane.
+
 ![](https://github.com/mercylyn/mprogproject/blob/master/mprog_sketch.png)
 
 ### main features ###
