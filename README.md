@@ -25,18 +25,18 @@ Show the emission CO2 of the travel to a country of choice in Europe.
 
 ## Prerequisities ##
 
-data sources
+### data sources ###
 * https://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data/data
 * https://www.co2emissiefactoren.nl/lijst-emissiefactoren/
 * https://www.schiphol.nl/en/developer-center/page/our-flight-api-explored/
 
-external components
+### external components ###
 * d3-tip
 * datamaps
 
-similar visualizations
+### similar visualizations ###
 * https://www.milieucentraal.nl/duurzaam-vervoer/vliegen-of-ander-vakantievervoer/
 
-hardest parts
+### hardest parts ###
 * scraping data: flights, train travels
 * implementing the possibility for users to select a real time travel (like 9292.nl)
