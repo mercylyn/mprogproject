@@ -4,15 +4,16 @@ Mercylyn Wiemer
 
 ## Travel CO2 meter
 
-Observe the air pollution of your vacation travel by car, train and airplane. Also, perceivethe effect of the climate change on the temperature of the country.
+Observe the air pollution of your travel in Europe by car, train and airplane. Also, perceive the effect of the climate change on the temperature of the country.
 
 ## Problem statement ##
-The expansion of the airports in the Netherlands is a hot topic. The top executive of KLM states: "If the aiport in Lelystad does not open, Schiphol airport has to expand." (1).
+The expansion of the airports in the Netherlands is a hot topic. The top executive of KLM states: "If the airport in Lelystad does not open, Schiphol airport has to expand." (1).
 
 However, the number of flights keeps increasing and the CO2 emission increases steadily.
 
 What is the impact of the current aviation on the environment? Are there alternatives for travelling?
 1) https://www.nu.nl/weekend/5137661/klm-topman-als-lelystad-niet-opengaat-moet-schiphol-uitbreiden.html
+
 ## Solution ##
 Show the emission CO2 of the travel to a country of choice in Europe.
 ![](https://github.com/mercylyn/mprogproject/blob/master/mprog_sketch.png)
