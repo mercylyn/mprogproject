@@ -40,6 +40,8 @@ The CO2 emission is the minimum viable product (MVP).
 ### similar visualizations ###
 * https://www.milieucentraal.nl/duurzaam-vervoer/vliegen-of-ander-vakantievervoer/
 
+On the website of milieucentraal the amount of CO2 during the vacation is visualized in a bar graph. It is possible to calculate the CO2 emission for 1, 2 or for persons. This is a nice feature.
+
 ### hardest parts ###
 * scraping data: flights, train travels
 * implementing the possibility for users to select a real time travel (like 9292.nl)
