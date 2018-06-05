@@ -15,7 +15,7 @@ Is er een populaire onderwerp of thema te zien in de liederen. Om er dieper op i
 ## Solution ##
 Laten zien van de top hits geschreven door The Beatles.
 
-![](https://github.com/mercylyn/mprogproject/blob/master/project_beatles.png)
+![](https://github.com/mercylyn/mprogproject/blob/master/beatles_project_proposal.png)
 
 ### main features ###
 *
