@@ -18,9 +18,9 @@ Laten zien van de top hits geschreven door The Beatles.
 ![](https://github.com/mercylyn/mprogproject/blob/master/project_beatles.png)
 
 ### main features ###
-* Top 10 beluisterd op Spotify (MVP)
+* Top 10 beluisterd op Spotify (MVP): keuze uit lengte van het lied, bpm, luisteraars, toonsoort
 * Per bandlid bijdrage aan de tekst van de liederen
-* Wat zijn de populaire onderwerpen in de liederen
+* Wat zijn de populaire onderwerpen in de liederen: kiezen per bandlid (songwriter)
 
 ## Prerequisities ##
 
