@@ -39,4 +39,5 @@ Laten zien van de top hits geschreven door The Beatles.
 
 ### hardest parts ###
 * Het linken van de data
+* Liederen analyseren; dataset vinden op de liederen
 * Data van de akkoordenschema's vinden en in een visualisatie weergeven
