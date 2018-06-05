@@ -1,19 +1,21 @@
-# Programmeerproject - proposal
+# Programming Project - Project proposal
 
-Mercylyn Wiemer (10749306)
+Mercylyn Wiemer
 
-## The Beatles muziekanalyse
+## Travel CO2 emission meter
 
-De Beatles was een popgroep uit Liverpool, Engeland. De groep was actief van 1960 tot 1970. Zij worden beschouwd al de meest invloedrijke band van de popmuziek. The Beatles muziekanalyse visualiseert de populaire liederen van The Beatles.
-
-Bron: https://nl.wikipedia.org/wiki/The_Beatles
+Observe the air pollution of your travel in Europe by car, train and airplane. Also, perceive the effect of the climate change on the temperature of the country.
 
 ## Problem statement ##
-The Beatles hebben meer dan 300 liederen geschreven, maar wat waren de grootste hits? Op welk album staan deze liederen en wie zijn de liedschrijvers.
-Is er een populaire onderwerp of thema te zien in de liederen. Om er dieper op in te gaan: toonsoort, bpm, akkoordenschema's.
+The expansion of the airports in the Netherlands is a hot topic. The top executive of KLM states: "If the airport in Lelystad does not open, Schiphol airport has to expand." (1).
+
+However, the number of flights keeps increasing and the CO2 emission increases steadily.
+
+What is the impact of the current aviation on the environment? Are there alternatives for travelling?
+1) https://www.nu.nl/weekend/5137661/klm-topman-als-lelystad-niet-opengaat-moet-schiphol-uitbreiden.html
 
 ## Solution ##
-Laten zien van de top hits geschreven door The Beatles.
+Visualizing the CO2 emission of the travel by train, car and airplane.
 
 ![](https://github.com/mercylyn/mprogproject/blob/master/mprog_sketch.png)
 
