@@ -32,10 +32,12 @@ Laten zien van de top hits geschreven door The Beatles.
 
 ### external components ###
 * d3-tip
+* Web API Spotify
 
 ### similar visualizations ###
 * https://public.tableau.com/en-us/s/gallery/beatles-analysis
-* http://research.google.com/bigpicture/music/#\
+* http://research.google.com/bigpicture/music/
+* https://artist-explorer.glitch.me/
 
 ### hardest parts ###
 * Het linken van de data
