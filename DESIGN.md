@@ -11,8 +11,11 @@ Mercylyn Wiemer (10749306)
 * https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band
 * https://docs.google.com/spreadsheets/d/1VI7e2yYOWcHnAG-0DaFJfbts-iT6QHU5pOq-Ajd62HE/edit
 
+Taking the following data: date, highest position, title, weeks at no. 1, USA no. 1. (from csv to JSON)
+
 #### Lead Vocals (only albums/singles no 1. UK and US) ####
 McCartney, Lennon, Harrison, Ringo, Lennon with McCartney, McCartney with Lennon, Instrumental
+
 https://en.wikipedia.org/wiki/The_Beatles_discography
 
 Albums
@@ -32,6 +35,23 @@ Albums
 * https://en.wikipedia.org/wiki/Anthology_2
 * https://en.wikipedia.org/wiki/1_(Beatles_album)
 
-### technical components (with descriptions) ###
+Scrape the lead vocals per song and transform to a percentage (csv to JSON).
+
+### technical components ###
+1. Stacked bar chart: number of albums/singles in chart per year
+* data: album and single date, weeks on chart, title, highest position
+* interactive buttons: switch between albums and singles. Link the buttons to the Bubble chart. Show the Albums/Singles that reached no. 1.
+* D3 tooltips to hover over the stacked bars
+
+
+2. Bubble chart: Albums/Singles at no. 1
+* data: album and single at chart no. 1 date, title, weeks at no. 1, no. 1 in USA
+* D3 tooltip to hover over the bubbles: weeks at no. 1
+* dropdown: options UK and US
+* link to pie chart: album lead vocals
+
+3. Pie chart: Lead vocals of album selected by user
+* data: Albums no. 1 in chart Lead Vocals per song in album, name of singer
 
 ### D3 plugins ###
+* tooltip
