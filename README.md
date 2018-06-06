@@ -29,8 +29,9 @@ Visualizing the Albums and singles that reached the Charts!
 
 ### data sources ###
 * https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band
+* https://docs.google.com/spreadsheets/d/1VI7e2yYOWcHnAG-0DaFJfbts-iT6QHU5pOq-Ajd62HE/edit
 * https://en.wikipedia.org/wiki/Please_Please_Me
-https://nl.wikipedia.org/wiki/The_Beatles
+* https://nl.wikipedia.org/wiki/The_Beatles
 
 
 ### external components ###
