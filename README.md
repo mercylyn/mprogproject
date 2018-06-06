@@ -1,39 +1,40 @@
-# Programmeerproject - proposal
+# Programming project - Project Proposal
 
 Mercylyn Wiemer (10749306)
 
-## The Beatles muziekanalyse
+## The Beatles chart position analysis
 
-De Beatles was een popgroep uit Liverpool, Engeland. De groep was actief van 1960 tot 1970. Zij worden beschouwd als de meest invloedrijke band in de popmuziek. The Beatles muziekanalyse visualiseert de populaire liederen van The Beatles.
+The Beatles were an English rockband from Liverpool England 1960. The band is considered as the most influential music band in history. The visualisations will present the number of albums and singles from the year 1963 to 2009 that reached the Official Charts Company. The Albums/Singles that reached No. 1 are visualised separately. Furthermore, there is the possibility to see the percentage of Lead Vocals per band member of a selected album.
+
+Three visualisations:
+1) Number of albums / singles that reached the Charts (stacked bar chart)
+2) Albums / Singles at No. 1 (bubble chart)
+3) Lead vocals per album (pie chart)
 
 Bron: https://nl.wikipedia.org/wiki/The_Beatles
 
 ## Problem statement ##
-The Beatles hebben meer dan 300 liederen geschreven, maar wat waren de grootste hits? Op welk album staan deze liederen en wie zijn de liedschrijvers.
-Is er een populaire onderwerp of thema te zien in de liederen. Om er dieper op in te gaan: toonsoort, bpm, akkoordenschema's.
+The Beatles a popular rock band wrote more than 300 songs. Which albums and singles reached the top chart in the UK and on the other side of the Atlantic US?
 
 ## Solution ##
-Laten zien van de top hits geschreven door The Beatles.
+Visualizing the Albums and singles that reached the Charts!
 
 ![](https://github.com/mercylyn/mprogproject/blob/master/beatles_project_proposal.png)
 
 ### main features ###
-*
-* Per bandlid bijdrage aan de tekst van de liederen
-* Wat zijn de populaire onderwerpen in de liederen: kiezen per bandlid (songwriter)
-
+* Number of albums and singles in top chart per year (options: albums - singles)
+* Albums and singles that reached no. 1 in the UK or US
+* Lead Vocals in percentage per band member by selecting an album that reached no. 1 in the UK or US
 ## Prerequisities ##
 
 ### data sources ###
-* https://atchai.com/blog/2016-05-03-in-search-of-the-perfect-music-dataset/
-* https://developer.musixmatch.com/documentation/music-meta-data
-* Spotify
-* last.fm
 * https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band
+* https://en.wikipedia.org/wiki/Please_Please_Me
+https://nl.wikipedia.org/wiki/The_Beatles
+
 
 ### external components ###
 * d3-tip
-* Web API Spotify
 
 ### similar visualizations ###
 * https://public.tableau.com/en-us/s/gallery/beatles-analysis
@@ -41,6 +42,5 @@ Laten zien van de top hits geschreven door The Beatles.
 * https://artist-explorer.glitch.me/
 
 ### hardest parts ###
-* Het linken van de data
-* Liederen analyseren; dataset vinden op de liederen
-* Data van de akkoordenschema's vinden en in een visualisatie weergeven
+* linking the visualisations
+* separately going through every album that reached no. 1 in the UK/US for the lead vocals
