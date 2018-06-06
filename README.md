@@ -7,8 +7,8 @@ Mercylyn Wiemer (10749306)
 The Beatles were an English rockband from Liverpool England 1960. The band is considered as the most influential music band in history. The visualisations will present the number of albums and singles from the year 1963 to 2009 that reached the Official Charts Company. The Albums/Singles that reached No. 1 are visualised separately. Furthermore, there is the possibility to see the percentage of Lead Vocals per band member of a selected album.
 
 Three visualisations:
-1) Number of albums / singles that reached the Charts (stacked bar chart)
-2) Albums / Singles at No. 1 (bubble chart)
+1) Number of albums / singles that reached the Charts (stacked bar chart) UK
+2) Albums / Singles at No. 1 (bubble chart) UK or US
 3) Lead vocals per album (pie chart)
 
 Bron: https://nl.wikipedia.org/wiki/The_Beatles
