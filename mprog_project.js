@@ -4,6 +4,7 @@
 
 http://bl.ocks.org/enjalot/1525346
 http://bl.ocks.org/mapsam/6090056
+http://bl.ocks.org/enjalot/1525346
  **/
 
 window.onload = function() {
@@ -34,10 +35,10 @@ window.onload = function() {
         console.log("data chart", dataChart);
 
         makeBarChart(dataChart);
-    }
-}
+    };
+};
 
-makeBarChart(data) {
+function makeBarChart(data) {
     // http://bl.ocks.org/mstanaland/6100713
     // Set dimensions of canvas
     const margin = {top: 100, bottom: 50, right:30, left: 60},

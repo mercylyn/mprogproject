@@ -21,7 +21,7 @@ https://en.wikipedia.org/wiki/The_Beatles_discography
 Albums
 * https://en.wikipedia.org/wiki/Please_Please_Me
 * https://en.wikipedia.org/wiki/With_the_Beatles
-* https://en.wikipedia.org/wiki/A_Hard_Day%27s_Night_
+* https://en.wikipedia.org/wiki/A_Hard_Day%27s_Night_(album)
 * https://en.wikipedia.org/wiki/Beatles_for_Sale
 * https://en.wikipedia.org/wiki/Help!_(album)
 * https://en.wikipedia.org/wiki/Rubber_Soul
