@@ -17,7 +17,7 @@ Bron: https://nl.wikipedia.org/wiki/The_Beatles
 The Beatles wrote more than 300 songs. Which albums and singles reached the top chart in the UK and on the other side of the Atlantic US?
 
 ## Solution ##
-Visualizing the Albums and singles that reached the Charts!
+Visualizing the albums and singles that reached the Charts!
 
 ![](https://github.com/mercylyn/mprogproject/blob/master/beatles_project_proposal.png)
 

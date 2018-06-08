@@ -27,6 +27,7 @@ Albums
 * https://en.wikipedia.org/wiki/Rubber_Soul
 * https://en.wikipedia.org/wiki/Revolver_(Beatles_album)
 * https://en.wikipedia.org/wiki/Sgt._Pepper%27s_Lonely_Hearts_Club_Band
+* https://en.wikipedia.org/wiki/Magical_Mystery_Tour
 * https://en.wikipedia.org/wiki/The_Beatles_(album)
 * https://en.wikipedia.org/wiki/Abbey_Road
 * https://en.wikipedia.org/wiki/Let_It_Be
