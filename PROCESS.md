@@ -3,6 +3,9 @@
 # week 1
 Uitwerken van idee: The Beatles
 
+# dag 4
+Data converteren: Album/Singles chart en lead vocals data.
+
 # day 5 presentatie
 Feedback
 
