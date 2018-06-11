@@ -4,16 +4,18 @@
 -->
 <html lang="en">
 <head>
-    <title>The Beatles Example</title>
+    <title>The Beatles</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- <script src="https://d3js.org/d3.v3.js"></script> -->
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
     <script src="http://d3js.org/queue.v1.min.js"></script>
+    <script src="https://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script src="mprog_project.js"></script>
 </head>
 <body>
@@ -41,6 +43,22 @@
   </div>
 </nav>
 
+<!-- <div class="jumbotron">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2"> -->
+            <!-- <img src="mprog.png" class = "mprog" alt="mprog" align="left"> -->
+        <!-- </div>
+        <div class="col-sm-8">
+          <h2>About</h2>
+          <h4>Programming project (Minor Programming)</h4>
+          <h4>Mercylyn Wiemer (10749306)</h4>
+        </div>
+      </div>
+    </div>
+</div> -->
+
+
 <div class="container text-center">
   <img src="logo.jpg" alt="Random Name">
   <br>
@@ -64,16 +82,28 @@
   </div>
 </div>
 
-<!-- <div class="container">
-  <h3 class="text-center">Student Information</h3>
-  <div class="row test">
-    <div class="col-md-6">
-      <p>Minor Programming</p>
-      <p>Programming project</p>
-      <p>Mercylyn Wiemer (10749306)</p>
+<div id="visual" class="bg-1">
+    <div class="container">
+    <h3 class="text-center">THE BEATLES ALBUMS AND SINGLES</h3>
+    <p class="text-center">Lorem ipsum we'll play you some music.<br> Remember to book your tickets!</p>
+
+        <div class="row text-center">
+          <div class="col-sm-4" id="chart">
+          </div>
+          <div class="col-sm-4">
+
+          </div>
+          <div class="col-sm-4">
+
+          </div>
+        </div>
     </div>
-  </div>
-</div> -->
+
+
+    <footer class="container-fluid text-center">
+      <p>Mercylyn Wiemer (10749306), Minor programming</p>
+    </footer>
+</div>
 
 </body>
 </html>

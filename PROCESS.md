@@ -14,3 +14,7 @@ Feedback
 * Scrapen van Data gebruik google sheets
 
 Continuing with converting the data: lead vocals data.
+
+# 11-06-2018
+* Continued with the design of the index page and made place for the chart
+* Worked on the stacked bar chart: converting data to fit to stack

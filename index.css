@@ -1,3 +1,53 @@
+
+.bg-1 {
+  /* background: #2d2d30; */
+  background: white;
+  color: #bdbdbd;
+}
+.bg-1 h3, p {
+    color: black;
+}
+.bg-1 p {
+    font-style: italic;
+}
+  body {
+      font: 400 15px/1.8 Lato, sans-serif;
+      color: #777;
+  }
+
+  h3 {
+    margin: 10px 0 30px 0;
+    font-size: 20px;
+    color: #111;
+}
+
+.container {
+    padding: 80px 40px;
+}
+.jumbotron {
+    background-color: #2d2d30;
+    color: #ffff;
+    padding: 100px 25px;
+    font-family: Montserrat, sans-serif;
+}
+h2 {
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+h4 {
+    font-size: 19px;
+    line-height: 1.375em;
+    font-weight: 400;
+    margin-bottom: 30px;
+}
+
+/* img.mprog {
+    height: 50%;
+    width: 50%;
+} */
+
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
   margin-bottom: 0;
@@ -16,10 +66,11 @@
 
 /* Set black background color, white text and some padding */
 footer {
-  background-color: #555;
+  background-color: ;
   color: white;
-  padding: 15px;
+  padding: 10px;
 }
+
 
 /* On small screens, set height to 'auto' for sidenav and grid */
 @media screen and (max-width: 767px) {
@@ -28,4 +79,24 @@ footer {
     padding: 15px;
   }
   .row.content {height:auto;}
+}
+
+/* style settings for svg*/
+svg {
+    font: 10px sans-serif;
+    shape-rendering: crispEdges;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+}
+
+path.domain {
+    stroke: none;
+}
+
+.y .tick line {
+    stroke: #ddd;
 }
