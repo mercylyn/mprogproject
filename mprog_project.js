@@ -11,7 +11,7 @@ https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-dif
 window.onload = function() {
 
     queue()
-        .defer(d3.csv, "data/beatles_chart_albums.csv")
+        .defer(d3.csv, "data/beatles_chart_albums_sample.csv")
         .defer(d3.csv, "data/beatles_chart_singles.csv")
         .await(convertData);
 
@@ -72,7 +72,7 @@ function dataToJSON(dataset) {
             if (!(years.length == 0)) {
             dataPerYear.push({
                 key: years.slice(-1)[0],
-                values: [valuesArray]
+                values: valuesArray
             });
         }
 
@@ -133,6 +133,52 @@ function makeBarChart(data) {
     //   1965: '#ED6A5A'
     // };
 
+    var dataExample = [{
+      key: 'Mechanical',
+      values: [{
+        key: 'Gear',
+        value: 11
+      }, {
+        key: 'Bearing',
+        value: 8
+      }, {
+        key: 'Motor',
+        value: 3
+      }]
+    }, {
+      key: 'Electrical',
+      values: [{
+        key: 'Switch',
+        value: 19
+      }, {
+        key: 'Plug',
+        value: 12
+      }, {
+        key: 'Cord',
+        value: 11
+      }, {
+        key: 'Fuse',
+        value: 3
+      }, {
+        key: 'Bulb',
+        value: 2
+      }]
+    }, {
+      key: 'Hydraulic',
+      values: [{
+        key: 'Pump',
+        value: 4
+      }, {
+        key: 'Leak',
+        value: 3
+      }, {
+        key: 'Seals',
+        value: 1
+      }]
+    }];
+
+    console.log("example", dataExample);
+    console.log("real date", data)
     var margin = {
         top: 20,
         right: 50,
@@ -142,7 +188,7 @@ function makeBarChart(data) {
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-    var barPadding = 20;
+    var barPadding = 5;
 
     var rangeBands = [];
     var cummulative = 0;
@@ -154,13 +200,13 @@ function makeBarChart(data) {
         rangeBands.push(i);
       })
     });
-    console.log(data);
+    // console.log(data);
 
     var x_category = d3.scale.linear()
       .range([0, width]);
 
 
-    var x_defect = d3.scale.ordinal().domain(rangeBands).rangeRoundBands([0, width], .1);
+    var x_defect = d3.scale.ordinal().domain(rangeBands).rangeRoundBands([0, width], .8);
     var x_category_domain = x_defect.rangeBand() * rangeBands.length;
     x_category.domain([0, x_category_domain]);
 
@@ -219,7 +265,7 @@ function makeBarChart(data) {
       })
       .enter().append("text")
       .attr("class", function(d) {
-        console.log(d)
+        // console.log(d)
         return 'category-label category-label-' + d.key;
       })
       .attr("transform", function(d) {
@@ -250,7 +296,7 @@ function makeBarChart(data) {
       })
       .enter().append("text")
       .attr("class", function(d) {
-        console.log(d)
+        // console.log(d)
         return 'defect-label defect-label-' + d.key;
       })
       .attr("transform", function(d) {
@@ -277,7 +323,7 @@ function makeBarChart(data) {
       .attr("y", function(d) {
         return y(d.value);
       })
-      .attr("height", function(d) { console.log(d)
+      .attr("height", function(d) {
         return height - y(d.value);
       });
 
