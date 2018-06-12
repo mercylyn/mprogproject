@@ -5,6 +5,7 @@
 http://bl.ocks.org/enjalot/1525346
 http://bl.ocks.org/mapsam/6090056
 http://bl.ocks.org/enjalot/1525346
+https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3
  **/
 
 window.onload = function() {
@@ -17,14 +18,16 @@ window.onload = function() {
     function convertData(error, albums, singles) {
         if (error) throw error;
 
-        console.log(albums[0])
         var parse = d3.time.format("%m/%d/%Y").parse;
+
         var dataAlbums = albums.map(function(d) {
             return {"date" : parse(d.date), "highestPosition" : +d.highestPosition,
                     "weeksChart" : +d.weeksChart, "award" : d.award, "title" : d.title,
                     "labelCatNo" : d.labelCatNo, "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
         });
 
+        // }
+        console.log(dataAlbums)
         var dataSingles = singles.map(function(d) {
             return {"date" : parse(d.date), "highestPosition" : +d.highestPosition,
                     "weeksChart" : +d.weeksChart, "title" : d.title,
@@ -32,22 +35,90 @@ window.onload = function() {
         })
 
         var dataChart = {"albums" : dataAlbums, "singles" : dataSingles};
-        //
-        // for (var key in dataAlbums) {
-        //
-        //     // console.log(dataAlbums[key])
-        //     if (dataAlbums[key].usNo1 == 1) {
-        //         console.log(dataAlbums[key])
-        //     }
-        // }
-        console.log(dataAlbums)
-        console.log("data chart", dataAlbums[0].date.getFullYear());
 
-        makeBarChart(dataChart);
+        var dataArray = dataToJSON(dataAlbums);
+
+        // var dataDictionary = convertToDictionary(dataArray)
+
+        console.log(dataArray);
+        // console.log("functie stacked data", stackedData)
+        // console.log("data chart", dataAlbums[0].date.getFullYear());
+        // console.log("stacked chart", stackedChart)
+        // console.log("album names", albumNames)
+        makeBarChart(dataArray);
     };
 };
 
-function makeBarChart(data_beatles) {
+/* Converts data from JSON to an array containing four variables. */
+function dataToJSON(dataset) {
+    let dataPerAlbum = [];
+    let dataPerYear = [];
+    let years = [];
+    let valuesArray = [];
+
+    for (var key in dataset) {
+        dataPerAlbum.push([dataset[key].date.getFullYear(), dataset[key].title, dataset[key].weeksChart]);
+    }
+
+    for (let i = 0; i < dataPerAlbum.length; i++) {
+
+        var values = {
+            key: dataPerAlbum[i][1],
+            value: dataPerAlbum[i][2]
+        }
+
+        if (!(years.includes(dataPerAlbum[i][0]))) {
+
+            if (!(years.length == 0)) {
+            dataPerYear.push({
+                key: years.slice(-1)[0],
+                values: [valuesArray]
+            });
+        }
+
+            valuesArray = [];
+            valuesArray.push(values);
+            years.push(dataPerAlbum[i][0]);
+        }
+        else {
+            valuesArray.push(values)
+        }
+    }
+
+    // add last value
+    dataPerYear.push({
+        key: years.slice(-1)[0],
+        values: [valuesArray]
+    });
+
+    return dataPerYear;
+    // return dataPerAlbum;
+};
+
+// function convertToDictionary(dataset) {
+//     let data = [];
+//     let dataCountry = {};
+//
+//     // Fetch data variables, put in JSON format and add to dataList
+//     for (let i = 0; i < dataset.length; i++) {
+//         data.push({
+//             key: dataset[i],
+//             lifeExpect: dataset[i][0],
+//             waterQuality: dataset[i][1],
+//             selfHealth: dataset[i][2],
+//             airPolution: dataset[i][3]
+//         });
+//     };
+//
+//     // Assign data value to country (ISO) in JSON format
+//     for (let i = 0; i < dataset.length; i++) {
+//         dataCountry[countryList[i]] = data[i]
+//     };
+//
+//     return {dataCountry};
+// };
+
+function makeBarChart(data) {
     // http://bl.ocks.org/mstanaland/6100713
     // Set dimensions of canvas
     // const margin = {top: 100, bottom: 50, right:30, left: 60},
@@ -55,145 +126,159 @@ function makeBarChart(data_beatles) {
     //     height = 470 - margin.top - margin.bottom,
     //     barHeight = 20,
     //     originChart = 0;
-    var margin = {top: 20, right: 160, bottom: 35, left: 30};
 
-    var width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+    // var color = {
+    //   1963: '#4A7B9D',
+    //   1964: '#54577C',
+    //   1965: '#ED6A5A'
+    // };
 
-    var svg = d3.select("#chart")
-      .append("svg")
+    var margin = {
+        top: 20,
+        right: 50,
+        bottom: 30,
+        left: 30
+      },
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    var barPadding = 20;
+
+    var rangeBands = [];
+    var cummulative = 0;
+    data.forEach(function(val, i) {
+      val.cummulative = cummulative;
+      cummulative += val.values.length;
+      val.values.forEach(function(values) {
+        values.parentKey = val.key;
+        rangeBands.push(i);
+      })
+    });
+    console.log(data);
+
+    var x_category = d3.scale.linear()
+      .range([0, width]);
+
+
+    var x_defect = d3.scale.ordinal().domain(rangeBands).rangeRoundBands([0, width], .1);
+    var x_category_domain = x_defect.rangeBand() * rangeBands.length;
+    x_category.domain([0, x_category_domain]);
+
+
+    var y = d3.scale.linear()
+      .range([height, 0]);
+
+    y.domain([0, d3.max(data, function(cat) {
+      return d3.max(cat.values, function(def) {
+        return def.value;
+      });
+    })]);
+
+    var category_axis = d3.svg.axis()
+      .scale(x_category)
+      .orient("bottom");
+
+    var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .tickFormat(d3.format(".2s"));
+
+    var svg = d3.select("body").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
+      .style('background-color', 'EFEFEF')
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      var data = [
-        { year: "2006", redDelicious: "70", mcintosh: "51", oranges: "9", pears: "6" },
-        { year: "2007", redDelicious: "12", mcintosh: "18", oranges: "9", pears: "4" },
-        { year: "2008", redDelicious: "05", mcintosh: "20", oranges: "8", pears: "2" },
-        { year: "2009", redDelicious: "01", mcintosh: "15", oranges: "5", pears: "4" },
-        { year: "2010", redDelicious: "02", mcintosh: "10", oranges: "4", pears: "2" },
-        { year: "2011", redDelicious: "03", mcintosh: "12", oranges: "6", pears: "3" },
-        { year: "2012", redDelicious: "04", mcintosh: "15", oranges: "8", pears: "1" },
-        { year: "2013", redDelicious: "06", mcintosh: "11", oranges: "9", pears: "4" },
-        { year: "2014", redDelicious: "10", mcintosh: "13", oranges: "9", pears: "5" },
-        { year: "2015", redDelicious: "16", mcintosh: "19", oranges: "6", pears: "9" },
-        { year: "2016", redDelicious: "19", mcintosh: "17", oranges: "5", pears: "7" },
-      ];
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Value");
 
-      var parseTime = d3.time.format("%Y").parse;
+    var category_g = svg.selectAll(".category")
+      .data(data)
+      .enter().append("g")
+      .attr("class", function(d) {
+        return 'category category-' + d.key;
+      })
+      .attr("transform", function(d) {
+        return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
+      })
+      // .attr("fill", function(d) {
+      //   return color[d.key];
+      // });
 
+    var category_label = category_g.selectAll(".category-label")
+      .data(function(d) {
+        return [d];
+      })
+      .enter().append("text")
+      .attr("class", function(d) {
+        console.log(d)
+        return 'category-label category-label-' + d.key;
+      })
+      .attr("transform", function(d) {
+        var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
+        var y_label = height + 30;
+        return "translate(" + x_label + "," + y_label + ")";
+      })
+      .text(function(d) {
+        return d.key;
+      })
+      .attr('text-anchor', 'middle');
 
-      // Transpose the data into layers
-      var dataset = d3.layout.stack()(["redDelicious", "mcintosh", "oranges", "pears"].map(function(fruit) {
-        return data.map(function(d) {
-          return {x: parseTime(d.year), y: +d[fruit]};
-        });
-      }));
+    var defect_g = category_g.selectAll(".defect")
+      .data(function(d) {
+        return d.values;
+      })
+      .enter().append("g")
+      .attr("class", function(d) {
+        return 'defect defect-' + d.key;
+      })
+      .attr("transform", function(d, i) {
+        return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
+      });
 
-
-      // Set x, y and colors
-      var x = d3.scale.ordinal()
-        .domain(dataset[0].map(function(d) { return d.x; }))
-        .rangeRoundBands([10, width-10], 0.02);
-
-      var y = d3.scale.linear()
-        .domain([0, d3.max(dataset, function(d) {  return d3.max(d, function(d) { return d.y0 + d.y; });  })])
-        .range([height, 0]);
-
-      var colors = ["b33040", "#d25c4d", "#f2b447", "#d9d574"];
-
-
-      // Define and draw axes
-      var yAxis = d3.svg.axis()
-        .scale(y)
-        .orient("left")
-        .ticks(5)
-        .tickSize(-width, 0, 0)
-        .tickFormat( function(d) { return d } );
-
-      var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom")
-        .tickFormat(d3.time.format("%Y"));
-
-      svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
-
-      svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);
-
-        console.log(dataset)
-      // Create groups for each series, rects for each segment
-      var groups = svg.selectAll("g.cost")
-        .data(dataset)
-        .enter().append("g")
-        .attr("class", "cost")
-        .style("fill", function(d, i) { return colors[i]; });
-
-      var rect = groups.selectAll("rect")
-        .data(function(d) { console.log(d) ;return d; })
-        .enter()
-        .append("rect")
-        .attr("x", function(d) { return x(d.x); })
-        .attr("y", function(d) { return y(d.y0 + d.y); })
-        .attr("height", function(d) { return y(d.y0) - y(d.y0 + d.y); })
-        .attr("width", x.rangeBand())
-        .on("mouseover", function() { tooltip.style("display", null); })
-        .on("mouseout", function() { tooltip.style("display", "none"); })
-        .on("mousemove", function(d) {
-          var xPosition = d3.mouse(this)[0] - 15;
-          var yPosition = d3.mouse(this)[1] - 25;
-          tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-          tooltip.select("text").text(d.y);
-        });
+    var defect_label = defect_g.selectAll(".defect-label")
+      .data(function(d) {
+        return [d];
+      })
+      .enter().append("text")
+      .attr("class", function(d) {
+        console.log(d)
+        return 'defect-label defect-label-' + d.key;
+      })
+      .attr("transform", function(d) {
+        var x_label = x_category((x_defect.rangeBand() + barPadding) / 2);
+        var y_label = height + 10;
+        return "translate(" + x_label + "," + y_label + ")";
+      })
+      .text(function(d) {
+        return d.key;
+      })
+      .attr('text-anchor', 'middle');
 
 
-      // Draw legend
-      var legend = svg.selectAll(".legend")
-        .data(colors)
-        .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", function(d, i) { return "translate(30," + i * 19 + ")"; });
+    var rects = defect_g.selectAll('.rect')
+      .data(function(d) {
+        return [d];
+      })
+      .enter().append("rect")
+      .attr("class", "rect")
+      .attr("width", x_category(x_defect.rangeBand() - barPadding))
+      .attr("x", function(d) {
+        return x_category(barPadding);
+      })
+      .attr("y", function(d) {
+        return y(d.value);
+      })
+      .attr("height", function(d) { console.log(d)
+        return height - y(d.value);
+      });
 
-      legend.append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", function(d, i) {return colors.slice().reverse()[i];});
-
-      legend.append("text")
-        .attr("x", width + 5)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "start")
-        .text(function(d, i) {
-          switch (i) {
-            case 0: return "Anjou pears";
-            case 1: return "Naval oranges";
-            case 2: return "McIntosh apples";
-            case 3: return "Red Delicious apples";
-          }
-        });
-
-    // Prep the tooltip bits, initial display is hidden
-    var tooltip = svg.append("g")
-      .attr("class", "tooltip")
-      .style("display", "none");
-
-    tooltip.append("rect")
-      .attr("width", 30)
-      .attr("height", 20)
-      .attr("fill", "white")
-      .style("opacity", 0.5);
-
-    tooltip.append("text")
-      .attr("x", 15)
-      .attr("dy", "1.2em")
-      .style("text-anchor", "middle")
-      .attr("font-size", "12px")
-      .attr("font-weight", "bold");
 }

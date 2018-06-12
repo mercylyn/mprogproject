@@ -89,14 +89,11 @@ svg {
 
 .axis path,
 .axis line {
-    fill: none;
-    stroke: #000;
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
 }
 
-path.domain {
-    stroke: none;
-}
-
-.y .tick line {
-    stroke: #ddd;
+.x.axis path {
+  display: none;
 }
