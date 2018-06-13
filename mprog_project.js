@@ -6,12 +6,13 @@ http://bl.ocks.org/enjalot/1525346
 http://bl.ocks.org/mapsam/6090056
 http://bl.ocks.org/enjalot/1525346
 https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3
+https://stackoverflow.com/questions/43903145/d3-position-x-axis-label-within-rectangle-and-rotate-90-degrees?rq=1
  **/
 
 window.onload = function() {
 
     queue()
-        .defer(d3.csv, "data/beatles_chart_albums_sample.csv")
+        .defer(d3.csv, "data/beatles_chart_albums.csv")
         .defer(d3.csv, "data/beatles_chart_singles.csv")
         .await(convertData);
 
@@ -88,35 +89,13 @@ function dataToJSON(dataset) {
     // add last value
     dataPerYear.push({
         key: years.slice(-1)[0],
-        values: [valuesArray]
+        values: valuesArray
     });
 
     return dataPerYear;
     // return dataPerAlbum;
 };
 
-// function convertToDictionary(dataset) {
-//     let data = [];
-//     let dataCountry = {};
-//
-//     // Fetch data variables, put in JSON format and add to dataList
-//     for (let i = 0; i < dataset.length; i++) {
-//         data.push({
-//             key: dataset[i],
-//             lifeExpect: dataset[i][0],
-//             waterQuality: dataset[i][1],
-//             selfHealth: dataset[i][2],
-//             airPolution: dataset[i][3]
-//         });
-//     };
-//
-//     // Assign data value to country (ISO) in JSON format
-//     for (let i = 0; i < dataset.length; i++) {
-//         dataCountry[countryList[i]] = data[i]
-//     };
-//
-//     return {dataCountry};
-// };
 
 function makeBarChart(data) {
     // http://bl.ocks.org/mstanaland/6100713
@@ -127,72 +106,52 @@ function makeBarChart(data) {
     //     barHeight = 20,
     //     originChart = 0;
 
-    // var color = {
-    //   1963: '#4A7B9D',
-    //   1964: '#54577C',
-    //   1965: '#ED6A5A'
-    // };
+    var color = {
+      1963: '#a6cee3',
+      1964: '#1f78b4',
+      1965: '#b2df8a',
+      1966: '#33a02c',
+      1967: '#fb9a99',
+      1968: '#e31a1c',
+      1969: '#fdbf6f',
+      1970: '#ff7f00',
+      1971: '#cab2d6',
+      1973: '#6a3d9a',
+      1976: '#8dd3c7',
+      1977: '#b15928',
+      1979: '#bebada',
+      1980: '#fb8072',
+      1982: '#80b1d3',
+      1987: '#fdb462',
+      1988: '#756bb1',
+      1993: '#fccde5',
+      1994: '#bc80bd',
+      1995: '#ef6548',
+      1996: '#6e016b',
+      1999: '#a8ddb5',
+      2000: '#4eb3d3',
+      2003: '#08589e',
+      2006: '#fa9fb5', //
+      2007: '#ef6548',
+      2009: '8c510a'
+    };
 
-    var dataExample = [{
-      key: 'Mechanical',
-      values: [{
-        key: 'Gear',
-        value: 11
-      }, {
-        key: 'Bearing',
-        value: 8
-      }, {
-        key: 'Motor',
-        value: 3
-      }]
-    }, {
-      key: 'Electrical',
-      values: [{
-        key: 'Switch',
-        value: 19
-      }, {
-        key: 'Plug',
-        value: 12
-      }, {
-        key: 'Cord',
-        value: 11
-      }, {
-        key: 'Fuse',
-        value: 3
-      }, {
-        key: 'Bulb',
-        value: 2
-      }]
-    }, {
-      key: 'Hydraulic',
-      values: [{
-        key: 'Pump',
-        value: 4
-      }, {
-        key: 'Leak',
-        value: 3
-      }, {
-        key: 'Seals',
-        value: 1
-      }]
-    }];
-
-    console.log("example", dataExample);
     console.log("real date", data)
     var margin = {
         top: 20,
-        right: 50,
+        right: 30,
         bottom: 30,
-        left: 30
+        left: 40
       },
-      width = 960 - margin.left - margin.right,
+      width = 1280 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-    var barPadding = 5;
+    var barPadding = 10,
+        n = 27 // number of years
 
     var rangeBands = [];
     var cummulative = 0;
-    data.forEach(function(val, i) {
+    data.forEach(function(val, i) { console.log(val);
       val.cummulative = cummulative;
       cummulative += val.values.length;
       val.values.forEach(function(values) {
@@ -205,9 +164,10 @@ function makeBarChart(data) {
     var x_category = d3.scale.linear()
       .range([0, width]);
 
+    var x_defect = d3.scale.ordinal().domain(rangeBands).rangeBands([0, width], .2);
 
-    var x_defect = d3.scale.ordinal().domain(rangeBands).rangeRoundBands([0, width], .8);
     var x_category_domain = x_defect.rangeBand() * rangeBands.length;
+
     x_category.domain([0, x_category_domain]);
 
 
@@ -224,12 +184,13 @@ function makeBarChart(data) {
       .scale(x_category)
       .orient("bottom");
 
+
     var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
-      .tickFormat(d3.format(".2s"));
+      .ticks(14);
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#chart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .style('background-color', 'EFEFEF')
@@ -237,14 +198,21 @@ function makeBarChart(data) {
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text("Value");
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Weeks in chart");
+
+    // doesn't work
+    // svg.append("g")
+    //     .attr("class", "x axis")
+    //     .attr("transform", "translate(0," + height + ")")
+    //     .call(category_axis);
+
 
     var category_g = svg.selectAll(".category")
       .data(data)
@@ -255,17 +223,17 @@ function makeBarChart(data) {
       .attr("transform", function(d) {
         return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
       })
-      // .attr("fill", function(d) {
-      //   return color[d.key];
-      // });
+      .attr("fill", function(d) {
+        return color[d.key];
+      });
 
+    // year
     var category_label = category_g.selectAll(".category-label")
       .data(function(d) {
         return [d];
       })
       .enter().append("text")
       .attr("class", function(d) {
-        // console.log(d)
         return 'category-label category-label-' + d.key;
       })
       .attr("transform", function(d) {
@@ -278,36 +246,19 @@ function makeBarChart(data) {
       })
       .attr('text-anchor', 'middle');
 
+    // adding inner groups g elements
     var defect_g = category_g.selectAll(".defect")
       .data(function(d) {
         return d.values;
       })
       .enter().append("g")
       .attr("class", function(d) {
+          console.log(d.key);
         return 'defect defect-' + d.key;
       })
       .attr("transform", function(d, i) {
         return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
       });
-
-    var defect_label = defect_g.selectAll(".defect-label")
-      .data(function(d) {
-        return [d];
-      })
-      .enter().append("text")
-      .attr("class", function(d) {
-        // console.log(d)
-        return 'defect-label defect-label-' + d.key;
-      })
-      .attr("transform", function(d) {
-        var x_label = x_category((x_defect.rangeBand() + barPadding) / 2);
-        var y_label = height + 10;
-        return "translate(" + x_label + "," + y_label + ")";
-      })
-      .text(function(d) {
-        return d.key;
-      })
-      .attr('text-anchor', 'middle');
 
 
     var rects = defect_g.selectAll('.rect')
@@ -327,4 +278,52 @@ function makeBarChart(data) {
         return height - y(d.value);
       });
 
+    // add labels to g elements
+    var defect_label = defect_g.selectAll(".defect-label")
+        .data(function(d) {
+          return [d];
+        })
+        .enter().append("text")
+        .attr("class", function(d) {
+          // console.log(d)
+          return 'defect-label defect-label-' + d.key;
+        })
+        // .attr("transform", function(d) {
+        //   var x_label = x_category((x_defect.rangeBand() + barPadding) / 2);
+        //   var y_label = height + 10;
+        //   return "translate(" + x_label + "," + y_label + ");
+        // })
+        // .attr("x", function(d) {
+        //   return x_category(barPadding);
+        // })
+        // .attr("y", function(d) {
+        //   return y(d.value);
+        // })
+
+        .text(function(d) {
+            return d.key;
+        })
+        // .attr("width", x_category(x_defect.rangeBand() - barPadding))
+        // .attr("transform", function(d, i) {
+        // // http://stackoverflow.com/questions/11252753/rotate-x-axis-text-in-d3
+        // var yVal = y(d.value);
+        // var xVal = x_category(barPadding);
+        // return "translate(" + xVal + "," + yVal + ") rotate(270)";
+        // })
+        .attr("transform", function(d) { console.log(d.key);
+            if (d.value < 114) {
+                var x_label =  x_category(x_defect.rangeBand() - barPadding);
+                var y_label =  y(d.value);
+                return "translate(" + x_label + "," + y_label + ") rotate(270)";
+            }
+            else {
+                var x_label =  x_category(x_defect.rangeBand() - barPadding);
+                var y_label =  y(d.value - (margin.left + margin.right));
+                return "translate(" + x_label + "," + y_label + ") rotate(270)";
+            }
+        })
+        .style('fill', 'black')
+        .attr("font-size", "12px");
+
+//Sgt. Pepper's Lonely Hearts Club Band, The Beatles 1962-1966, The Beatles 1967-1970
 }

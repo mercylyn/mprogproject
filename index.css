@@ -7,19 +7,6 @@
 .bg-1 h3, p {
     color: black;
 }
-.bg-1 p {
-    font-style: italic;
-}
-  body {
-      font: 400 15px/1.8 Lato, sans-serif;
-      color: #777;
-  }
-
-  h3 {
-    margin: 10px 0 30px 0;
-    font-size: 20px;
-    color: #111;
-}
 
 .container {
     padding: 80px 40px;

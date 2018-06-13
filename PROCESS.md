@@ -22,3 +22,8 @@ Continuing with converting the data: lead vocals data.
 # 12-06-2018
 * decided to use a grouped bar chart for the albums and singles over the years in the chart
 * try to convert the data for the grouped bar chart to work
+
+#13-06-2018
+* established to make a grouped bar chart: albums per year in chart with on the y-axis number of weeks in chart
+* added labels above the bars
+* note: x-axis add ticks per year
