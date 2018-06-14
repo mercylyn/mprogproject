@@ -68,3 +68,75 @@ data = album_chart.map(function(d) {
 // chartCsv()
 //
 // console.log(dataChart)
+
+function convertDataStackedChart(data) {
+    var albumNames = [];
+    var stackedChart = []
+
+    for (var key in data) {
+
+        // stackedChart.push(dataAlbums[key].title)
+        if (!(albumNames.includes(data[key].title))) {
+            albumNames.push(data[key].title)
+            stackedChart.push([data[key]])
+        }
+        else {
+            // console.log(albumNames.indexOf(dataAlbums[key].title), dataAlbums[key].title)
+            albumPosition = albumNames.indexOf(data[key].title);
+            // console.log(stackedChart[albumPosition]);
+            stackedChart[albumPosition].push(data[key])
+        }
+    }
+
+    return stackedChart;
+};
+
+
+function dataToJSON(dataset) {
+    let dataPerAlbum = [];
+    let dataPerYear = [];
+    let years = [];
+    let valuesArray = [];
+
+    for (var key in dataset) {
+        dataPerAlbum.push([dataset[key].date.getFullYear(), dataset[key].title, dataset[key].weeksChart]);
+    }
+
+    console.log(dataPerAlbum)
+
+    for (let i = 0; i < dataPerAlbum.length; i++) {
+
+        var values = {
+            key: dataPerAlbum[i][1],
+            value: dataPerAlbum[i][2]
+        }
+
+        if (!(years.includes(dataPerAlbum[i][0]))) {
+
+            if (!(years.length == 0)) {
+                dataPerYear.push({
+                    key: years.slice(-1)[0],
+                    values: valuesArray
+                });
+            }
+
+            valuesArray = [];
+            valuesArray.push(values);
+            years.push(dataPerAlbum[i][0]);
+        }
+        else {
+            valuesArray.push(values)
+        }
+        console.log(dataPerYear)
+    }
+
+    // add last value
+    dataPerYear.push({
+        key: years.slice(-1)[0],
+        values: valuesArray
+    });
+    // console.log(dataPerYear)
+    return dataPerYear;
+    // return dataPerAlbum;
+
+};

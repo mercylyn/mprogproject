@@ -23,7 +23,13 @@ Continuing with converting the data: lead vocals data.
 * decided to use a grouped bar chart for the albums and singles over the years in the chart
 * try to convert the data for the grouped bar chart to work
 
-#13-06-2018
+# 13-06-2018
+* converted data for grouped bar chart
 * established to make a grouped bar chart: albums per year in chart with on the y-axis number of weeks in chart
 * added labels above the bars
 * note: x-axis add ticks per year
+
+# 14-06-2018
+* added tooltip to stacked bar chart
+* starting with the bubble chart: converted dataset (albums no. 1) and visualized in chart
+* begin for the framework of the pie chart

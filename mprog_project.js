@@ -6,6 +6,7 @@ http://bl.ocks.org/enjalot/1525346
 http://bl.ocks.org/mapsam/6090056
 http://bl.ocks.org/enjalot/1525346
 https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3
+https://plnkr.co/edit/L0eQwtEMQ413CpoS5nvo?p=preview
 https://stackoverflow.com/questions/43903145/d3-position-x-axis-label-within-rectangle-and-rotate-90-degrees?rq=1
  **/
 
@@ -14,9 +15,10 @@ window.onload = function() {
     queue()
         .defer(d3.csv, "data/beatles_chart_albums.csv")
         .defer(d3.csv, "data/beatles_chart_singles.csv")
+        .defer(d3.csv, "data/lead_vocals_albums_clean.csv")
         .await(convertData);
 
-    function convertData(error, albums, singles) {
+    function convertData(error, albums, singles, lead) {
         if (error) throw error;
 
         var parse = d3.time.format("%m/%d/%Y").parse;
@@ -27,8 +29,7 @@ window.onload = function() {
                     "labelCatNo" : d.labelCatNo, "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
         });
 
-        // }
-        console.log(dataAlbums)
+        console.log(lead)
         var dataSingles = singles.map(function(d) {
             return {"date" : parse(d.date), "highestPosition" : +d.highestPosition,
                     "weeksChart" : +d.weeksChart, "title" : d.title,
@@ -39,6 +40,10 @@ window.onload = function() {
 
         var dataArray = dataToJSON(dataAlbums);
 
+        var dataBubble = convertForBubble(dataAlbums)
+
+        console.log(dataBubble)
+
         // var dataDictionary = convertToDictionary(dataArray)
 
         console.log(dataArray);
@@ -47,8 +52,29 @@ window.onload = function() {
         // console.log("stacked chart", stackedChart)
         // console.log("album names", albumNames)
         makeBarChart(dataArray);
+
+        makeBubbleChart(dataBubble);
+
+        makePieChart();
     };
 };
+
+function convertForBubble(dataset) {
+    data = [];
+
+    for (let i = 0; i < dataset.length; i++) {
+
+        if (dataset[i].highestPosition === 1) {
+            data.push( {
+                title: dataset[i].title,
+                weeks: dataset[i].weeksNo1,
+                usNo: dataset[i].usNo1
+            })
+        };
+    };
+
+    return data;
+}
 
 /* Converts data from JSON to an array containing four variables. */
 function dataToJSON(dataset) {
@@ -61,6 +87,10 @@ function dataToJSON(dataset) {
         dataPerAlbum.push([dataset[key].date.getFullYear(), dataset[key].title, dataset[key].weeksChart]);
     }
 
+    years.push(dataPerAlbum[0][0]);
+
+    console.log(dataPerAlbum)
+
     for (let i = 0; i < dataPerAlbum.length; i++) {
 
         var values = {
@@ -68,20 +98,21 @@ function dataToJSON(dataset) {
             value: dataPerAlbum[i][2]
         }
 
-        if (!(years.includes(dataPerAlbum[i][0]))) {
+        // console.log(values)
+        if (years.includes(dataPerAlbum[i][0])) {
 
-            if (!(years.length == 0)) {
+            valuesArray.push(values);
+        }
+        else {
             dataPerYear.push({
                 key: years.slice(-1)[0],
                 values: valuesArray
             });
-        }
+
+            years.push(dataPerAlbum[i][0]);
 
             valuesArray = [];
-            valuesArray.push(values);
-            years.push(dataPerAlbum[i][0]);
-        }
-        else {
+
             valuesArray.push(values)
         }
     }
@@ -91,9 +122,10 @@ function dataToJSON(dataset) {
         key: years.slice(-1)[0],
         values: valuesArray
     });
-
+    console.log(dataPerYear)
     return dataPerYear;
     // return dataPerAlbum;
+
 };
 
 
@@ -136,7 +168,7 @@ function makeBarChart(data) {
       2009: '8c510a'
     };
 
-    console.log("real date", data)
+    // console.log("real date", data)
     var margin = {
         top: 20,
         right: 30,
@@ -151,7 +183,7 @@ function makeBarChart(data) {
 
     var rangeBands = [];
     var cummulative = 0;
-    data.forEach(function(val, i) { console.log(val);
+    data.forEach(function(val, i) {
       val.cummulative = cummulative;
       cummulative += val.values.length;
       val.values.forEach(function(values) {
@@ -190,12 +222,23 @@ function makeBarChart(data) {
       .orient("left")
       .ticks(14);
 
-    var svg = d3.select("#chart").append("svg")
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) { console.log(d);
+          return "<strong>Album:</strong> <span style='color:red'>" + d.key +
+                    "</span> <br> <strong>Weeks in chart:</strong> <span style='color:red'>" + d.value + "</span>";
+    })
+
+    var svg = d3.select("#barChart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .style('background-color', 'EFEFEF')
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+    svg.call(tip);
 
     svg.append("g")
         .attr("class", "y axis")
@@ -253,7 +296,6 @@ function makeBarChart(data) {
       })
       .enter().append("g")
       .attr("class", function(d) {
-          console.log(d.key);
         return 'defect defect-' + d.key;
       })
       .attr("transform", function(d, i) {
@@ -276,7 +318,10 @@ function makeBarChart(data) {
       })
       .attr("height", function(d) {
         return height - y(d.value);
-      });
+    })
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide);
+
 
     // add labels to g elements
     var defect_label = defect_g.selectAll(".defect-label")
@@ -310,7 +355,7 @@ function makeBarChart(data) {
         // var xVal = x_category(barPadding);
         // return "translate(" + xVal + "," + yVal + ") rotate(270)";
         // })
-        .attr("transform", function(d) { console.log(d.key);
+        .attr("transform", function(d) {
             if (d.value < 114) {
                 var x_label =  x_category(x_defect.rangeBand() - barPadding);
                 var y_label =  y(d.value);
@@ -324,6 +369,103 @@ function makeBarChart(data) {
         })
         .style('fill', 'black')
         .attr("font-size", "12px");
+}
 
-//Sgt. Pepper's Lonely Hearts Club Band, The Beatles 1962-1966, The Beatles 1967-1970
+function makeBubbleChart(data) {
+    var diameter = 500, //max size of the bubbles
+        color    = d3.scale.category20b(); //color category
+
+    var bubble = d3.layout.pack()
+        .sort(null)
+        .size([diameter, diameter])
+        .padding(1.5);
+
+    var svg = d3.select("#bubbleChart")
+        .append("svg")
+        .attr("width", diameter)
+        .attr("height", diameter)
+        .attr("class", "bubble");
+
+    // convert numerical values from strings to numbers
+    data = data.map(function(d){ d.value = +d["weeks"]; return d; });
+
+    // bubbles needs very specific format, convert data to this.
+    var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
+
+    //setup the chart
+    var bubbles = svg.append("g")
+        .attr("transform", "translate(0,0)")
+        .selectAll(".bubble")
+        .data(nodes)
+        .enter();
+
+    //create the bubbles
+    bubbles.append("circle")
+        .attr("r", function(d){ return d.r; })
+        .attr("cx", function(d){ return d.x; })
+        .attr("cy", function(d){ return d.y; })
+        .style("fill", function(d) { return color(d.value); });
+
+    //format the text for each bubble
+    bubbles.append("text")
+        .attr("x", function(d){ return d.x; })
+        .attr("y", function(d){ return d.y + 5; })
+        .attr("text-anchor", "middle")
+        .text(function(d){ return d["title"]; })
+        .style({
+            "fill":"white",
+            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
+            "font-size": "12px"
+        });
+}
+
+function makePieChart() {
+    var w = 400;
+    var h = 400;
+    var r = h/2;
+    var aColor = [
+        'rgb(178, 55, 56)',
+        'rgb(213, 69, 70)',
+        'rgb(230, 125, 126)',
+        'rgb(239, 183, 182)'
+    ]
+
+    var data = [
+        {"label":"Colorectale levermetastase (n=336)", "value":74},
+        {"label": "Primaire maligne levertumor (n=56)", "value":12},
+        {"label":"Levensmetatase van andere origine (n=32)", "value":7},
+        {"label":"Beningne levertumor (n=34)", "value":7}
+    ];
+
+
+    var vis = d3.select('#pieChart')
+    .append("svg").data([data])
+    .attr("width", w)
+    .attr("height", h)
+    .append("svg:g")
+    .attr("transform", "translate(" + r + "," + r + ")");
+
+    var pie = d3.layout.pie().value(function(d){return d.value;});
+
+    // Declare an arc generator function
+    var arc = d3.svg.arc().outerRadius(r);
+
+    // Select paths, use arc generator to draw
+    var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+    arcs.append("svg:path")
+        .attr("fill", function(d, i){return aColor[i];})
+        .attr("d", function (d) {return arc(d);})
+    ;
+
+    // Add the text
+    arcs.append("svg:text")
+        .attr("transform", function(d){
+            d.innerRadius = 100; /* Distance of label to the center*/
+            d.outerRadius = r;
+            return "translate(" + arc.centroid(d) + ")";}
+        )
+        .attr("text-anchor", "middle")
+        .text( function(d, i) {return data[i].value + '%';})
+    ;
+
 }
