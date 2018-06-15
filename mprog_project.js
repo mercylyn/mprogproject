@@ -59,6 +59,10 @@ window.onload = function() {
     };
 };
 
+function calculatePercentage(data) {
+
+}
+
 function convertForBubble(dataset) {
     data = [];
 
@@ -225,7 +229,7 @@ function makeBarChart(data) {
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
-        .html(function(d) { console.log(d);
+        .html(function(d) {
           return "<strong>Album:</strong> <span style='color:red'>" + d.key +
                     "</span> <br> <strong>Weeks in chart:</strong> <span style='color:red'>" + d.value + "</span>";
     })
@@ -437,7 +441,7 @@ function makePieChart() {
         {"label":"Beningne levertumor (n=34)", "value":7}
     ];
 
-
+    console.log(data);
     var vis = d3.select('#pieChart')
     .append("svg").data([data])
     .attr("width", w)

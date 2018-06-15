@@ -3,10 +3,10 @@
 # week 1
 Work out the programming project proposal: The Beatles albums and singles that reached the Charts (UK - US)
 
-# dag 4
+# 07-06-2018
 Converting Data to JSON: Album/Singles in chart and a start with lead vocals data.
 
-# day 5 presentatie
+# 08-06-2018
 Feedback
 
 * Albums geselecteerd: pie chart laat album zien waar single op staat of pie chart verbergen
