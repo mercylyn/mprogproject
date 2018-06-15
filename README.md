@@ -19,7 +19,7 @@ The Beatles wrote more than 300 songs. Which albums and singles reached the top 
 ## Solution ##
 Visualizing the albums and singles that reached the Charts!
 
-![](https://github.com/mercylyn/mprogproject/blob/master/beatles_project_proposal.png)
+![](doc/beatles_project_proposal.png)
 
 ### main features ###
 * Number of albums and singles in top chart per year (options: albums - singles)
