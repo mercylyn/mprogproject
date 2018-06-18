@@ -51,8 +51,6 @@ window.onload = function() {
                     "instrumental" : +d.instrumental};
             });
 
-        console.log(dataLead)
-
         var dataChart = {"albums" : dataAlbums, "singles" : dataSingles};
 
         var dataArray = dataToJSON(dataAlbums);
@@ -62,6 +60,7 @@ window.onload = function() {
         var dataPie = calculatePercentage(dataLead);
 
         makeBarChart(dataArray);
+        // makeBarChart(dataChart);
 
         makeBubbleChart(dataBubble);
 
@@ -73,7 +72,6 @@ window.onload = function() {
 function calculatePercentage(data) {
     convertedData = [];
 
-    console.log(data)
     for (let i = 0; i < data.length; i++) {
         album = data[i];
         title = album.title
@@ -117,6 +115,7 @@ function convertForBubble(dataset) {
 
 /* Converts data from JSON to an array containing four variables. */
 function dataToJSON(dataset) {
+    // console.log(dataset)
     let dataPerAlbum = [];
     let dataPerYear = [];
     let years = [];
@@ -159,7 +158,7 @@ function dataToJSON(dataset) {
         key: years.slice(-1)[0],
         values: valuesArray
     });
-    console.log(dataPerYear)
+
     return dataPerYear;
     // return dataPerAlbum;
 
@@ -174,7 +173,7 @@ function makeBarChart(data) {
     //     height = 470 - margin.top - margin.bottom,
     //     barHeight = 20,
     //     originChart = 0;
-
+    console.log(data);
     var color = {
       1963: '#a6cee3',
       1964: '#1f78b4',
@@ -412,7 +411,6 @@ function makeBubbleChart(data) {
     var diameter = 500, //max size of the bubbles
         color    = d3.scale.category20b(); //color category
 
-        console.log(data);
     var bubble = d3.layout.pack()
         .sort(null)
         .size([diameter, diameter])
@@ -454,7 +452,14 @@ function makeBubbleChart(data) {
         .attr("cy", function(d) { return d.y; })
         .style("fill", function(d) { return color(d.value); })
         .on('mouseover', function(d) {
-            tooltip.select('.weeks').html(d.weeks + " weeks");
+
+            if (d.weeks > 1) {
+                tooltip.select('.weeks').html(d.weeks + " weeks");
+            }
+            else {
+                tooltip.select('.weeks').html(d.weeks + " week");
+            };
+
             tooltip.style('display', 'block');
             tooltip.style('opacity',2);
 
@@ -486,11 +491,9 @@ function makeBubbleChart(data) {
 // http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
 function renderPieChart(dataset) {
 
-    console.log(dataset[0].lead);
-
     data = dataset[0].lead;
 
-    var margin = {top:50,bottom:50,left:50,right:50};
+    var margin = {top:100, bottom:50, left:50, right:50};
 	var width = 500 - margin.left - margin.right,
 	height = width,
 	radius = Math.min(width, height) / 2;
@@ -509,21 +512,13 @@ function renderPieChart(dataset) {
         "#0c2c84"
     ];
 
-    // var data = [
-    //     {"label":"Colorectale levermetastase (n=336)", "value":74},
-    //     {"label": "Primaire maligne levertumor (n=56)", "value":12},
-    //     {"label":"Levensmetatase van andere origine (n=32)", "value":7},
-    //     {"label":"Beningne levertumor (n=34)", "value":7}
-    // ];
-
-    console.log(data);
     var svg = d3.select('#pieChart')
     .append("svg")
     // .data([data])
-    .attr("width", width)
-    .attr("height", height)
+        .attr("width", width)
+        .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
     // .attr("transform", "translate(" + radius + "," + radius + ")");
 
     var pie = d3.layout.pie()
@@ -532,7 +527,7 @@ function renderPieChart(dataset) {
 
     // Declare an arc generator function
     var arc = d3.svg.arc()
-        .outerRadius(radius - 10)
+        .outerRadius(radius - 20)
         .innerRadius(radius - donutWidth);
 
     var tooltip = d3.select("#pieChart")
@@ -546,7 +541,7 @@ function renderPieChart(dataset) {
     // 	.attr('class', 'count');
 
     tooltip.append('div')
-        .attr('class', 'percent');
+        .attr('id', 'percent');
 
     // Select paths, use arc generator to draw
     var arcs = svg.selectAll("g.slice")
@@ -565,7 +560,7 @@ function renderPieChart(dataset) {
 
 			// var percent = Math.round(1000 * d.data.value / total) / 10;
 			// tooltip.select('.singer').html(d.data.singer).style('color','black');
-			tooltip.select('.percent').html(d.data.value + "%");
+			tooltip.select('#percent').html(d.data.value + "%");
 			// tooltip.select('.percent').html(percent + '%');
 
 			tooltip.style('display', 'block');
