@@ -40,3 +40,5 @@ Continuing with converting the data: lead vocals data.
 # 18-06-2018
 * loaded album data into pie chart
 * added tooltips at pie chart and bubble chart
+* data singles: in bar chart
+* still working on updating the bar chart and bubble chart

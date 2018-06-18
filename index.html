@@ -89,15 +89,15 @@
     <div class="col-sm-12" id="barChart">
         <form>
             <label class="radio-inline">
-                <input type="radio" name="optradio" checked="checked">Albums
+                <input type="radio" value="albums" name="music" checked="checked"  onclick='change(this.value)' >Albums
             </label>
             <label class="radio-inline">
-                <input type="radio" name="optradio">Singles
+                <input type="radio" value="singles" name="music"  onclick='change(this.value)'>Singles
             </label>
         </form>
     </div>
         <div class="row text-center">
-          <div class="col-sm-6" id="bubbleChart">
+          <div class="col-sm-6 barChart" id="bubbleChart">
           </div>
           <div class="col-sm-6" id="pieChart">
 
