@@ -29,39 +29,74 @@ window.onload = function() {
                     "labelCatNo" : d.labelCatNo, "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
         });
 
-        console.log(lead)
         var dataSingles = singles.map(function(d) {
             return {"date" : parse(d.date), "highestPosition" : +d.highestPosition,
                     "weeksChart" : +d.weeksChart, "title" : d.title,
                     "artists" : d.artists, "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
-        })
+        });
+
+        var dataLead = lead.map(function(d) {
+            return {"title" : d.title,
+                    "country" : d.country,
+                    "released" : parse(d.released),
+                    "noTracks" : +d.noTracks,
+                    "harrison" : +d.Harrison,
+                    "lennon" : +d.Lennon,
+                    "mcCartney" : +d.McCartney,
+                    "starr" : +d.Starr,
+                    "lennonHarrison" : +d.LennonHarrison,
+                    "lennonMcCartney" : +d.LennonMcCartney,
+                    "lennonMcCartneyHarrison" : +d.LennonMcCartneyHarrison,
+                    "lennonMcCartneyHarrisonStarr" : +d.LennonMcCartneyHarrisonStarr,
+                    "instrumental" : +d.instrumental};
+            });
+
+        console.log(dataLead)
 
         var dataChart = {"albums" : dataAlbums, "singles" : dataSingles};
 
         var dataArray = dataToJSON(dataAlbums);
 
-        var dataBubble = convertForBubble(dataAlbums)
+        var dataBubble = convertForBubble(dataAlbums);
 
-        console.log(dataBubble)
+        var dataPie = calculatePercentage(dataLead);
 
-        // var dataDictionary = convertToDictionary(dataArray)
-
-        console.log(dataArray);
-        // console.log("functie stacked data", stackedData)
-        // console.log("data chart", dataAlbums[0].date.getFullYear());
-        // console.log("stacked chart", stackedChart)
-        // console.log("album names", albumNames)
         makeBarChart(dataArray);
 
         makeBubbleChart(dataBubble);
 
-        makePieChart();
+        renderPieChart(dataPie);
     };
 };
 
+// percentages in een array en daarover heen lopen
 function calculatePercentage(data) {
+    convertedData = [];
 
-}
+    console.log(data)
+    for (let i = 0; i < data.length; i++) {
+        album = data[i];
+        title = album.title
+        noTracks = album.noTracks;
+        chart =
+
+        convertedData.push({
+            title: title,
+            lead: [
+                {singer: "McCartney", value: Math.round((album.mcCartney / noTracks) * 100)},
+                {singer: "Lennon", value: Math.round((album.lennon / noTracks) * 100)},
+                {singer: "Harrison", value: Math.round((album.harrison / noTracks) * 100)},
+                {singer: "Starr", value: Math.round((album.starr / noTracks) * 100)},
+                {singer: "LennonMcCartney", value: Math.round((album.lennonMcCartney / noTracks) * 100)},
+                {singer: "LennonHarrison", value: Math.round((album.lennonHarrison / noTracks) * 100)},
+                {singer: "LennonMcCartneyHarrison", value: Math.round((album.lennonMcCartneyHarrison / noTracks) * 100)},
+                {singer: "LennonMcCartneyHarrisonStarr", value: Math.round((album.lennonMcCartneyHarrisonStarr / noTracks) * 100)}
+            // }
+        ]});
+    };
+
+    return convertedData;
+};
 
 function convertForBubble(dataset) {
     data = [];
@@ -69,7 +104,7 @@ function convertForBubble(dataset) {
     for (let i = 0; i < dataset.length; i++) {
 
         if (dataset[i].highestPosition === 1) {
-            data.push( {
+            data.push({
                 title: dataset[i].title,
                 weeks: dataset[i].weeksNo1,
                 usNo: dataset[i].usNo1
@@ -93,14 +128,12 @@ function dataToJSON(dataset) {
 
     years.push(dataPerAlbum[0][0]);
 
-    console.log(dataPerAlbum)
-
     for (let i = 0; i < dataPerAlbum.length; i++) {
 
         var values = {
             key: dataPerAlbum[i][1],
             value: dataPerAlbum[i][2]
-        }
+        };
 
         // console.log(values)
         if (years.includes(dataPerAlbum[i][0])) {
@@ -379,6 +412,7 @@ function makeBubbleChart(data) {
     var diameter = 500, //max size of the bubbles
         color    = d3.scale.category20b(); //color category
 
+        console.log(data);
     var bubble = d3.layout.pack()
         .sort(null)
         .size([diameter, diameter])
@@ -403,12 +437,38 @@ function makeBubbleChart(data) {
         .data(nodes)
         .enter();
 
+    var tooltip = d3.select("#bubbleChart")
+    	.append('div')
+    	.attr('class', 'tooltip');
+
+    tooltip.append('div')
+    	.attr('class', 'weeks');
+
+    // tooltip.append('div')
+    // 	.attr('class', 'count');
+
     //create the bubbles
     bubbles.append("circle")
-        .attr("r", function(d){ return d.r; })
-        .attr("cx", function(d){ return d.x; })
-        .attr("cy", function(d){ return d.y; })
-        .style("fill", function(d) { return color(d.value); });
+        .attr("r", function(d) { return d.r; })
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; })
+        .style("fill", function(d) { return color(d.value); })
+        .on('mouseover', function(d) {
+            tooltip.select('.weeks').html(d.weeks + " weeks");
+            tooltip.style('display', 'block');
+            tooltip.style('opacity',2);
+
+        })
+
+        .on('mousemove', function(d) {
+            tooltip.style('top', (d3.event.layerY + 10) + 'px')
+            .style('left', (d3.event.layerX - 25) + 'px');
+        })
+
+        .on('mouseout', function() {
+            tooltip.style('display', 'none');
+            tooltip.style('opacity',0);
+        });
 
     //format the text for each bubble
     bubbles.append("text")
@@ -423,53 +483,119 @@ function makeBubbleChart(data) {
         });
 }
 
-function makePieChart() {
-    var w = 400;
-    var h = 400;
-    var r = h/2;
-    var aColor = [
-        'rgb(178, 55, 56)',
-        'rgb(213, 69, 70)',
-        'rgb(230, 125, 126)',
-        'rgb(239, 183, 182)'
-    ]
+// http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
+function renderPieChart(dataset) {
 
-    var data = [
-        {"label":"Colorectale levermetastase (n=336)", "value":74},
-        {"label": "Primaire maligne levertumor (n=56)", "value":12},
-        {"label":"Levensmetatase van andere origine (n=32)", "value":7},
-        {"label":"Beningne levertumor (n=34)", "value":7}
+    console.log(dataset[0].lead);
+
+    data = dataset[0].lead;
+
+    var margin = {top:50,bottom:50,left:50,right:50};
+	var width = 500 - margin.left - margin.right,
+	height = width,
+	radius = Math.min(width, height) / 2;
+    		var donutWidth = 100;
+    		// var legendRectSize = 18;
+    		// var legendSpacing = 4;
+
+    var aColor = [
+        "#ffffd9",
+        "#edf8b1",
+        "#c7e9b4",
+        "#7fcdbb",
+        "#41b6c4",
+        "#1d91c0",
+        "#225ea8",
+        "#0c2c84"
     ];
 
-    console.log(data);
-    var vis = d3.select('#pieChart')
-    .append("svg").data([data])
-    .attr("width", w)
-    .attr("height", h)
-    .append("svg:g")
-    .attr("transform", "translate(" + r + "," + r + ")");
+    // var data = [
+    //     {"label":"Colorectale levermetastase (n=336)", "value":74},
+    //     {"label": "Primaire maligne levertumor (n=56)", "value":12},
+    //     {"label":"Levensmetatase van andere origine (n=32)", "value":7},
+    //     {"label":"Beningne levertumor (n=34)", "value":7}
+    // ];
 
-    var pie = d3.layout.pie().value(function(d){return d.value;});
+    console.log(data);
+    var svg = d3.select('#pieChart')
+    .append("svg")
+    // .data([data])
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    // .attr("transform", "translate(" + radius + "," + radius + ")");
+
+    var pie = d3.layout.pie()
+        .sort(null)
+        .value(function(d) { return d.value; });
 
     // Declare an arc generator function
-    var arc = d3.svg.arc().outerRadius(r);
+    var arc = d3.svg.arc()
+        .outerRadius(radius - 10)
+        .innerRadius(radius - donutWidth);
+
+    var tooltip = d3.select("#pieChart")
+    	.append('div')
+    	.attr('class', 'tooltip');
+
+    tooltip.append('div')
+    	.attr('class', 'singer');
+
+    // tooltip.append('div')
+    // 	.attr('class', 'count');
+
+    tooltip.append('div')
+        .attr('class', 'percent');
 
     // Select paths, use arc generator to draw
-    var arcs = vis.selectAll("g.slice").data(pie).enter().append("svg:g").attr("class", "slice");
+    var arcs = svg.selectAll("g.slice")
+        .data(pie(data))
+        .enter()
+        .append("g")
+        .attr("class", "slice");
+
     arcs.append("svg:path")
-        .attr("fill", function(d, i){return aColor[i];})
+        .attr("fill", function(d, i) { return aColor[i]; })
         .attr("d", function (d) {return arc(d);})
-    ;
+        .on('mouseover', function(d) {
+			// var total = d3.sum(dataset.map(function(d) {
+			// 	return (d.enabled) ? d.value : 0;
+			// }));
+
+			// var percent = Math.round(1000 * d.data.value / total) / 10;
+			// tooltip.select('.singer').html(d.data.singer).style('color','black');
+			tooltip.select('.percent').html(d.data.value + "%");
+			// tooltip.select('.percent').html(percent + '%');
+
+			tooltip.style('display', 'block');
+			tooltip.style('opacity',2);
+
+		})
+
+        .on('mousemove', function(d) {
+			tooltip.style('top', (d3.event.layerY + 10) + 'px')
+			.style('left', (d3.event.layerX - 25) + 'px');
+		})
+        .on('mouseout', function() {
+			tooltip.style('display', 'none');
+			tooltip.style('opacity',0);
+		});
 
     // Add the text
     arcs.append("svg:text")
         .attr("transform", function(d){
             d.innerRadius = 100; /* Distance of label to the center*/
-            d.outerRadius = r;
+            d.outerRadius = radius;
             return "translate(" + arc.centroid(d) + ")";}
         )
         .attr("text-anchor", "middle")
-        .text( function(d, i) {return data[i].value + '%';})
+        // .text( function(d, i) {return data[i].value + '%';})
+        .text( function(d, i) {
+            if (data[i].value > 0) {
+            return data[i].singer;
+            }
+        })
     ;
 
 }

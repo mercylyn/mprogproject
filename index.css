@@ -115,6 +115,22 @@ svg {
   left: 0;
 }
 
+.tooltip {
+	background: #eee;
+	box-shadow: 0 0 5px #999999;
+	color: #333;
+	font-size: 12px;
+	left: 130px;
+	padding: 10px;
+	position: absolute;
+	text-align: center;
+	top: 95px;
+	width: 80px;
+	z-index: 10;
+	display: block;
+	opacity: 0;
+}
+
 /* pie chart */
 .arc text {
   font: 10px sans-serif;

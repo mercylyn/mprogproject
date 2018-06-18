@@ -33,3 +33,10 @@ Continuing with converting the data: lead vocals data.
 * added tooltip to stacked bar chart
 * starting with the bubble chart: converted dataset (albums no. 1) and visualized in chart
 * begin for the framework of the pie chart
+
+# 15-06-2018
+* feedback presentation: when data not available insert text with explanation
+
+# 18-06-2018
+* loaded album data into pie chart
+* added tooltips at pie chart and bubble chart
