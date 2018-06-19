@@ -2,7 +2,7 @@
 
 Mercylyn Wiemer (10749306)
 
-[GitHub pages](https://mercylyn.github.io/mprogproject/index.html/)
+[The Beatles Albums and Charts](https://mercylyn.github.io/mprogproject/index.html)
 
 ## The Beatles chart position analysis ##
 
