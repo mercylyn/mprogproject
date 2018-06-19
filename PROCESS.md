@@ -9,7 +9,7 @@ Converting Data to JSON: Album/Singles in chart and a start with lead vocals dat
 # 08-06-2018
 Feedback
 
-* Albums geselecteerd: pie chart laat album zien waar single op staat of pie chart verbergen
+* Selecting albums: pie chart laat album zien waar single op staat of pie chart verbergen
 * album selecteren/hover in stacked bar chart: in bubble chart oplichten van bubble met bijbehorend album
 * Scrapen van Data gebruik google sheets
 
@@ -42,3 +42,6 @@ Continuing with converting the data: lead vocals data.
 * added tooltips at pie chart and bubble chart
 * data singles: in bar chart
 * still working on updating the bar chart and bubble chart
+
+# 19-06-2018
+* switching dataset albums-singles in grouped bar chart
