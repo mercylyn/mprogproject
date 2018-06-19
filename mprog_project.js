@@ -10,7 +10,7 @@ https://plnkr.co/edit/L0eQwtEMQ413CpoS5nvo?p=preview
 https://stackoverflow.com/questions/43903145/d3-position-x-axis-label-within-rectangle-and-rotate-90-degrees?rq=1
  **/
 
-var dataAlbumsBar, dataSinglesBar;
+var dataAlbumsBar, dataSinglesBar, dataBubbleAlbums, dataBubbleSingles;
 
 window.onload = function() {
 
@@ -61,8 +61,8 @@ window.onload = function() {
 
         console.log(dataSinglesBar);
 
-        var dataBubbleAlbums = convertForBubble(dataAlbums),
-            dataBubbleSingles = convertForBubble(dataSingles);
+        dataBubbleAlbums = convertForBubble(dataAlbums),
+        dataBubbleSingles = convertForBubble(dataSingles);
 
         console.log(dataBubbleSingles)
         console.log(dataBubbleAlbums)
@@ -209,16 +209,24 @@ function makeBarChart(data) {
 
         x_category.domain([0, x_category_domain]);
 
-
         var y = d3.scale.linear()
           .range([height, 0]);
 
         y.domain([0, d3.max(data, function(cat) {
-          return d3.max(cat.values, function(def) {
-            return def.value;
-          });
-        })]);
-        console.log(svg.selectAll(".category"))
+            return d3.max(cat.values, function(def) {
+                return def.value;
+                });
+            }) * 2]);
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(14);
+
+        svg.selectAll("g.y.axis")
+            .transition().duration(500)
+            .call(yAxis)
+
 
         var category_g = svg.selectAll(".category")
           .data(data)
@@ -248,10 +256,9 @@ function makeBarChart(data) {
                 console.log(d);
               return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
             })
-            .attr("fill", function(d) {
-                console.log(d);
-              return color[d.key];
-            });
+            // .attr("fill", function(d) {
+            //   return color[d.key];
+            // });
 
         // Remove old ones
         category_g.exit().remove();
@@ -287,7 +294,6 @@ function makeBarChart(data) {
             return "translate(" + x_label + "," + y_label + ")";
             })
             .text(function(d) {
-                console.log(d.key)
             return d.key;
             })
             .attr('text-anchor', 'middle');
@@ -369,16 +375,10 @@ function makeBarChart(data) {
                 return d.key;
             })
             .attr("transform", function(d) {
-                if (d.value < 114) {
                     var x_label =  x_category(x_defect.rangeBand() - barPadding);
                     var y_label =  y(d.value);
                     return "translate(" + x_label + "," + y_label + ") rotate(270)";
-                }
-                else {
-                    var x_label =  x_category(x_defect.rangeBand() - barPadding);
-                    var y_label =  y(d.value - (margin.left + margin.right));
-                    return "translate(" + x_label + "," + y_label + ") rotate(270)";
-                }
+
             })
             .style('fill', 'black')
             .attr("font-size", "12px");
@@ -394,16 +394,10 @@ function makeBarChart(data) {
                     return d.key;
                 })
                 .attr("transform", function(d) {
-                    if (d.value < 114) {
                         var x_label =  x_category(x_defect.rangeBand() - barPadding);
                         var y_label =  y(d.value);
                         return "translate(" + x_label + "," + y_label + ") rotate(270)";
-                    }
-                    else {
-                        var x_label =  x_category(x_defect.rangeBand() - barPadding);
-                        var y_label =  y(d.value - (margin.left + margin.right));
-                        return "translate(" + x_label + "," + y_label + ") rotate(270)";
-                    }
+
                 });
 
     };
@@ -416,7 +410,7 @@ function makeBarChart(data) {
       1979: '#bebada', 1980: '#fb8072', 1982: '#80b1d3', 1987: '#fdb462',
       1988: '#756bb1', 1993: '#fccde5', 1994: '#bc80bd', 1995: '#ef6548',
       1996: '#6e016b', 1999: '#a8ddb5', 2000: '#4eb3d3', 2003: '#08589e',
-      2006: '#fa9fb5', 2007: '#ef6548', 2009: '8c510a'
+      2006: '#fa9fb5', 2007: '#ef6548', 2009: '#dd1c77'
     };
 
     // console.log("real date", data)
@@ -453,15 +447,11 @@ function makeBarChart(data) {
       .range([height, 0]);
 
     y.domain([0, d3.max(data, function(cat) {
-      return d3.max(cat.values, function(def) {
-        return def.value;
-      });
-    })]);
-
-    var category_axis = d3.svg.axis()
-      .scale(x_category)
-      .orient("bottom");
-
+        return d3.max(cat.values, function(def) {
+            return def.value;
+            });
+        }) * 1.75
+    ]);
 
     var yAxis = d3.svg.axis()
       .scale(y)
@@ -595,16 +585,10 @@ function makeBarChart(data) {
         // return "translate(" + xVal + "," + yVal + ") rotate(270)";
         // })
         .attr("transform", function(d) {
-            if (d.value < 114) {
                 var x_label =  x_category(x_defect.rangeBand() - barPadding);
                 var y_label =  y(d.value);
                 return "translate(" + x_label + "," + y_label + ") rotate(270)";
-            }
-            else {
-                var x_label =  x_category(x_defect.rangeBand() - barPadding);
-                var y_label =  y(d.value - (margin.left + margin.right));
-                return "translate(" + x_label + "," + y_label + ") rotate(270)";
-            }
+
         })
         .style('fill', 'black')
         .attr("font-size", "12px");
@@ -630,6 +614,7 @@ function updateBubble() {
 };
 
 function makeBubbleChart(data) {
+    //http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
     var diameter = 500, //max size of the bubbles
         color    = d3.scale.category20b(); //color category
 
@@ -645,7 +630,7 @@ function makeBubbleChart(data) {
         .attr("class", "bubble");
 
     // convert numerical values from strings to numbers
-    data = data.map(function(d){ d.value = +d["weeks"]; return d; });
+    var data = data.map(function(d){ d.value = +d["weeks"]; return d; });
 
     // bubbles needs very specific format, convert data to this.
     var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
@@ -663,9 +648,6 @@ function makeBubbleChart(data) {
 
     tooltip.append('div')
     	.attr('class', 'weeks');
-
-    // tooltip.append('div')
-    // 	.attr('class', 'count');
 
     //create the bubbles
     bubbles.append("circle")
