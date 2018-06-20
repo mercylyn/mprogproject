@@ -46,3 +46,8 @@ Continuing with converting the data: lead vocals data.
 # 19-06-2018
 * switching/updating dataset albums-singles in grouped bar chart
 * transition y-axis grouped bar chart
+
+# 20-06-2018
+* ordening repository
+* ordening and improve html website
+* starting with updating bubble chart
