@@ -1,15 +1,25 @@
+.bg-2 {
+      background-color: #969696; /* Dark Blue */
+      color: #ffffff;
+  }
 
-.bg-1 {
-  /* background: #2d2d30; */
-  background: white;
-  color: #bdbdbd;
-}
-.bg-1 h3, p {
-    color: black;
+.bg-3 {
+    background-color: #ffffff; /* White */
+    color: #555555;
 }
 
-.container {
-    padding: 80px 40px;
+.bg-4 {
+    background-color: #969696;
+    color: #ffffff;
+}
+
+.container-fluid {
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.container-fluid {
+    padding-bottom: 30px;
 }
 .jumbotron {
     background-color: #2d2d30;
@@ -30,17 +40,32 @@ h4 {
     margin-bottom: 30px;
 }
 
-/* img.mprog {
-    height: 50%;
-    width: 50%;
-} */
+body {
+    font: 20px "Montserrat", sans-serif;
+    line-height: 1.8;
+    color: #f5f6f7;
+}
+
+p {font-size: 16px;}
 
 /* Remove the navbar's default margin-bottom and rounded borders */
 .navbar {
-  margin-bottom: 0;
-  border-radius: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    letter-spacing: 5px
 }
 
+.navbar-nav li a:hover {
+    color: #1abc9c !important;
+}
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+}
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
 .row.content {height: 450px}
 
@@ -49,13 +74,6 @@ h4 {
   padding-top: 20px;
   background-color: #f1f1f1;
   height: 100%;
-}
-
-/* Set black background color, white text and some padding */
-footer {
-  background-color: ;
-  color: white;
-  padding: 10px;
 }
 
 

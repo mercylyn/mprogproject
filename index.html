@@ -8,58 +8,40 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="code/css/index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- <script src="https://d3js.org/d3.v3.js"></script> -->
+    <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> -->
+
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
     <script src="https://d3js.org/queue.v1.min.js"></script>
     <script src="https://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script src="mprog_project.js"></script>
+    <script src="code/javascripts/mprog_project.js"></script>
 </head>
-<body>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <!-- <a class="navbar-brand" href="#">Logo</a> -->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#visualisation">Visualisation</a></li>
+                <li><a href="#source">Source</a></li>
+            </ul>
+        </div>
     </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="index.html">Home</a></li>
-        <li><a href="story.html">Story</a></li>
-        <li><a href="source.html">Source</a></li>
-      </ul>
-      <!-- <ul class="nav navbar-nav navbar-right"> -->
-        <!-- <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
-      <!-- </ul> -->
-    </div>
-  </div>
 </nav>
 
-<!-- <div class="jumbotron">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-2"> -->
-            <!-- <img src="mprog.png" class = "mprog" alt="mprog" align="left"> -->
-        <!-- </div>
-        <div class="col-sm-8">
-          <h2>About</h2>
-          <h4>Programming project (Minor Programming)</h4>
-          <h4>Mercylyn Wiemer (10749306)</h4>
-        </div>
-      </div>
-    </div>
-</div> -->
 
-
-<div class="container text-center">
+<div id="home" class="container-fluid bg-1 text-center">
   <img src="images/logo.jpg" alt="Random Name">
   <br>
   <div class="row">
@@ -82,35 +64,71 @@
   </div>
 </div>
 
-<div id="visual" class="bg-1">
-    <div class="container">
+<!-- <div id="visual" class="bg-2"> -->
+<div id="visualisation" class="container-fluid bg-2 text-center">
     <h3 class="text-center">THE BEATLES ALBUMS AND SINGLES</h3>
-    <p class="text-center">Album or Singles timeline with number of weeks in charts</p>
-    <div class="col-sm-12" id="barChart">
+    <p class="text-center">Timeline of years in which albums or singles of the Beatles reached the charts in the UK</p>
+
+    <div class ="row text-center">
         <form>
             <label class="radio-inline">
                 <input type="radio" value="albums" name="music" checked="checked">Albums
-                <!-- onclick='change(this.value)'  -->
             </label>
             <label class="radio-inline">
                 <input type="radio" value="singles" name="music">Singles
             </label>
         </form>
-    </div>
-        <div class="row text-center">
-          <div class="col-sm-6 barChart" id="bubbleChart">
-          </div>
-          <div class="col-sm-6" id="pieChart">
 
-          </div>
+        <br>
+    </div>
+    <div class="col-sm-12" id="barChart">
+
+    </div>
+
+    <div class="row text-center">
+            <div class="col-sm-6 barChart" id="bubbleChart">
+            </div>
+
+            <div class="col-sm-6" id="pieChart">
+            </div>
         </div>
-    </div>
-
-
-    <footer class="container-fluid text-center">
-      <p>Mercylyn Wiemer (10749306), Minor programming</p>
-    </footer>
 </div>
+
+
+<div id="source" class="container-fluid bg-3 text-center">
+    <h3>Source of Data</h3>
+    <p>Lorem ipsum..</p>
+</div>
+
+<footer class="container-fluid bg-4 text-center">
+  <p>Mercylyn Wiemer (10749306), Minor programming</p>
+</footer>
+
+<script>
+$(document).ready(function(){
+  // Add smooth scrolling to all links in navbar + footer link
+  $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
+    // Make sure this.hash has a value before overriding default behavior
+    if (this.hash !== ""){
+      // Prevent default anchor click behavior
+      event.preventDefault();
+
+      // Store hash
+      var hash = this.hash;
+
+      // Using jQuery's animate() method to add smooth page scroll
+      // The optional number (900) specifies the number of milliseconds it takes to scroll to the specified area
+      $('html, body').animate({
+        scrollTop: $(hash).offset().top
+      }, 900, function(){
+
+        // Add hash (#) to URL when done scrolling (default click behavior)
+        window.location.hash = hash;
+      });
+    } // End if
+  });
+})
+</script>
 
 </body>
 </html>
