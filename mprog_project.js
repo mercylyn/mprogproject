@@ -110,7 +110,7 @@ function convertForBubble(dataset) {
         if (dataset[i].highestPosition === 1) {
             data.push({
                 title: dataset[i].title,
-                weeks: dataset[i].weeksNo1,
+                weeks: dataset[i].weeksChart,
                 usNo: dataset[i].usNo1
             })
         };
@@ -552,28 +552,10 @@ function makeBarChart(data) {
           // console.log(d)
           return 'defect-label defect-label-' + d.key;
         })
-        // .attr("transform", function(d) {
-        //   var x_label = x_category((x_defect.rangeBand() + barPadding) / 2);
-        //   var y_label = height + 10;
-        //   return "translate(" + x_label + "," + y_label + ");
-        // })
-        // .attr("x", function(d) {
-        //   return x_category(barPadding);
-        // })
-        // .attr("y", function(d) {
-        //   return y(d.value);
-        // })
 
         .text(function(d) {
             return d.key;
         })
-        // .attr("width", x_category(x_defect.rangeBand() - barPadding))
-        // .attr("transform", function(d, i) {
-        // // http://stackoverflow.com/questions/11252753/rotate-x-axis-text-in-d3
-        // var yVal = y(d.value);
-        // var xVal = x_category(barPadding);
-        // return "translate(" + xVal + "," + yVal + ") rotate(270)";
-        // })
         .attr("transform", function(d) {
                 var x_label =  x_category(x_defect.rangeBand() - barPadding);
                 var y_label =  y(d.value);
@@ -606,26 +588,98 @@ function makeBarChart(data) {
 var updateBubble;
 
 function makeBubbleChart(data) {
-    function updateBubbleChart(data) {
-        console.log(data);
+    function updateBubbleChart(dataset) {
+        console.log(dataset);
         console.log("update bubble chart")
 
         // convert numerical values from strings to numbers
         // var data = data.map(function(d){ d.value = +d["weeks"]; return d; });
 
-        console.log(data)
+        console.log(dataset)
+
+        var data = dataset.map(function(d){ d.value = +d["weeks"]; return d; });
 
         // bubbles needs very specific format, convert data to this.
         var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
         console.log(nodes)
-                var node = svg.selectAll(".bubble")
-                    .data(nodes)
 
+        var node = svg.selectAll(".node")
+            .data(nodes);
+
+        var text = svg.selectAll("text")
+            .data(nodes);
+
+            //setup the chart
+            var nodeEnter = node.enter()
+                .append("g")
+                .attr("class", "node")
+                .attr("transform", "translate(0,0)");
+
+            nodeEnter
+                .append("circle")
+                .attr("r", function(d) { return d.r; })
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; })
+                .style("fill", function(d) { return color(d.value); })
+
+
+            text
+                .enter().append("text")
+                .attr("x", function(d){ return d.x; })
+                .attr("y", function(d){ return d.y + 5; })
+                .attr("text-anchor", "middle")
+                .text(function(d){ console.log(d); return d["title"]; })
+                .style({
+                    "fill":"white",
+                    "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
+                    "font-size": "12px"
+                });
+
+            text
+                .transition().duration(1000)
+                .attr("x", function(d){ return d.x; })
+                .attr("y", function(d){ return d.y + 5; })
+                .text(function(d){ console.log(d); return d["title"]; });
+
+
+            node.select("circle")
+                .attr("r", function(d) { return d.r; })
+                .attr("cx", function(d) { return d.x; })
+                .attr("cy", function(d) { return d.y; })
+                .style("fill", function(d) { return color(d.value); })
+                .on('mouseover', function(d) {
+                    tooltip.select('.title').html("Title: " + d.title);
+                    tooltip.select('.weeks').html("In Chart: " + d.weeks + " weeks");
+
+                    tooltip.style('display', 'block');
+                    tooltip.style('opacity',2);
+
+                })
+
+                .on('mousemove', function(d) {
+                    tooltip.style('top', (d3.event.layerY + 10) + 'px')
+                    .style('left', (d3.event.layerX - 25) + 'px');
+                })
+
+                .on('mouseout', function() {
+                    tooltip.style('display', 'none');
+                    tooltip.style('opacity',0);
+                });
+
+            node
+                .transition().duration(1000)
+                .attr("class", "node")
+                .attr("transform", "translate(0,0)")
+
+            node.exit().remove();
+
+            text.exit().remove();
     };
     updateBubble = updateBubbleChart;
-    //http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
-    var diameter = 500, //max size of the bubbles
-        color    = d3.scale.category20b(); //color category
+
+    var diameter = 800,
+        clusterPadding = 6
+        color    = d3.scale.category20b();
 
     var bubble = d3.layout.pack()
         .sort(null)
@@ -645,33 +699,34 @@ function makeBubbleChart(data) {
     var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
 
     //setup the chart
-    var bubbles = svg.append("g")
-        .attr("transform", "translate(0,0)")
-        .selectAll(".bubble")
+    var node = svg.selectAll(".node")
         .data(nodes)
-        .enter();
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", "translate(0,0)");
+        // .selectAll(".bubble")
 
     var tooltip = d3.select("#bubbleChart")
     	.append('div')
     	.attr('class', 'tooltip');
 
+
+    tooltip.append('div')
+                .attr('class', 'title');
     tooltip.append('div')
     	.attr('class', 'weeks');
 
+
     //create the bubbles
-    bubbles.append("circle")
+    node.append("circle")
         .attr("r", function(d) { return d.r; })
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; })
         .style("fill", function(d) { return color(d.value); })
         .on('mouseover', function(d) {
 
-            if (d.weeks > 1) {
-                tooltip.select('.weeks').html(d.weeks + " weeks");
-            }
-            else {
-                tooltip.select('.weeks').html(d.weeks + " week");
-            };
+            tooltip.select('.title').html("Title: " + d.title);
+            tooltip.select('.weeks').html("In Chart: " + d.weeks + " weeks");
 
             tooltip.style('display', 'block');
             tooltip.style('opacity',2);
@@ -686,14 +741,24 @@ function makeBubbleChart(data) {
         .on('mouseout', function() {
             tooltip.style('display', 'none');
             tooltip.style('opacity',0);
+        })
+        .on("click", function() {
+            console.log("klik op bubble")
         });
 
     //format the text for each bubble
-    bubbles.append("text")
+    node.append("text")
         .attr("x", function(d){ return d.x; })
-        .attr("y", function(d){ return d.y + 5; })
+        .attr("y", function(d){ return d.y + 10; })
         .attr("text-anchor", "middle")
-        .text(function(d){ return d["title"]; })
+        .text(function(d){
+            // if (d["title"].length > 10) {
+            //     console.log("hoi")
+            // }
+            // else {
+                return d["title"];
+            // }
+        })
         .style({
             "fill":"white",
             "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
