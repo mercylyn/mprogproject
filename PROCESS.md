@@ -53,5 +53,5 @@ Continuing with converting the data: lead vocals data.
 * starting with updating bubble chart
 
 # 21-06-2018
-* updating dataset bubble chart
-* updating pie chart (still working on the pie chart update function)
+* update function dataset bubble chart
+* update function pie chart with albums
