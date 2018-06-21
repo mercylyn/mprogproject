@@ -12,7 +12,7 @@ https://stackoverflow.com/questions/43903145/d3-position-x-axis-label-within-rec
  **/
 
 var dataAlbumsBar, dataSinglesBar, dataBubbleAlbums, dataBubbleSingles, dataPie,
-    updateBubble, updatePie, dataName;
+    updateBubble, dataName;
 
 
 window.onload = function() {
@@ -66,12 +66,18 @@ window.onload = function() {
         dataBubbleSingles = convertForBubble(dataSingles);
 
         dataPie = calculatePercentage(dataLead);
+        console.log(dataPie)
 
         // makeBarChart(dataArray);
         makeBarChart(dataAlbumsBar);
 
         // update(dataAlbumsBar)
         makeBubbleChart(dataBubbleAlbums);
+        console.log(dataPie[0].lead)
+        // select first album of the timeline
+        makePieChart(dataPie[0].lead);
+
+
 
 
     };
@@ -645,7 +651,6 @@ function makeBubbleChart(data) {
             text.exit().remove();
     };
     updateBubble = updateBubbleChart;
-    updatePie = renderPieChart;
 
     var diameter = 800,
         clusterPadding = 6
@@ -729,7 +734,7 @@ function makeBubbleChart(data) {
                 };
 
                 if (lead) {
-                    renderPieChart(lead);
+                    updatePieChart(lead);
                 }
                 else {
                     console.log("no data")
@@ -755,20 +760,95 @@ function makeBubbleChart(data) {
 
 // selecteren svg
 
-function updatePie {
-
-            svg = d3.select('#pieChart') and svg( and g)
-            // opnieuw arc
-
-            select paths nieuwe data
-
+function updatePieChart(data) {
+    console.log("update pie")
+    console.log(data)
+    //
+    // var colour = d3.scale.category20();
+    //
+    // var margin = {top:100, bottom:50, left:50, right:50};
+    // var width = 500 - margin.left - margin.right,
+    // height = 800,
+    // radius = Math.min(width, height) / 2;
+    //         var donutWidth = 100;
+    //
+    // var svg = d3.select('#pieChart') //and svg( and g)
+    //     .append("svg")
+    //     // .data([data])
+    //         .attr("width", width)
+    //         .attr("height", height + margin.top + margin.bottom)
+    //         .append("g")
+    //         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    //
+    //     var pie = d3.layout.pie()
+    //         .sort(null)
+    //         .value(function(d) { return d.value; });
+    //
+    //     console.log(pie)
+    //     // Declare an arc generator function
+    //     var arc = d3.svg.arc()
+    //         .outerRadius(radius - 20)
+    //         .innerRadius(radius - donutWidth);
+    //
+    //     //    Select paths, use arc generator to draw
+    //     var arcs = svg.selectAll(".slice")
+    //         .selectAll("path")
+    //         .enter().append("g")
+    //         .attr("class", "arc");
+    //             .data(pie(data))
+    //
+    //     var path = svg.selectAll("path")
+    //          .data(pie(data));
+    //     path.enter().append("path")
+    //          .attr("fill", function(d, i) { return colour(i); })
+    //          .attr("d", arc)
+    //     .each(function(d) {this._current = d;} );
+    //     path.transition()
+    //            .attrTween("d", arcTween);
+    //              path.exit().remove()
+    //
+    //     // arcs.append("svg:path")
+    //     //     .attr("fill", function(d, i) { return colour(i); })
+    //     //     .attr("d", arc)
+    //     //     // .each(function(d) { this._current = d; })
+    //     //     .on('mouseover', function(d) {
+    //     //         // var total = d3.sum(dataset.map(function(d) {
+    //     //         // 	return (d.enabled) ? d.value : 0;
+    //     //         // }));
+    //     //
+    //     //         // var percent = Math.round(1000 * d.data.value / total) / 10;
+    //     //         // tooltip.select('.singer').html(d.data.singer).style('color','black');
+    //     //         tooltip.select('#percent').html(d.data.value + "%");
+    //     //         // tooltip.select('.percent').html(percent + '%');
+    //     //
+    //     //         tooltip.style('display', 'block');
+    //     //         tooltip.style('opacity',2);
+    //     //
+    //     //     })
+    //     //     .on('mousemove', function(d) {
+    //     //         tooltip.style('top', (d3.event.layerY + 10) + 'px')
+    //     //         .style('left', (d3.event.layerX - 25) + 'px');
+    //     //     })
+    //     //     .on('mouseout', function() {
+    //     //         tooltip.style('display', 'none');
+    //     //         tooltip.style('opacity',0);
+    //     //     });
+    //
+    //     function arcTween(a) {
+    //       var i = d3.interpolate(this._current, a);
+    //       this._current = i(0);
+    //       return function(t) {
+    //         return arc(i(t));
+    //       };
+    //     }
 }
-// http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
-function renderPieChart(data) {
-    var pie, arc, arcs;
-    var svg = d3.select('#pieChart').select("svg");
 
-    if ((svg.empty())) {
+// http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
+function makePieChart(data) {
+    // var pie, arc, arcs;
+    // var svg = d3.select('#pieChart').select("svg");
+    //
+    // if ((svg.empty())) {
         var margin = {top:100, bottom:50, left:50, right:50};
     	var width = 500 - margin.left - margin.right,
     	height = 800,
@@ -779,7 +859,7 @@ function renderPieChart(data) {
 
         var colour = d3.scale.category20();
 
-        svg = d3.select('#pieChart')
+        var svg = d3.select('#pieChart')
         .append("svg")
         // .data([data])
             .attr("width", width)
@@ -787,12 +867,14 @@ function renderPieChart(data) {
         .append("g")
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-        pie = d3.layout.pie()
+        var pie = d3.layout.pie()
             .sort(null)
             .value(function(d) { return d.value; });
 
+        console.log(pie)
+
         // Declare an arc generator function
-        arc = d3.svg.arc()
+        var arc = d3.svg.arc()
             .outerRadius(radius - 20)
             .innerRadius(radius - donutWidth);
 
@@ -806,102 +888,146 @@ function renderPieChart(data) {
         tooltip.append('div')
             .attr('id', 'percent');
 
-        // Select paths, use arc generator to draw
-        arcs = svg.selectAll("g.slice")
+        //Select paths, use arc generator to draw
+        var arcs = svg.selectAll(".arc")
             .data(pie(data))
-            .enter()
-            .append("g")
-            .attr("class", "slice");
+            .enter().append("g")
+            .attr("class", "arc");
 
-        arcs.append("svg:path")
-            .attr("fill", function(d, i) { return colour(i); })
-            .attr("d", function (d) {return arc(d);})
-            .on('mouseover', function(d) {
-    			// var total = d3.sum(dataset.map(function(d) {
-    			// 	return (d.enabled) ? d.value : 0;
-    			// }));
+        arcs.append("path")
+            .attr("d", arc)
+              .attr("fill", function(d, i) { return colour(i); })
+              .each(function(d) { this._current = d; }) // store the initial angles
+                  .on('mouseover', function(d) {
+                      // var total = d3.sum(dataset.map(function(d) {
+                      // 	return (d.enabled) ? d.value : 0;
+                      // }));
 
-    			// var percent = Math.round(1000 * d.data.value / total) / 10;
-    			// tooltip.select('.singer').html(d.data.singer).style('color','black');
-    			tooltip.select('#percent').html(d.data.value + "%");
-    			// tooltip.select('.percent').html(percent + '%');
+                      // var percent = Math.round(1000 * d.data.value / total) / 10;
+                      tooltip.select('.singer').html(d.data.singer).style('color','black');
+                      tooltip.select('#percent').html(d.data.value + "%");
+                      // tooltip.select('.percent').html(percent + '%');
 
-    			tooltip.style('display', 'block');
-    			tooltip.style('opacity',2);
+                      tooltip.style('display', 'block');
+                      tooltip.style('opacity',2);
 
-    		})
+                  })
+                  .on('mousemove', function(d) {
+                      tooltip.style('top', (d3.event.layerY + 10) + 'px')
+                      .style('left', (d3.event.layerX - 25) + 'px');
+                  })
+                  .on('mouseout', function() {
+                      tooltip.style('display', 'none');
+                      tooltip.style('opacity',0);
+                  });
 
-            .on('mousemove', function(d) {
-    			tooltip.style('top', (d3.event.layerY + 10) + 'px')
-    			.style('left', (d3.event.layerX - 25) + 'px');
-    		})
-            .on('mouseout', function() {
-    			tooltip.style('display', 'none');
-    			tooltip.style('opacity',0);
-    		});
+            arcs.append("text")
+                .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+                .attr("dy", "0.35em")
+                .text(function(d) { return d.singer; });
 
-        // Add the text
-        arcs.append("svg:text")
-            .attr("transform", function(d){
-                d.innerRadius = 100; /* Distance of label to the center*/
-                d.outerRadius = radius;
-                return "translate(" + arc.centroid(d) + ")";}
-            )
-            .attr("text-anchor", "middle")
-            // .text( function(d, i) {return data[i].value + '%';})
-            .text( function(d, i) {
-                if (data[i].value > 0) {
-                return data[i].singer;
-                }
-            });
+
+        // arcs.append("svg:path")
+        //     .attr("fill", function(d, i) { return colour(i); })
+        //     .attr("d", arc)
+        //     // .each(function(d) { this._current = d; })
+        //     .on('mouseover', function(d) {
+        //         // var total = d3.sum(dataset.map(function(d) {
+        //         // 	return (d.enabled) ? d.value : 0;
+        //         // }));
+        //
+        //         // var percent = Math.round(1000 * d.data.value / total) / 10;
+        //         // tooltip.select('.singer').html(d.data.singer).style('color','black');
+        //         tooltip.select('#percent').html(d.data.value + "%");
+        //         // tooltip.select('.percent').html(percent + '%');
+        //
+        //         tooltip.style('display', 'block');
+        //         tooltip.style('opacity',2);
+        //
+        //     })
+        //     .on('mousemove', function(d) {
+        //         tooltip.style('top', (d3.event.layerY + 10) + 'px')
+        //         .style('left', (d3.event.layerX - 25) + 'px');
+        //     })
+        //     .on('mouseout', function() {
+        //         tooltip.style('display', 'none');
+        //         tooltip.style('opacity',0);
+        //     });
+
+
+            // Add the text
+            arcs.append("svg:text")
+                .attr("transform", function(d) {
+                    d.innerRadius = 100; /* Distance of label to the center*/
+                    d.outerRadius = radius;
+                    return "translate(" + arc.centroid(d) + ")";}
+                )
+                .attr("text-anchor", "middle")
+                // .text( function(d, i) {return data[i].value + '%';})
+                .text( function(d, i) {
+                    if (data[i].value > 0) {
+                        // console.log("hoi");
+                    return data[i].singer;
+                    }
+                });
+
+
+
 
             // again rebind for legend
-        var legend = svg.selectAll(".legend")
-          .data(pie(data))
-          .enter().append("g")
-          .attr("transform", function(d,i){
-            return "translate(" + (width - 600) + "," + (i * 30 + 20) + ")"; // place each legend on the right and bump each one down 15 pixels
-          })
-          .attr("class", "legend");
+        // var legend = svg.selectAll(".legend")
+        //   .data(pie(data))
+        //   .enter().append("g")
+        //   .attr("transform", function(d,i){
+        //     return "translate(" + (width - 600) + "," + (i * 30 + 20) + ")"; // place each legend on the right and bump each one down 15 pixels
+        //   })
+        //   .attr("class", "legend");
+        //
+        // legend.append("rect") // make a matching color rect
+        //   .attr("width", 10)
+        //   .attr("height", 10)
+        //   .attr("fill", function(d, i) {
+        //     return colour(i);
+        //   });
+        //
+        // legend.append("text") // add the text
+        //     .text(function(d){
+        //     return d.value;
+        //     })
+        //     .style("font-size", 12)
+        //     .attr("y", 10)
+        //     .attr("x", 11);
 
-        legend.append("rect") // make a matching color rect
-          .attr("width", 10)
-          .attr("height", 10)
-          .attr("fill", function(d, i) {
-            return colour(i);
-          });
 
-        legend.append("text") // add the text
-            .text(function(d){
-            return d.value;
-            })
-            .style("font-size", 12)
-            .attr("y", 10)
-            .attr("x", 11);
-        }
 
-        else {
-            console.log(svg)
-            pie = d3.layout.pie()
-                .sort(null)
-                .value(function(d) { return d.value; });
 
-            arcs = svg.selectAll("g.slice")
-                .data(pie(data))
-                .enter()
-                .append("g")
-                .attr("class", "slice");
 
-            arcs.append("svg:path")
-                .attr("fill", function(d, i) { return colour(i); })
-                .attr("d", function (d) {return arc(d);})
-                // .on('mouseover', function(d) {
-                //     tooltip.select('#percent').html(d.data.value + "%");
-                //     // tooltip.select('.percent').html(percent + '%');
-                //
-                //     tooltip.style('display', 'block');
-                //     tooltip.style('opacity',2);
-                // })
-        }
+
+
+        // }
+
+        // else {
+        //     console.log(svg)
+        //     pie = d3.layout.pie()
+        //         .sort(null)
+        //         .value(function(d) { return d.value; });
+        //
+        //     arcs = svg.selectAll("g.slice")
+        //         .data(pie(data))
+        //         .enter()
+        //         .append("g")
+        //         .attr("class", "slice");
+        //
+        //     arcs.append("svg:path")
+        //         .attr("fill", function(d, i) { return colour(i); })
+        //         .attr("d", function (d) {return arc(d);})
+        //         // .on('mouseover', function(d) {
+        //         //     tooltip.select('#percent').html(d.data.value + "%");
+        //         //     // tooltip.select('.percent').html(percent + '%');
+        //         //
+        //         //     tooltip.style('display', 'block');
+        //         //     tooltip.style('opacity',2);
+        //         // })
+        // }
 
 }
