@@ -14,7 +14,6 @@ https://stackoverflow.com/questions/43903145/d3-position-x-axis-label-within-rec
 var dataAlbumsBar, dataSinglesBar, dataBubbleAlbums, dataBubbleSingles, dataPie,
     updateBubble, dataName, updatePie;
 
-
 window.onload = function() {
 
     queue()
@@ -62,24 +61,19 @@ window.onload = function() {
 
         dataSinglesBar = dataToJSON(dataSingles);
 
-        dataBubbleAlbums = convertForBubble(dataAlbums),
+        dataBubbleAlbums = convertForBubble(dataAlbums);
         dataBubbleSingles = convertForBubble(dataSingles);
 
         dataPie = calculatePercentage(dataLead);
-        console.log(dataPie)
 
         // makeBarChart(dataArray);
         makeBarChart(dataAlbumsBar);
 
         // update(dataAlbumsBar)
         makeBubbleChart(dataBubbleAlbums);
-        console.log(dataPie[0].lead)
+
         // select first album of the timeline
         makePieChart(dataPie[0].lead);
-
-
-
-
     };
 };
 
@@ -91,7 +85,6 @@ function calculatePercentage(data) {
         album = data[i];
         title = album.title
         noTracks = album.noTracks;
-        chart =
 
         convertedData.push({
             title: title,
@@ -177,6 +170,8 @@ function dataToJSON(dataset) {
 
 
 function makeBarChart(data) {
+
+    // Updates the bar chart album or singles
     function update(data) {
         var rangeBands = [];
         var cummulative = 0;
@@ -215,7 +210,6 @@ function makeBarChart(data) {
         svg.selectAll("g.y.axis")
             .transition().duration(500)
             .call(yAxis)
-
 
         var category_g = svg.selectAll(".category")
           .data(data)
@@ -259,7 +253,7 @@ function makeBarChart(data) {
             })
             .attr("transform", function(d) {
             var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
-            var y_label = height + 30;
+            var y_label = height + 20;
             return "translate(" + x_label + "," + y_label + ")";
             })
             .text(function(d) {
@@ -274,7 +268,7 @@ function makeBarChart(data) {
             })
             .attr("transform", function(d) {
             var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
-            var y_label = height + 30;
+            var y_label = height + 20;
             return "translate(" + x_label + "," + y_label + ")";
             })
             .text(function(d) {
@@ -383,10 +377,20 @@ function makeBarChart(data) {
             });
     };
 
+    // var color = {
+    //   1963: '#a6cee3', 1964: '#1f78b4', 1965: '#b2df8a', 1966: '#33a02c',
+    //   1967: '#fb9a99', 1968: '#e31a1c', 1969: '#fdbf6f', 1970: '#ff7f00',
+    //   1971: '#cab2d6', 1973: '#6a3d9a', 1976: '#8dd3c7', 1977: '#b15928',
+    //   1979: '#bebada', 1980: '#fb8072', 1982: '#80b1d3', 1987: '#fdb462',
+    //   1988: '#756bb1', 1993: '#fccde5', 1994: '#bc80bd', 1995: '#ef6548',
+    //   1996: '#6e016b', 1999: '#a8ddb5', 2000: '#4eb3d3', 2003: '#08589e',
+    //   2006: '#fa9fb5', 2007: '#ef6548', 2009: '#dd1c77'
+    // };
+
     var color = {
-      1963: '#a6cee3', 1964: '#1f78b4', 1965: '#b2df8a', 1966: '#33a02c',
-      1967: '#fb9a99', 1968: '#e31a1c', 1969: '#fdbf6f', 1970: '#ff7f00',
-      1971: '#cab2d6', 1973: '#6a3d9a', 1976: '#8dd3c7', 1977: '#b15928',
+      1963: '#67001f', 1964: '#b2182b', 1965: '#d6604d', 1966: '#f4a582',
+      1967: '#fddbc7', 1968: '#f7f7f7', 1969: '#d1e5f0', 1970: '#92c5de',
+      1971: '#4393c3', 1973: '#2166ac', 1976: '#053061', 1977: '#b15928',
       1979: '#bebada', 1980: '#fb8072', 1982: '#80b1d3', 1987: '#fdb462',
       1988: '#756bb1', 1993: '#fccde5', 1994: '#bc80bd', 1995: '#ef6548',
       1996: '#6e016b', 1999: '#a8ddb5', 2000: '#4eb3d3', 2003: '#08589e',
@@ -447,7 +451,7 @@ function makeBarChart(data) {
     var svg = d3.select("#barChart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
-      .style('background-color', 'EFEFEF')
+      .style('background-color', '#F7F6E2')
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -488,7 +492,7 @@ function makeBarChart(data) {
       })
       .attr("transform", function(d) {
         var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
-        var y_label = height + 30;
+        var y_label = height + 20;
         return "translate(" + x_label + "," + y_label + ")";
       })
       .text(function(d) {
@@ -779,8 +783,8 @@ function makePieChart(data) {
   return sortedMerge;
 }
     function updatePieChart(data) {
-        console.log("update pie")
-        console.log(data)
+        // console.log("update pie")
+        // console.log(data)
 
         var oldData = svg.select(".slices")
           .selectAll("path")
@@ -791,6 +795,7 @@ function makePieChart(data) {
         var was = mergeWithFirstEqualZero(data, oldData);
         var is = mergeWithFirstEqualZero(oldData, data);
 
+
         var slice = svg.select(".slices")
           .selectAll("path")
           .data(pie(was), key);
@@ -799,7 +804,7 @@ function makePieChart(data) {
           .insert("path")
           .attr("class", "slice")
           .style("fill", function(d, i) { return color(i); })
-          .each(function(d) { console.log(d);
+          .each(function(d) {
               this._current = d;
             })
           .on('mouseover', function(d) {
@@ -949,8 +954,6 @@ function makePieChart(data) {
 
         // var color = d3.scale.ordinal(d3.schemePastel1)
         //     .domain(keys);
-
-
 
         var tooltip = d3.select("#pieChart")
         	.append('div')

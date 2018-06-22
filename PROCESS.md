@@ -55,3 +55,8 @@ Continuing with converting the data: lead vocals data.
 # 21-06-2018
 * update function dataset bubble chart
 * update function pie chart with albums
+
+# 22-06-2018
+* feedback presentation: scale titles in grouped bar chart, colors in bubble
+chart, visualation dropdown (grouped bar chart/bubble - pie chart), albums/singles
+button underneath the chart
