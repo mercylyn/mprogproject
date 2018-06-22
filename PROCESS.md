@@ -60,3 +60,5 @@ Continuing with converting the data: lead vocals data.
 * feedback presentation: scale titles in grouped bar chart, colors in bubble
 chart, visualation dropdown (grouped bar chart/bubble - pie chart), albums/singles
 button underneath the chart
+* changed design of website
+* design of grouped bar chart
