@@ -19,8 +19,8 @@
 }
 
 .container-fluid {
-    padding-top: 70px;
-    padding-bottom: 60px;
+    padding-top: 80px;
+    padding-bottom: 80px;
 }
 
 /* .jumbotron {
@@ -49,6 +49,19 @@ body {
 }
 
 p {font-size: 16px;}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #f1f1f1;
+    border-radius: 0;
+    transition: .2s;
+}
+.btn:hover, .btn:focus {
+    border: 1px solid #333;
+    background-color: #fff;
+    color: #000;
+}
 
 /* Remove the navbar's default margin-bottom and rounded borders */
 /* .navbar {

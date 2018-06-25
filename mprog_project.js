@@ -221,8 +221,8 @@ function makeBarChart(data) {
           .attr("transform", function(d) {
             return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
           })
-          .attr("fill", function(d) {
-            return color[d.key];
+          .attr("fill", function(d, i) {
+            return color[i];
           });
 
           // Update old ones, already have x / width from before
@@ -234,9 +234,9 @@ function makeBarChart(data) {
             .attr("transform", function(d) {
               return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
             })
-            // .attr("fill", function(d) {
-            //   return color[d.key];
-            // });
+            .attr("fill", function(d, i) {
+              return color[i];
+            });
 
         // Remove old ones
         category_g.exit().remove();
@@ -371,33 +371,21 @@ function makeBarChart(data) {
             })
             .attr("transform", function(d) {
                     var x_label =  x_category(x_defect.rangeBand() - barPadding);
-                    var y_label =  y(d.value);
+                    var y_label =  y(d.value) - barPadding / 2;
                     return "translate(" + x_label + "," + y_label + ") rotate(270)";
 
             });
     };
 
-    // var color = {
-    //   1963: '#a6cee3', 1964: '#1f78b4', 1965: '#b2df8a', 1966: '#33a02c',
-    //   1967: '#fb9a99', 1968: '#e31a1c', 1969: '#fdbf6f', 1970: '#ff7f00',
-    //   1971: '#cab2d6', 1973: '#6a3d9a', 1976: '#8dd3c7', 1977: '#b15928',
-    //   1979: '#bebada', 1980: '#fb8072', 1982: '#80b1d3', 1987: '#fdb462',
-    //   1988: '#756bb1', 1993: '#fccde5', 1994: '#bc80bd', 1995: '#ef6548',
-    //   1996: '#6e016b', 1999: '#a8ddb5', 2000: '#4eb3d3', 2003: '#08589e',
-    //   2006: '#fa9fb5', 2007: '#ef6548', 2009: '#dd1c77'
-    // };
 
-    var color = {
-      1963: '#67001f', 1964: '#b2182b', 1965: '#d6604d', 1966: '#f4a582',
-      1967: '#fddbc7', 1968: '#f7f7f7', 1969: '#d1e5f0', 1970: '#92c5de',
-      1971: '#4393c3', 1973: '#2166ac', 1976: '#053061', 1977: '#b15928',
-      1979: '#bebada', 1980: '#fb8072', 1982: '#80b1d3', 1987: '#fdb462',
-      1988: '#756bb1', 1993: '#fccde5', 1994: '#bc80bd', 1995: '#ef6548',
-      1996: '#6e016b', 1999: '#a8ddb5', 2000: '#4eb3d3', 2003: '#08589e',
-      2006: '#fa9fb5', 2007: '#ef6548', 2009: '#dd1c77'
-    };
+    const color =[
+        "#c95275", "#58ae5d", "#ba5fbe", "#b9b83e", "#543586", "#83aa46",
+        "#6678d3", "#d0943a", "#bd8fd7", "#46bc8c", "#b54b8d", "#59c1c2",
+        "#c3443a", "#70a3ce", "#bd6633", "#504c76", "#94863a", "#c68fb6",
+        "#454d25", "#c65158", "#538f7c", "#783821", "#85a673", "#71334a",
+        "#b4a170", "#da896b", "#bf8981"];
 
-    var margin = {top: 20, right: 30, bottom: 30, left: 40},
+    const margin = {top: 20, right: 30, bottom: 30, left: 40},
         width = 1280 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
@@ -432,7 +420,7 @@ function makeBarChart(data) {
         return d3.max(cat.values, function(def) {
             return def.value;
             });
-        }) * 1.75
+        }) * 2
     ]);
 
     var yAxis = d3.svg.axis()
@@ -455,7 +443,6 @@ function makeBarChart(data) {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
     svg.call(tip);
 
     svg.append("g")
@@ -477,8 +464,8 @@ function makeBarChart(data) {
       .attr("transform", function(d) {
         return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
       })
-      .attr("fill", function(d) {
-        return color[d.key];
+      .attr("fill", function(d, i) {
+        return color[i];
       });
 
     // year
@@ -502,36 +489,35 @@ function makeBarChart(data) {
 
     // adding inner groups g elements
     var defect_g = category_g.selectAll(".defect")
-      .data(function(d) {
+        .data(function(d) {
         return d.values;
-      })
-      .enter().append("g")
-      .attr("class", function(d) {
+        })
+        .enter().append("g")
+        .attr("class", function(d) {
         return 'defect defect-' + d.key;
-      })
-      .attr("transform", function(d, i) {
+        })
+        .attr("transform", function(d, i) {
         return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
-      });
+        });
 
-    //
     var rects = defect_g.selectAll('.rect')
-      .data(function(d) {
+        .data(function(d) {
         return [d];
-      })
-      .enter().append("rect")
-      .attr("class", "rect")
-      .attr("width", x_category(x_defect.rangeBand() - barPadding))
-      .attr("x", function(d) {
+        })
+        .enter().append("rect")
+        .attr("class", "rect")
+        .attr("width", x_category(x_defect.rangeBand() - barPadding))
+        .attr("x", function(d) {
         return x_category(barPadding);
-      })
-      .attr("y", function(d) {
+        })
+        .attr("y", function(d) {
         return y(d.value);
-      })
-      .attr("height", function(d) {
+        })
+        .attr("height", function(d) {
         return height - y(d.value);
-    })
-    .on('mouseover', tip.show)
-    .on('mouseout', tip.hide);
+        })
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
 
 
     // add labels to g elements
@@ -548,9 +534,9 @@ function makeBarChart(data) {
             return d.key;
         })
         .attr("transform", function(d) {
-                var x_label =  x_category(x_defect.rangeBand() - barPadding);
-                var y_label =  y(d.value);
-                return "translate(" + x_label + "," + y_label + ") rotate(270)";
+            var x_label =  x_category(x_defect.rangeBand() - barPadding);
+            var y_label =  y(d.value) - barPadding / 2;
+            return "translate(" + x_label + "," + y_label + ") rotate(270)";
 
         })
         .style('fill', 'black')
@@ -564,7 +550,7 @@ function makeBarChart(data) {
                     updateBubble(dataBubbleAlbums);
 
                 let updateTitle = d3.selectAll(".pieTitle")
-                                    .text("*Select Album");
+                                    .text("* Select an album");
                 }
                 else {
                     update(dataSinglesBar);
@@ -618,7 +604,7 @@ function makeBubbleChart(data) {
             .attr("r", function(d) { return d.r; })
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
-            .style("fill", function(d) { return color(d.value); })
+            .style("fill", function(d, i) { return color[i]; })
 
 
         text
@@ -635,7 +621,7 @@ function makeBubbleChart(data) {
             });
 
         text
-            .transition().duration(1000)
+            .transition().duration(750)
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d){ return d.y + 5; })
             .text(function(d){ return d["title"]; });
@@ -675,7 +661,7 @@ function makeBubbleChart(data) {
             });
 
         node
-            .transition().duration(1000)
+            .transition().duration(750)
             .attr("class", "node")
             .attr("transform", "translate(0,0)")
 
@@ -886,7 +872,7 @@ function makePieChart(data, albumTitle) {
           .data(pie(is), key);
 
         slice.transition()
-          .duration(500)
+          .duration(750)
           .attrTween("d", function(d) {
               var interpolate = d3.interpolate(this._current, d);
               var _this = this;
@@ -902,7 +888,7 @@ function makePieChart(data, albumTitle) {
 
         slice.exit()
             .transition()
-            .delay(500)
+            .delay(750)
             .duration(0)
             .remove();
 

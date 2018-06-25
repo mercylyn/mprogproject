@@ -62,3 +62,12 @@ chart, visualation dropdown (grouped bar chart/bubble - pie chart), albums/singl
 button underneath the chart
 * changed design of website
 * design of grouped bar chart
+
+# 25-06-2018
+* title for bubble chart and pie chart (dynamic)
+* handeling user input for pie chart with no data or bubble chart set on singles
+* chose appropriate color scheme http://tools.medialab.sciences-po.fr/iwanthue/
+and try to improve for colorblind (grouped bar chart)
+* adjust title of albums/singles in grouped bar chart
+* adjust lengend pie chart
+* changed home page to fit screen
