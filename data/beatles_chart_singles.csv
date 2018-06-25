@@ -11,10 +11,10 @@ date,highestPosition,weeksChart,title,artists,weeksNo1,usNo1
 12/3/1964,1,13,I Feel Fine,Beatles,5,1
 4/15/1965,1,12,Ticket To Ride,Beatles,3,1
 7/29/1965,1,14,Help!,Beatles,3,1
-12/9/1965,1,12,Day Tripper / We Can Work It Out,Beatles,5,1
+12/9/1965,1,12,Day Tripper/We Can Work It Out,Beatles,5,1
 6/16/1966,1,11,Paperback Writer,Beatles,2,1
-8/11/1966,1,13,Yellow Submarine / Eleanor Rigby,Beatles,4,0
-2/23/1967,2,11,Penny Lane / Strawberry Fields Forever,Beatles,,1
+8/11/1966,1,13,Yellow Submarine/Eleanor Rigby,Beatles,4,0
+2/23/1967,2,11,Penny Lane/Strawberry Fields Forever,Beatles,,1
 7/12/1967,1,13,All You Need Is Love,Beatles,3,1
 11/29/1967,1,12,Hello Goodbye,Beatles,,1
 12/13/1967,2,12,Magical Mystery Tour (double ep),Beatles,7,0
@@ -22,7 +22,7 @@ date,highestPosition,weeksChart,title,artists,weeksNo1,usNo1
 9/4/1968,1,16,Hey Jude,Beatles,2,1
 4/23/1969,1,17,Get Back,Beatles With Billy Preston,6,1
 6/4/1969,1,14,The Ballad Of John And Yoko,Beatles,3,0
-11/8/1969,4,12,Something / Come Together,Beatles,,0
+11/8/1969,4,12,Something/Come Together,Beatles,,0
 3/14/1970,2,10,Let It Be,Beatles,,1
 3/13/1976,8,7,Yesterday,Beatles,,1
 3/27/1976,12,7,Hey Jude,Beatles,,0
@@ -42,8 +42,8 @@ date,highestPosition,weeksChart,title,artists,weeksNo1,usNo1
 7/21/1984,52,2,A Hard Day's Night,Beatles,,0
 12/8/1984,65,1,I Feel Fine,Beatles,,0
 4/20/1985,70,2,Ticket To Ride,Beatles,,0
-8/30/1986,63,1,Yellow Submarine / Eleanor Rigby,Beatles,,0
-2/28/1987,65,2,Penny Lane / Strawberry Fields Forever,Beatles,,0
+8/30/1986,63,1,Yellow Submarine/Eleanor Rigby,Beatles,,0
+2/28/1987,65,2,Penny Lane/Strawberry Fields Forever,Beatles,,0
 7/18/1987,47,3,All You Need Is Love,Beatles,,0
 12/5/1987,63,1,Hello Goodbye,Beatles,,0
 3/26/1988,67,1,Lady Madonna,Beatles,,0

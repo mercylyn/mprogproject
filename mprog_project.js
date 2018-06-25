@@ -19,7 +19,7 @@ window.onload = function() {
     queue()
         .defer(d3.csv, "data/beatles_chart_albums.csv")
         .defer(d3.csv, "data/beatles_chart_singles.csv")
-        .defer(d3.csv, "data/lead_vocals_albums_clean.csv")
+        .defer(d3.csv, "data/lead_vocals_albums.csv")
         .await(convertData);
 
     function convertData(error, albums, singles, lead) {
@@ -616,25 +616,16 @@ function makeBubbleChart(data) {
             .text(function(d){ return d["title"]; })
             .style({
                 "fill":"white",
-                "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
-                "font-size": "12px"
-            });
+                "font-family":"Helvetica Neue, Helvetica, Arial, san-serif"
+            })
+            .style("font-size", function(d) { return Math.min(2 * d.radius, (2 * d.radius - 8) / this.getComputedTextLength() * 24) + "px"; })
+            .attr("dy", ".35em");
 
         text
             .transition().duration(750)
             .attr("x", function(d){ return d.x; })
             .attr("y", function(d){ return d.y + 5; })
             .text(function(d){ return d["title"]; });
-
-        // svg.append("text")
-        //     .attr("class", "title")
-        //     .attr("x", (diameter / 2))
-        //     .attr("y", 50)
-        //     .attr("text-anchor", "middle")
-        //     .style("font-size", "22px")
-        //     .style("fill", "white")
-        //     .text("UK CHART NUMBER ONES")
-
 
         node.select("circle")
             .attr("r", function(d) { return d.r; })
@@ -649,12 +640,10 @@ function makeBubbleChart(data) {
                 tooltip.style('opacity',2);
 
             })
-
             .on('mousemove', function(d) {
                 tooltip.style('top', (d3.event.layerY + 10) + 'px')
                 .style('left', (d3.event.layerX - 25) + 'px');
             })
-
             .on('mouseout', function() {
                 tooltip.style('display', 'none');
                 tooltip.style('opacity',0);
@@ -669,15 +658,16 @@ function makeBubbleChart(data) {
 
         text.exit().remove();
     };
+
     updateBubble = updateBubbleChart;
 
-    var diameter = 700,
+    var diameter = 740,
         color    = d3.scale.category20b();
 
     var bubble = d3.layout.pack()
         .sort(null)
         .size([diameter, diameter])
-        .padding(1.5);
+        .padding(3.5);
 
     var svg = d3.select("#bubbleChart")
         .append("svg")
@@ -702,7 +692,6 @@ function makeBubbleChart(data) {
     var tooltip = d3.select("#bubbleChart")
         .append('div')
         .attr('class', 'tooltip');
-
 
     tooltip.append('div')
         .attr('class', 'title');
@@ -767,7 +756,6 @@ function makeBubbleChart(data) {
                     let updateTitle = d3.selectAll(".pieTitle")
                                         .text("Sorry, no data available");
                 };
-
             };
         });
 
@@ -783,19 +771,10 @@ function makeBubbleChart(data) {
         .text(function(d){ return d["title"]; })
         .style({
             "fill":"white",
-            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
-            "font-size": "12px"
-        });
-
-    // svg.append("text")
-    //     .attr("class", "title")
-    //     .attr("x", (diameter / 2))
-    //     .attr("y", 50)
-    //     .attr("text-anchor", "middle")
-    //     .style("font-size", "22px")
-    //     .style("fill", "white")
-    //     .text("UK ALBUMS CHART NUMBER ONES")
-
+            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif"
+        })
+        .style("font-size", function(d) { return Math.min(2 * d.radius, (2 * d.radius - 8) / this.getComputedTextLength() * 24) + "px"; })
+        .attr("dy", ".35em");
 }
 
 // http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
