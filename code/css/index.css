@@ -1,6 +1,6 @@
 .bg-1 {
       background-color: #F7F6E2; /* Dark Blue */
-      color: #ffffff;
+      color: #000000;
 }
 
 .bg-2 {
@@ -172,7 +172,7 @@ svg {
 	position: absolute;
 	text-align: center;
 	top: 95px;
-	width: 80px;
+	width: 125px;
 	z-index: 10;
 	display: block;
 	opacity: 0;
