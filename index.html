@@ -13,6 +13,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://d3js.org/queue.v1.min.js"></script>
 
@@ -36,8 +38,14 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#home">Home</a></li>
-                <li><a href="#visualisation">Visualisation</a></li>
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Visualisations<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#part1">UK chart timeline</a></li>
+                        <li><a href="#part2">No 1 & Lead Vocals</a></li>
+                    </ul>
+                </li>
                 <li><a href="#source">Source</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -49,26 +57,25 @@
   <br>
   <div class="row">
     <div class="col-sm-3">
-      <!-- <p><strong>JOHN</strong></p> -->
       <img src="images/lennon.jpg" class="person" alt="Random Name" width="255" height="255" border="5">
     </div>
     <div class="col-sm-3">
-      <!-- <p><strong>PAUL</strong></p> -->
       <img src="images/mccartney.jpg" class="person" alt="Random Name" width="255" height="255">
     </div>
     <div class="col-sm-3">
-      <!-- <p><strong>GEORGE</strong></p> -->
       <img src="images/harrison.jpg" class="person" alt="Random Name" width="255" height="255">
     </div>
     <div class="col-sm-3">
-      <!-- <p><strong>RINGO</strong></p> -->
       <img src="images/starr.jpg" class="person" alt="Random Name" width="255" height="255">
     </div>
+    <a href="#part1">
+        <i class="fa fa-angle-double-down" style="font-size:36px"></i>
+    </a>
   </div>
 </div>
 
 <!-- <div id="visual" class="bg-2"> -->
-<div id="visualisation" class="container-fluid bg-2 text-center">
+<div id="part1" class="container-fluid bg-2 text-center">
     <h3 class="text-center">THE BEATLES ALBUMS AND SINGLES</h3>
     <p class="text-center">Timeline of years in which albums or singles of the Beatles reached the charts in the UK</p>
 
@@ -84,27 +91,91 @@
 
     </div>
 
-    <div class="col-sm-12" id="barChart">
-
+    <div class="row text-center">
+        <div class="col-sm-12" id="barChart">
+        </div>
     </div>
+
+    <div class="row text-center">
+        <a href="#part2">
+            <i class="fa fa-angle-double-down" style="font-size:36px"></i>
+        </a>
+    </div>
+</div>
+
+<div id="part2" class="container-fluid bg-2 text-center">
 
     <div class="row text-center">
             <div class="col-sm-6" id="bubbleChart">
             </div>
 
-            <div class="col-sm-6" id="pieChart">
+            <div class="col-sm-1">
+                <div class="row">
+                    <br>
+                </div>
+
+                <a href="#part1">
+                    <i class="fa fa-angle-double-up" style="font-size:36px"></i>
+                </a>
+                <a href="#source">
+                    <i class="fa fa-angle-double-down" style="font-size:36px"></i>
+                </a>
             </div>
+
+            <div class="col-sm-5" id="pieChart">
+            </div>
+    </div>
+</div>
+
+
+<div id="source" class="container-fluid bg-3 text-left">
+    <div class="col-sm-2">
+    </div>
+
+    <div class="col-sm-6">
+        <div class="row">
+            <h2>Source of Data</h2>
         </div>
+
+        <div class="row">
+        <h4>The Beatles: every album and single, with its chart position</h4>
+        </div>
+        <ul style="list-style-type:none">
+            <li><a href="https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band" target="_blank"> The Guardian </a></li>
+        </ul>
+
+        <div class="row">
+            <h4>Lead vocals per album (Wikipedia)</h4>
+        </div>
+
+        <ul style="list-style-type:none">
+          <li><a href="https://en.wikipedia.org/wiki/Please_Please_Me" target="_blank"> Please Please Me </a></li>
+          <li><a href="https://en.wikipedia.org/wiki/With_the_Beatles" target="_blank"> With The Beatles </a></li>
+          <li><a href="https://en.wikipedia.org/wiki/A_Hard_Day%27s_Night_(album)" target="_blank"> A Hard Day's Night </a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Beatles_for_Sale" target="_blank"> Beatles For Sale</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Help!_(album)e" target="_blank"> Help! </a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Rubber_Soul" target="_blank">Rubber Soul </a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Revolver_(Beatles_album)" target="_blank">Revolver</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Sgt._Pepper%27s_Lonely_Hearts_Club_Band" target="_blank">Sgt. Pepper's Lonely Hearts Club Band</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Magical_Mystery_Tour" target="_blank">Magical Mystery Tour</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/The_Beatles_(album)" target="_blank"> The Beatles (The White Album) </a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Abbey_Road" target="_blank">Abbey Road</a></li>
+          <li><a href="https://en.wikipedia.org/wiki/Let_It_Be" target="_blank">Let It Be</a></li>
+        </ul>
+    </div>
+
+    <!-- <div class="col-sm-2">
+        <a href="#contact">
+            <i class="fa fa-angle-double-down" style="font-size:36px"></i>
+        </a>
+    </div> -->
 </div>
 
-
-<div id="source" class="container-fluid bg-3 text-center">
-    <h3>Source of Data</h3>
-    <a href="https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band" target="_blank"> The Guardian </a>
-</div>
-
-<footer class="container-fluid bg-4 text-center">
-  <p>Mercylyn Wiemer (10749306), Minor programming</p>
+<footer id="contact" class="container-fluid bg-4 text-center">
+    <p>Mercylyn Wiemer (10749306), Minor programming</p>
+    <a href="#myPage" title="To Top">
+        <i class="fa fa-angle-double-up" style="font-size:36px"></i>
+    </a>
 </footer>
 
 </body>

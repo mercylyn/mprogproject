@@ -71,3 +71,10 @@ and try to improve for colorblind (grouped bar chart)
 * adjust title of albums/singles in grouped bar chart
 * adjust lengend pie chart
 * changed home page to fit screen
+
+# 26-06-2018
+* adjusted legend to page / changed colors or rectangles
+* completed the source
+* adjusted scroll spy for visualisations: from gouped bar chart to pie chart/bubble chart
+* adjusted grid for the visualisations
+* update title of bubble chart

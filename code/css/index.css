@@ -1,40 +1,71 @@
 .bg-1 {
-      background-color: #F7F6E2; /* Dark Blue */
-      color: #000000;
-}
-
-.bg-2 {
-      background-color: #1F8093; /* Dark Blue */
-      color: #ffffff;
-}
-
-.bg-3 {
-    background-color: #ffffff; /* White */
-    color: #555555;
-}
-
-.bg-4 {
-    background-color: #969696;
-    color: #ffffff;
-}
-
-.container-fluid {
+    background-color: #F7F6E2;
+    color: #000000;
     padding-top: 80px;
     padding-bottom: 80px;
 }
 
-/* .jumbotron {
-    background-color: #2d2d30;
-    color: #ffff;
-    padding: 100px 25px;
-    font-family: Montserrat, sans-serif;
+.bg-1 .fa {
+    color: #000000;
+}
+.bg-2 {
+    background-color: #1F8093; /* Dark Blue */
+    color: #ffffff;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.bg-2 .fa {
+        font-size: 22px;
+        margin-bottom: 20px;
+        color: #F7F6E2;
+}
+
+.bg-3 {
+    background-color: #F7F6E2; /* White */
+    color: #555555;
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
+
+.bg-4 {
+    background-color: #000000;
+    color: #ffffff;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+footer .fa {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #F7F6E2;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.open .dropdown-toggle {
+    color: #fff;
+    background-color: #555 !important;
+}
+.dropdown-menu li a {
+    color: #000 !important;
+    background-color: black;
+}
+.dropdown-menu li a:hover {
+    background-color: red !important;
+}
+
+/* .container-fluid {
+    padding-top: 80px;
+    padding-bottom: 80px;
 } */
+
 h2 {
     font-size: 24px;
     text-transform: uppercase;
     font-weight: 600;
     margin-bottom: 30px;
 }
+
 h4 {
     font-size: 19px;
     line-height: 1.375em;
@@ -46,9 +77,12 @@ body {
     font: 20px "Montserrat", sans-serif;
     line-height: 1.8;
     color: #E4C85D;
+    /* overflow-y: hidden; */
 }
 
-p {font-size: 16px;}
+p {
+    font-size: 16px;
+}
 
 .btn {
     padding: 10px 20px;
@@ -62,18 +96,6 @@ p {font-size: 16px;}
     background-color: #fff;
     color: #000;
 }
-
-/* Remove the navbar's default margin-bottom and rounded borders */
-/* .navbar {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border: 0;
-    border-radius: 0;
-    margin-bottom: 0;
-    font-size: 12px;
-    letter-spacing: 5px;
-    background-color: #F7F6E2;
-} */
 
 .navbar {
     font-family: Montserrat, sans-serif;
@@ -97,27 +119,11 @@ p {font-size: 16px;}
 .navbar-default .navbar-toggle {
     border-color: transparent;
 }
-/* .open .dropdown-toggle {
-color: #fff;
-background-color: #555 !important;
-} */
-/* .dropdown-menu li a {
-color: #000 !important;
-} */
-/* .dropdown-menu li a:hover {
-background-color: red !important;
-} */
-/* .navbar-nav li a:hover {
-    color: #1abc9c !important;
-}
-.navbar-default .navbar-toggle {
-    border-color: transparent;
-    color: #fff !important;
-} */
+
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-.row.content {height: 450px}
-
-
+.row.content {
+    height: 450px;
+}
 
 /* On small screens, set height to 'auto' for sidenav and grid */
 @media screen and (max-width: 767px) {

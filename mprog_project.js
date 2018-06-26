@@ -551,6 +551,9 @@ function makeBarChart(data) {
 
                 let updateTitle = d3.selectAll(".pieTitle")
                                     .text("* Select an album");
+
+                let updateTitleBubble = d3.selectAll(".bubbleTitle")
+                                        .text("UK ALBUMS CHART NUMBER ONES");
                 }
                 else {
                     update(dataSinglesBar);
@@ -563,6 +566,9 @@ function makeBarChart(data) {
 
                     let updateTitle = d3.selectAll(".pieTitle")
                                         .text("*Only possible for albums");
+
+                    let updateTitleBubble = d3.selectAll(".bubbleTitle")
+                                            .text("UK SINGLES CHART NUMBER ONES");
                 }
         };
 
@@ -574,7 +580,8 @@ function makeBubbleChart(data) {
 
     let bubbleTitle = d3.select("#bubbleChart")
                         .append("h3")
-                        .text("UK ALBUM CHART NUMBER ONES")
+                        .attr("class", "bubbleTitle")
+                        .text("UK ALBUMS CHART NUMBER ONES")
 
     // update bubble chart when user switches input
     function updateBubbleChart(dataset) {
@@ -661,7 +668,7 @@ function makeBubbleChart(data) {
 
     updateBubble = updateBubbleChart;
 
-    var diameter = 740,
+    var diameter = 730,
         color    = d3.scale.category20b();
 
     var bubble = d3.layout.pack()
@@ -806,8 +813,6 @@ function makePieChart(data, albumTitle) {
     }
 
     function updatePieChart(data) {
-        // console.log("update pie")
-        console.log(data)
 
         var oldData = svg.select(".slices")
           .selectAll("path")
@@ -847,17 +852,17 @@ function makePieChart(data, albumTitle) {
             });
 
         slice = svg.select(".slices")
-          .selectAll("path")
-          .data(pie(is), key);
+            .selectAll("path")
+            .data(pie(is), key);
 
         slice.transition()
-          .duration(750)
-          .attrTween("d", function(d) {
-              var interpolate = d3.interpolate(this._current, d);
-              var _this = this;
-              return function(t) {
-                  _this._current = interpolate(t);
-                  return arc(_this._current);
+            .duration(750)
+            .attrTween("d", function(d) {
+                var interpolate = d3.interpolate(this._current, d);
+                var _this = this;
+                return function(t) {
+                    _this._current = interpolate(t);
+                    return arc(_this._current);
                 };
             });
 
@@ -871,75 +876,41 @@ function makePieChart(data, albumTitle) {
             .duration(0)
             .remove();
 
-        // var title = svg.append("text")
-        //     .attr("class", "title")
-        //     .attr("x", 10)
-        //     .attr("y", -200)
-        //     .attr("text-anchor", "middle")
-        //     .style("font-size", "22px")
-        //     .style("fill", "white")
-        //     .text(albumTitle.toUpperCase());
 
-        // arcs.select("svg:text")
-        //   .attr("transform", function(d) {
-        //       d.innerRadius = 100; /* Distance of label to the center*/
-        //       d.outerRadius = radius;
-        //       return "translate(" + arc.centroid(d) + ")";}
-        //   )
-        //   .attr("text-anchor", "middle")
-        //   // .text( function(d, i) {return data[i].value + '%';})
-        //   .text( function(d, i) {
-        //       if (data[i].value > 0) {
-        //           // console.log("hoi");
-        //       return data[i].singer;
-        //       }
-        //   });
-        //
-        // arcs.exit()
-        // .transition()
-        // .delay(500)
-        // .duration(0)
-        // .remove();
-        // svg.data([data]);
-        //
-        // var arc = d3.svg.arc()
-        //     .outerRadius(radius - 20)
-        //     .innerRadius(radius - donutWidth);
-        //
-        // var pie = d3.layout.pie()
-            // .sort(null)
-            // .value(function(d) {console.log(d.value); return d.value; });
+        var legend = svg.selectAll(".legend")
+          .data(pie(is))
+          .enter().append("g")
+          .attr("transform", function(d,i){
+            return "translate(" + (width - 600) + "," + (i * 30 + 125) + ")";
+          })
+          .attr("class", "legend");
 
-        // arcs.data(pie(data))
-        //      .enter()
-        //      .append("svg:g")
-        //      .attr("class", "slice")
-        //      .append("svg:path")
-        //      .attr("fill", function(d, i){return colour(i);}).attr("d", arc);
+        legend.append("rect")
+          .attr("width", 20)
+          .attr("height", 20)
+          .attr("fill", function(d, i) {
+            return color(i);
+          });
 
-        // arcs = arcs.data(pie(data))
-
-  //       arcs.transition()
-  //           .duration(750)
-  //           .attrTween('d', function(d) { // 'd' specifies the d attribute that we'll be animating
-  //       var interpolate = d3.interpolate(this._current, d); // this = current path element
-  //       this._current = interpolate(0); // interpolate between current value and the new value of 'd'
-  //       return function(t) {
-  //         return arc(interpolate(t));
-  //       };
-  //     });
-  // });
+        legend.append("text") // add the text
+            .text(function(d){
+            return d.data.singer;
+            })
+            .style("font-size", 12)
+            .style("fill", "white")
+            .attr("y", 15)
+            .attr("x", 23);
     }
 
     updatePie = updatePieChart;
 
     var margin = {top: 100, bottom: 50, left: 50, right: 50};
 	var width = 500 - margin.left - margin.right,
-	height = 500,
-	radius = Math.min(width, height) / 2;
-    		var donutWidth = 100;
-    		// var legendRectSize = 18;
-    		// var legendSpacing = 4;
+    	height = 500,
+    	radius = Math.min(width, height) / 2;
+        		var donutWidth = 100;
+        		// var legendRectSize = 18;
+        		// var legendSpacing = 4;
 
     var keys = [
         "McCartney",
@@ -953,8 +924,7 @@ function makePieChart(data, albumTitle) {
         "instrumental"
     ];
 
-
-    var color = d3.scale.category20();
+    var color = d3.scale.category20b();
 
     var svg = d3.select('#pieChart')
     .append("svg")
@@ -976,9 +946,6 @@ function makePieChart(data, albumTitle) {
 
     var key = function(d) { return d.data.singer; };
 
-    // var color = d3.scale.ordinal(d3.schemePastel1)
-    //     .domain(keys);
-
     var tooltip = d3.select("#pieChart")
     	.append('div')
     	.attr('class', 'tooltip');
@@ -988,7 +955,7 @@ function makePieChart(data, albumTitle) {
 
     tooltip.append('div')
         .attr('id', 'percent');
-    //
+
     // //Select paths, use arc generator to draw
     var arcs = svg.selectAll(".slice")
         .data(pie(data))
@@ -996,27 +963,4 @@ function makePieChart(data, albumTitle) {
         .attr("class", "slice");
 
     updatePie(data, albumTitle);
-
-    var legend = svg.selectAll(".legend")
-      .data(pie(data))
-      .enter().append("g")
-      .attr("transform", function(d,i){
-        return "translate(" + (width - 550) + "," + (i * 30 + 200) + ")"; // place each legend on the right and bump each one down 15 pixels
-      })
-      .attr("class", "legend");
-
-    legend.append("rect")
-      .attr("width", 20)
-      .attr("height", 20)
-      .attr("fill", function(d, i) {
-        return color(i);
-      });
-
-    legend.append("text") // add the text
-        .text(function(d){
-        return d.data.singer;
-        })
-        .style("font-size", 12)
-        .attr("y", 15)
-        .attr("x", 23);
 }
