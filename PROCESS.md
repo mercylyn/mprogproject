@@ -77,4 +77,4 @@ and try to improve for colorblind (grouped bar chart)
 * completed the source
 * adjusted scroll spy for visualisations: from gouped bar chart to pie chart/bubble chart
 * adjusted grid for the visualisations
-* update title of bubble chart
+* updated the title of bubble chart

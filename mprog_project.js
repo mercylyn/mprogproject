@@ -97,7 +97,6 @@ function calculatePercentage(data) {
                 {singer: "Lennon & Harrison", value: Math.round((album.lennonHarrison / noTracks) * 100)},
                 {singer: "Lennon & McCartney & Harrison", value: Math.round((album.lennonMcCartneyHarrison / noTracks) * 100)},
                 {singer: "Lennon & McCartney & Harrison & Starr", value: Math.round((album.lennonMcCartneyHarrisonStarr / noTracks) * 100)}
-            // }
         ]});
     };
 
@@ -200,7 +199,7 @@ function makeBarChart(data) {
             return d3.max(cat.values, function(def) {
                 return def.value;
                 });
-            }) * 2]);
+            }) * 3]);
 
         var yAxis = d3.svg.axis()
             .scale(y)
@@ -470,51 +469,51 @@ function makeBarChart(data) {
 
     // year
     var category_label = category_g.selectAll(".category-label")
-      .data(function(d) {
-        return [d];
-      })
-      .enter().append("text")
-      .attr("class", function(d) {
-        return 'category-label category-label-' + d.key;
-      })
-      .attr("transform", function(d) {
-        var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
-        var y_label = height + 20;
-        return "translate(" + x_label + "," + y_label + ")";
-      })
-      .text(function(d) {
-        return d.key;
-      })
-      .attr('text-anchor', 'middle');
+        .data(function(d) {
+            return [d];
+        })
+        .enter().append("text")
+        .attr("class", function(d) {
+            return 'category-label category-label-' + d.key;
+        })
+        .attr("transform", function(d) {
+            var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
+            var y_label = height + 20;
+            return "translate(" + x_label + "," + y_label + ")";
+        })
+        .text(function(d) {
+            return d.key;
+        })
+        .attr('text-anchor', 'middle');
 
     // adding inner groups g elements
     var defect_g = category_g.selectAll(".defect")
         .data(function(d) {
-        return d.values;
+            return d.values;
         })
         .enter().append("g")
         .attr("class", function(d) {
-        return 'defect defect-' + d.key;
+            return 'defect defect-' + d.key;
         })
         .attr("transform", function(d, i) {
-        return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
+            return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
         });
 
     var rects = defect_g.selectAll('.rect')
         .data(function(d) {
-        return [d];
+            return [d];
         })
         .enter().append("rect")
         .attr("class", "rect")
         .attr("width", x_category(x_defect.rangeBand() - barPadding))
         .attr("x", function(d) {
-        return x_category(barPadding);
+            return x_category(barPadding);
         })
         .attr("y", function(d) {
-        return y(d.value);
+            return y(d.value);
         })
         .attr("height", function(d) {
-        return height - y(d.value);
+            return height - y(d.value);
         })
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
@@ -668,7 +667,7 @@ function makeBubbleChart(data) {
 
     updateBubble = updateBubbleChart;
 
-    var diameter = 730,
+    var diameter = 725,
         color    = d3.scale.category20b();
 
     var bubble = d3.layout.pack()
@@ -778,9 +777,10 @@ function makeBubbleChart(data) {
         .text(function(d){ return d["title"]; })
         .style({
             "fill":"white",
-            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif"
+            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
+            "font-size": "12px"
         })
-        .style("font-size", function(d) { return Math.min(2 * d.radius, (2 * d.radius - 8) / this.getComputedTextLength() * 24) + "px"; })
+        // .style("font-size", function(d) { return Math.min(2 * d.radius, (2 * d.radius - 8) / this.getComputedTextLength() * 24) + "px"; })
         .attr("dy", ".35em");
 }
 
@@ -888,7 +888,7 @@ function makePieChart(data, albumTitle) {
         legend.append("rect")
           .attr("width", 20)
           .attr("height", 20)
-          .attr("fill", function(d, i) {
+          .attr("fill", function(d, i) { console.log(d);
             return color(i);
           });
 
@@ -931,7 +931,7 @@ function makePieChart(data, albumTitle) {
         .attr("width", width)
         .attr("height", height + margin.top + margin.bottom)
     .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        .attr("transform", "translate(" + width / 2 + "," + ((height / 2) - 50) + ")");
 
     svg.append("g").attr("class", "slices");
 
