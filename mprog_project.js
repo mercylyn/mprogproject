@@ -292,8 +292,11 @@ function makeBarChart(data) {
     /* Updates the bar chart based upon user input: album or singles. */
     function updateBar(data) {
 
-        var rangeBands = [];
-        var cummulative = 0;
+        // dummy array
+        let rangeBands = [];
+
+        // cummulative value to position our bars
+        let cummulative = 0;
         data.forEach(function(val, i) {
           val.cummulative = cummulative;
           cummulative += val.values.length;
@@ -303,15 +306,16 @@ function makeBarChart(data) {
           })
         });
 
-        // set ranges and domain
+        // set scale to cover whole svg
         let x_category = d3.scale.linear()
             .range([0, width]),
 
-            x_defect = d3.scale.ordinal()
+        // create dummy scale to get rangeBands
+            x_inner = d3.scale.ordinal()
             .domain(rangeBands)
             .rangeBands([0, width], .2),
 
-            x_category_domain = x_defect.rangeBand() * rangeBands.length;
+            x_category_domain = x_inner.rangeBand() * rangeBands.length;
 
         x_category.domain([0, x_category_domain]);
 
@@ -335,6 +339,7 @@ function makeBarChart(data) {
             .transition().duration(500)
             .call(yAxis)
 
+        // add all category groups: years
         var category_g = svg.selectAll(".category")
           .data(data)
 
@@ -343,7 +348,7 @@ function makeBarChart(data) {
             return 'category category-' + d.key;
           })
           .attr("transform", function(d) {
-            return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
+            return "translate(" + x_category((d.cummulative * x_inner.rangeBand())) + ",0)";
           })
           .attr("fill", function(d, i) {
             return color[i];
@@ -356,7 +361,7 @@ function makeBarChart(data) {
               return 'category category-' + d.key;
             })
             .attr("transform", function(d) {
-              return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
+              return "translate(" + x_category((d.cummulative * x_inner.rangeBand())) + ",0)";
             })
             .attr("fill", function(d, i) {
               return color[i];
@@ -376,7 +381,7 @@ function makeBarChart(data) {
             return 'category-label category-label-' + d.key;
             })
             .attr("transform", function(d) {
-            var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
+            var x_label = x_category((d.values.length * x_inner.rangeBand() + barPadding) / 2);
             var y_label = height + 20;
             return "translate(" + x_label + "," + y_label + ")";
             })
@@ -391,7 +396,7 @@ function makeBarChart(data) {
             return 'category-label category-label-' + d.key;
             })
             .attr("transform", function(d) {
-            var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
+            var x_label = x_category((d.values.length * x_inner.rangeBand() + barPadding) / 2);
             var y_label = height + 20;
             return "translate(" + x_label + "," + y_label + ")";
             })
@@ -403,32 +408,32 @@ function makeBarChart(data) {
         category_label.exit().remove();
 
         // adding inner groups g elements
-        var defect_g = category_g.selectAll(".defect")
+        var inner_g = category_g.selectAll(".inner")
           .data(function(d) {
             return d.values;
           })
 
-        defect_g
+        inner_g
           .enter().append("g")
           .attr("class", function(d) {
-            return 'defect defect-' + d.key;
+            return 'inner inner-' + d.key;
           })
           .attr("transform", function(d, i) {
-            return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
+            return "translate(" + x_category((i * x_inner.rangeBand())) + ",0)";
           });
 
-        defect_g
+        inner_g
               .transition().duration(500)
               .attr("class", function(d) {
-                return 'defect defect-' + d.key;
+                return 'inner inner-' + d.key;
               })
               .attr("transform", function(d, i) {
-                return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
+                return "translate(" + x_category((i * x_inner.rangeBand())) + ",0)";
               });
 
-        defect_g.exit().remove();
+        inner_g.exit().remove();
 
-        var rects = defect_g.selectAll('.rect')
+        var rects = inner_g.selectAll('.rect')
           .data(function(d) {
             return [d];
           })
@@ -436,7 +441,7 @@ function makeBarChart(data) {
           rects
           .enter().append("rect")
           .attr("class", "rect")
-          .attr("width", x_category(x_defect.rangeBand() - barPadding))
+          .attr("width", x_category(x_inner.rangeBand() - barPadding))
           .attr("x", function(d) {
             return x_category(barPadding);
           })
@@ -461,23 +466,23 @@ function makeBarChart(data) {
         rects.exit().remove();
 
         // add labels to g elements
-        var defect_label = defect_g.selectAll(".defect-label")
+        var inner_label = inner_g.selectAll(".inner-label")
             .data(function(d) {
               return [d];
             })
 
-        defect_label
+        inner_label
             .enter().append("text")
             .attr("class", function(d) {
 
-              return 'defect-label defect-label-' + d.key;
+              return 'inner-label inner-label-' + d.key;
             })
 
             .text(function(d) {
                 return d.key;
             })
             .attr("transform", function(d) {
-                    var x_label =  x_category(x_defect.rangeBand() - barPadding);
+                    var x_label =  x_category(x_inner.rangeBand() - barPadding);
                     var y_label =  y(d.value);
                     return "translate(" + x_label + "," + y_label + ") rotate(270)";
 
@@ -485,16 +490,16 @@ function makeBarChart(data) {
             .style('fill', 'black')
             .attr("font-size", "12px");
 
-        defect_label
+        inner_label
             .transition().duration(500)
             .attr("class", function(d) {
-              return 'defect-label defect-label-' + d.key;
+              return 'inner-label inner-label-' + d.key;
             })
             .text(function(d) {
                 return d.key;
             })
             .attr("transform", function(d) {
-                    var x_label =  x_category(x_defect.rangeBand() - barPadding);
+                    var x_label =  x_category(x_inner.rangeBand() - barPadding);
                     var y_label =  y(d.value) - barPadding / 2;
                     return "translate(" + x_label + "," + y_label + ") rotate(270)";
 
