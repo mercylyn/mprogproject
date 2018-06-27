@@ -1,45 +1,45 @@
 /**
  * Name: Mercylyn Wiemer (10749306)
- * Course: programmeerproject
+ * Course: programming project
 
-http://bl.ocks.org/enjalot/1525346
-http://bl.ocks.org/mapsam/6090056
-http://bl.ocks.org/mstanaland/6100713
-http://bl.ocks.org/enjalot/1525346
-https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3
-https://plnkr.co/edit/L0eQwtEMQ413CpoS5nvo?p=preview
-https://stackoverflow.com/questions/43903145/d3-position-x-axis-label-within-rectangle-and-rotate-90-degrees?rq=1
- **/
+ * https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3
+ * https://plnkr.co/edit/L0eQwtEMQ413CpoS5nvo?p=preview
+**/
 
-var dataAlbumsBar, dataSinglesBar, dataBubbleAlbums, dataBubbleSingles, dataDonut,
+// global variables for grouped bar chart, bubble chart and donut chart
+let dataAlbumsBar, dataSinglesBar, dataBubbleAlbums, dataBubbleSingles, dataDonut,
     updateBubble, dataName, updateDonut;
 
+// run code when files are loaded
 window.onload = function() {
 
+    // request queries: when fulfilled, continue
     queue()
         .defer(d3.csv, "data/beatles_chart_albums.csv")
         .defer(d3.csv, "data/beatles_chart_singles.csv")
         .defer(d3.csv, "data/lead_vocals_albums.csv")
         .await(convertData);
 
+    // convert data to dictionary
     function convertData(error, albums, singles, lead) {
         if (error) throw error;
 
-        var parse = d3.time.format("%m/%d/%Y").parse;
+        let parse = d3.time.format("%m/%d/%Y").parse;
 
-        var dataAlbums = albums.map(function(d) {
-            return {"date" : parse(d.date), "highestPosition" : +d.highestPosition,
-                    "weeksChart" : +d.weeksChart, "award" : d.award, "title" : d.title,
-                    "labelCatNo" : d.labelCatNo, "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
-        });
-
-        var dataSingles = singles.map(function(d) {
+        // convert data to following type: date, string or number
+        let dataAlbums = albums.map(function(d) {
             return {"date" : parse(d.date), "highestPosition" : +d.highestPosition,
                     "weeksChart" : +d.weeksChart, "title" : d.title,
-                    "artists" : d.artists, "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
+                    "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
         });
 
-        var dataLead = lead.map(function(d) {
+        let dataSingles = singles.map(function(d) {
+            return {"date" : parse(d.date), "highestPosition" : +d.highestPosition,
+                    "weeksChart" : +d.weeksChart, "title" : d.title,
+                    "weeksNo1" : +d.weeksNo1, "usNo1" : +d.usNo1};
+        });
+
+        let dataLead = lead.map(function(d) {
             return {"title" : d.title,
                     "country" : d.country,
                     "released" : parse(d.released),
@@ -52,24 +52,22 @@ window.onload = function() {
                     "lennonMcCartney" : +d.LennonMcCartney,
                     "lennonMcCartneyHarrison" : +d.LennonMcCartneyHarrison,
                     "lennonMcCartneyHarrisonStarr" : +d.LennonMcCartneyHarrisonStarr,
-                    "instrumental" : +d.instrumental};
-            });
+                    "instrumental" : +d.instrumental };
+        });
 
-        var dataChart = {"albums" : dataAlbums, "singles" : dataSingles};
+        // convert data to JSON format
+        dataAlbumsBar = convertToDictionary(dataAlbums);
+        dataSinglesBar = convertToDictionary(dataSingles);
 
-        dataAlbumsBar = dataToJSON(dataAlbums);
-
-        dataSinglesBar = dataToJSON(dataSingles);
-
+        // convert data for bubble chart
         dataBubbleAlbums = convertForBubble(dataAlbums);
         dataBubbleSingles = convertForBubble(dataSingles);
 
+        // convert data and calculate percentages for donut chart
         dataDonut = calculatePercentage(dataLead);
 
-        // makeBarChart(dataArray);
         makeBarChart(dataAlbumsBar);
 
-        // update(dataAlbumsBar)
         makeBubbleChart(dataBubbleAlbums);
 
         // select first album of the timeline
@@ -77,15 +75,17 @@ window.onload = function() {
     };
 };
 
-// percentages in een array en daarover heen lopen
+/* Calculates the percentage of songs in which a band member stars as lead vocals. */
 function calculatePercentage(data) {
     convertedData = [];
 
+    // determine per album the percentages
     for (let i = 0; i < data.length; i++) {
         album = data[i];
         title = album.title
         noTracks = album.noTracks;
 
+        // per category (member or instrumental) calculate percentage of lead vocals
         convertedData.push({
             title: title,
             lead: [
@@ -93,20 +93,29 @@ function calculatePercentage(data) {
                 {singer: "Lennon", value: Math.round((album.lennon / noTracks) * 100)},
                 {singer: "Harrison", value: Math.round((album.harrison / noTracks) * 100)},
                 {singer: "Starr", value: Math.round((album.starr / noTracks) * 100)},
-                {singer: "Lennon & McCartney", value: Math.round((album.lennonMcCartney / noTracks) * 100)},
-                {singer: "Lennon & Harrison", value: Math.round((album.lennonHarrison / noTracks) * 100)},
-                {singer: "Lennon & McCartney & Harrison", value: Math.round((album.lennonMcCartneyHarrison / noTracks) * 100)},
-                {singer: "Lennon & McCartney & Harrison & Starr", value: Math.round((album.lennonMcCartneyHarrisonStarr / noTracks) * 100)},
-                {singer: "instrumental", value: Math.round((album.instrumental / noTracks) * 100)}
+                {singer: "Lennon & McCartney", value:
+                    Math.round((album.lennonMcCartney / noTracks) * 100)},
+                {singer: "Lennon & Harrison", value:
+                    Math.round((album.lennonHarrison / noTracks) * 100)},
+                {singer: "Lennon & McCartney & Harrison", value:
+                    Math.round((album.lennonMcCartneyHarrison / noTracks) * 100)},
+                {singer: "Lennon & McCartney & Harrison & Starr", value:
+                    Math.round((album.lennonMcCartneyHarrisonStarr / noTracks) * 100)},
+                {singer: "Instrumental", value:
+                    Math.round((album.instrumental / noTracks) * 100)}
         ]});
     };
 
     return convertedData;
 };
 
+/* Selects the albums with highest position: 1, and returns a dictionary with
+   the following information: title of album, year in which the album
+   reached the chart and the number of weeks in the chart. */
 function convertForBubble(dataset) {
     data = [];
 
+    // determine which albums reached highest position 1 and convert data
     for (let i = 0; i < dataset.length; i++) {
 
         if (dataset[i].highestPosition === 1) {
@@ -114,7 +123,6 @@ function convertForBubble(dataset) {
                 title: dataset[i].title,
                 year: dataset[i].date.getFullYear(),
                 weeks: dataset[i].weeksChart,
-                usNo: dataset[i].usNo1
             })
         };
     };
@@ -122,45 +130,53 @@ function convertForBubble(dataset) {
     return data;
 };
 
-/* Converts data from JSON to an array containing four variables. */
-function dataToJSON(dataset) {
-    let dataPerAlbum = [];
+/* Converts data to dictionary: sorting albums or singles by year. */
+function convertToDictionary(dataset) {
+    let dataPerType = [];
     let dataPerYear = [];
     let years = [];
     let valuesArray = [];
 
-    for (var key in dataset) {
-        dataPerAlbum.push([dataset[key].date.getFullYear(), dataset[key].title, dataset[key].weeksChart]);
+    // get data per album or single: year in chart, title and chart position
+    for (let key in dataset) {
+        dataPerType.push([dataset[key].date.getFullYear(), dataset[key].title,
+                          dataset[key].weeksChart]);
     }
 
-    years.push(dataPerAlbum[0][0]);
+    // add year of first album to for sorting the dictionary
+    years.push(dataPerType[0][0]);
 
-    for (let i = 0; i < dataPerAlbum.length; i++) {
+    // convert data to dictionary based upon year in chart
+    for (let i = 0; i < dataPerType.length; i++) {
 
-        var values = {
-            key: dataPerAlbum[i][1],
-            value: dataPerAlbum[i][2]
+        let values = {
+            key: dataPerType[i][1],
+            value: dataPerType[i][2]
         };
 
-        if (years.includes(dataPerAlbum[i][0])) {
-
+        // keep track of years
+        if (years.includes(dataPerType[i][0])) {
             valuesArray.push(values);
         }
+        // found album/single in chart in a new year
         else {
+
+            // add data of the last occuring year to main array
             dataPerYear.push({
                 key: years.slice(-1)[0],
                 values: valuesArray
             });
 
-            years.push(dataPerAlbum[i][0]);
+            years.push(dataPerType[i][0]);
 
             valuesArray = [];
 
+            // add values to new value array
             valuesArray.push(values)
         }
-    }
+    };
 
-    // add last value
+    // add last dictionary
     dataPerYear.push({
         key: years.slice(-1)[0],
         values: valuesArray
@@ -169,11 +185,113 @@ function dataToJSON(dataset) {
     return dataPerYear;
 };
 
-
+/* Create a grouped bar chart of albums/singles of the beatles with categories
+   (years) and inner categories (albums/singles) */
 function makeBarChart(data) {
 
-    // Updates the bar chart album or singles
-    function update(data) {
+    // define colors for bars
+    const color =[
+        "#c95275", "#58ae5d", "#ba5fbe", "#b9b83e", "#543586", "#83aa46",
+        "#6678d3", "#d0943a", "#bd8fd7", "#46bc8c", "#b54b8d", "#59c1c2",
+        "#c3443a", "#70a3ce", "#bd6633", "#504c76", "#94863a", "#c68fb6",
+        "#454d25", "#c65158", "#538f7c", "#783821", "#85a673", "#71334a",
+        "#b4a170", "#da896b", "#bf8981"];
+
+    // set dimensions of svg
+    const margin = {top: 20, right: 30, bottom: 30, left: 40},
+        width = 1280 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    let barPadding = 10;
+
+    let y = d3.scale.linear()
+      .range([height, 0]);
+
+    y.domain([0, d3.max(data, function(cat) {
+        return d3.max(cat.values, function(def) {
+            return def.value;
+            });
+        }) * 2
+    ]);
+
+    // Define Y axis
+    var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        .ticks(14);
+
+    // Setup the tool tip
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+          return "<strong>Album:</strong> <span style='color:red'>" + d.key +
+                    "</span> <br> <strong>Weeks in chart:</strong> \
+                    <span style='color:red'>" + d.value + "</span>";
+    });
+
+    // create SVG element
+    var svg = d3.select("#barChart").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .style('background-color', '#F7F6E2')
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.call(tip);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Weeks in chart");
+
+        updateBar(data);
+
+        // add button to switch data: album or single data
+        var radioButtonChange = function() {
+            dataName = d3.select(this).property('value');
+
+            // check user input: albums or singles and update charts
+            if (dataName == "albums") {
+                updateBar(dataAlbumsBar)
+                updateBubble(dataBubbleAlbums);
+
+            let updateTitleDonut = d3.selectAll(".donutTitle")
+                                .text("* Select an album");
+
+            let updateTitleBubble = d3.selectAll(".bubbleTitle")
+                                    .text("UK ALBUMS CHART NUMBER ONES");
+            }
+
+            // update grouped bar chart, bubble chart and donut chart to singles dataset
+            else {
+                updateBar(dataSinglesBar);
+                updateBubble(dataBubbleSingles);
+
+                let data = [{singer: "no data", value: 0}];
+
+                // update donut chart: no data available
+                updateDonut(data);
+
+                let updateTitle = d3.selectAll(".donutTitle")
+                                    .text("*Only possible for albums");
+
+                let updateTitleBubble = d3.selectAll(".bubbleTitle")
+                                        .text("UK SINGLES CHART NUMBER ONES");
+            }
+        };
+
+        var radioButtons = d3.selectAll("input")
+            .on("change", radioButtonChange);
+
+    /* Updates the bar chart based upon user input: album or singles. */
+    function updateBar(data) {
+
         var rangeBands = [];
         var cummulative = 0;
         data.forEach(function(val, i) {
@@ -185,23 +303,28 @@ function makeBarChart(data) {
           })
         });
 
-        var x_category = d3.scale.linear()
-          .range([0, width]);
+        // set ranges and domain
+        let x_category = d3.scale.linear()
+            .range([0, width]),
 
-        var x_defect = d3.scale.ordinal().domain(rangeBands).rangeBands([0, width], .2);
+            x_defect = d3.scale.ordinal()
+            .domain(rangeBands)
+            .rangeBands([0, width], .2),
 
-        var x_category_domain = x_defect.rangeBand() * rangeBands.length;
+            x_category_domain = x_defect.rangeBand() * rangeBands.length;
 
         x_category.domain([0, x_category_domain]);
 
-        var y = d3.scale.linear()
+
+        let y = d3.scale.linear()
           .range([height, 0]);
 
         y.domain([0, d3.max(data, function(cat) {
             return d3.max(cat.values, function(def) {
                 return def.value;
                 });
-            }) * 3]);
+            }) * 2
+        ]);
 
         var yAxis = d3.svg.axis()
             .scale(y)
@@ -377,205 +500,7 @@ function makeBarChart(data) {
 
             });
     };
-
-
-    const color =[
-        "#c95275", "#58ae5d", "#ba5fbe", "#b9b83e", "#543586", "#83aa46",
-        "#6678d3", "#d0943a", "#bd8fd7", "#46bc8c", "#b54b8d", "#59c1c2",
-        "#c3443a", "#70a3ce", "#bd6633", "#504c76", "#94863a", "#c68fb6",
-        "#454d25", "#c65158", "#538f7c", "#783821", "#85a673", "#71334a",
-        "#b4a170", "#da896b", "#bf8981"];
-
-    const margin = {top: 20, right: 30, bottom: 30, left: 40},
-        width = 1280 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
-
-    var barPadding = 10,
-        n = 27;
-
-    var rangeBands = [];
-    var cummulative = 0;
-    data.forEach(function(val, i) {
-      val.cummulative = cummulative;
-      cummulative += val.values.length;
-      val.values.forEach(function(values) {
-        values.parentKey = val.key;
-        rangeBands.push(i);
-      })
-    });
-
-    var x_category = d3.scale.linear()
-      .range([0, width]);
-
-    var x_defect = d3.scale.ordinal().domain(rangeBands).rangeBands([0, width], .2);
-
-    var x_category_domain = x_defect.rangeBand() * rangeBands.length;
-
-    x_category.domain([0, x_category_domain]);
-
-
-    var y = d3.scale.linear()
-      .range([height, 0]);
-
-    y.domain([0, d3.max(data, function(cat) {
-        return d3.max(cat.values, function(def) {
-            return def.value;
-            });
-        }) * 2
-    ]);
-
-    var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .ticks(14);
-
-    var tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([-10, 0])
-        .html(function(d) {
-          return "<strong>Album:</strong> <span style='color:red'>" + d.key +
-                    "</span> <br> <strong>Weeks in chart:</strong> <span style='color:red'>" + d.value + "</span>";
-    })
-
-    var svg = d3.select("#barChart").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .style('background-color', '#F7F6E2')
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    svg.call(tip);
-
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Weeks in chart");
-
-    var category_g = svg.selectAll(".category")
-      .data(data)
-      .enter().append("g")
-      .attr("class", function(d) {
-        return 'category category-' + d.key;
-      })
-      .attr("transform", function(d) {
-        return "translate(" + x_category((d.cummulative * x_defect.rangeBand())) + ",0)";
-      })
-      .attr("fill", function(d, i) {
-        return color[i];
-      });
-
-    // year
-    var category_label = category_g.selectAll(".category-label")
-        .data(function(d) {
-            return [d];
-        })
-        .enter().append("text")
-        .attr("class", function(d) {
-            return 'category-label category-label-' + d.key;
-        })
-        .attr("transform", function(d) {
-            var x_label = x_category((d.values.length * x_defect.rangeBand() + barPadding) / 2);
-            var y_label = height + 20;
-            return "translate(" + x_label + "," + y_label + ")";
-        })
-        .text(function(d) {
-            return d.key;
-        })
-        .attr('text-anchor', 'middle');
-
-    // adding inner groups g elements
-    var defect_g = category_g.selectAll(".defect")
-        .data(function(d) {
-            return d.values;
-        })
-        .enter().append("g")
-        .attr("class", function(d) {
-            return 'defect defect-' + d.key;
-        })
-        .attr("transform", function(d, i) {
-            return "translate(" + x_category((i * x_defect.rangeBand())) + ",0)";
-        });
-
-    var rects = defect_g.selectAll('.rect')
-        .data(function(d) {
-            return [d];
-        })
-        .enter().append("rect")
-        .attr("class", "rect")
-        .attr("width", x_category(x_defect.rangeBand() - barPadding))
-        .attr("x", function(d) {
-            return x_category(barPadding);
-        })
-        .attr("y", function(d) {
-            return y(d.value);
-        })
-        .attr("height", function(d) {
-            return height - y(d.value);
-        })
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
-
-
-    // add labels to g elements
-    var defect_label = defect_g.selectAll(".defect-label")
-        .data(function(d) {
-          return [d];
-        })
-        .enter().append("text")
-        .attr("class", function(d) {
-          return 'defect-label defect-label-' + d.key;
-        })
-
-        .text(function(d) {
-            return d.key;
-        })
-        .attr("transform", function(d) {
-            var x_label =  x_category(x_defect.rangeBand() - barPadding);
-            var y_label =  y(d.value) - barPadding / 2;
-            return "translate(" + x_label + "," + y_label + ") rotate(270)";
-
-        })
-        .style('fill', 'black')
-        .attr("font-size", "12px");
-
-
-        var radioButtonChange = function() {
-            dataName = d3.select(this).property('value');
-                if (dataName == "albums") {
-                    update(dataAlbumsBar)
-                    updateBubble(dataBubbleAlbums);
-
-                let updateTitle = d3.selectAll(".donutTitle")
-                                    .text("* Select an album");
-
-                let updateTitleBubble = d3.selectAll(".bubbleTitle")
-                                        .text("UK ALBUMS CHART NUMBER ONES");
-                }
-                else {
-                    update(dataSinglesBar);
-                    updateBubble(dataBubbleSingles)
-
-                    // aanpassen
-                    let data = [{singer: "no data", value: 0}];
-
-                    updateDonut(data);
-
-                    let updateTitle = d3.selectAll(".donutTitle")
-                                        .text("*Only possible for albums");
-
-                    let updateTitleBubble = d3.selectAll(".bubbleTitle")
-                                            .text("UK SINGLES CHART NUMBER ONES");
-                }
-        };
-
-        var radioButtons = d3.selectAll("input")
-            .on("change", radioButtonChange);
-}
+};
 
 /* Set up SVG and create bubble chart. */
 function makeBubbleChart(data) {
@@ -596,12 +521,14 @@ function makeBubbleChart(data) {
         .size([diameter, diameter])
         .padding(3.5);
 
+    // create svg element
     let svg = d3.select("#bubbleChart")
         .append("svg")
         .attr("width", diameter)
         .attr("height", diameter)
         .attr("class", "bubble");
 
+    // set up tooltip
     let tooltip = d3.select("#bubbleChart")
         .append('div')
         .attr('class', 'tooltip');
@@ -615,6 +542,7 @@ function makeBubbleChart(data) {
     tooltip.append('div')
         .attr('class', 'year');
 
+    // create or update bubble chart
     updateBubble(data);
 
     /* Update bubble chart when user switches input: album - singles. */
@@ -666,35 +594,44 @@ function makeBubbleChart(data) {
                 tooltip.style('opacity',0);
             })
             .on("click", function(d) {
+
+                // check user input: singles or albums and update donut chart
                 if (dataName == "singles") {
 
                     let data = [{singer: "no data", value: 0}];
 
+                    // no data for singles
                     updateDonut(data);
 
-                    let updateTitle = d3.selectAll(".donutTitle")
+                    let updateTitleDonut = d3.selectAll(".donutTitle")
                                         .text("*Only possible for albums");
                 }
+
+                // user input: albums
                 else {
                     var title = d.title, lead;
 
+                    // find dataset (album) of user input and select lead vocals data
                     for (var album in dataDonut) {
                         if (title === dataDonut[album].title) {
                             lead = dataDonut[album].lead
                         }
                     };
 
+                    // check if data is available for lead vocals: donut chart
                     if (lead) {
                         updateDonut(lead);
-                        let updateTitle = d3.selectAll(".donutTitle")
+                        let updateTitleDonut= d3.selectAll(".donutTitle")
                                             .text(title);
                     }
+
+                    // warn user: no data available
                     else {
                         let data = [{singer: "no data", value: 0}];
 
                         updateDonut(data);
 
-                        let updateTitle = d3.selectAll(".donutTitle")
+                        let updateTitleDonut = d3.selectAll(".donutTitle")
                                             .text("Sorry, no data available");
                     };
                 };
@@ -735,17 +672,75 @@ function makeBubbleChart(data) {
 
         text.exit().remove();
     };
-}
+};
 
-// http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
 function makeDonutChart(data, albumTitle) {
-
     let donutTitle = d3.select("#donutChart")
                         .append("h3")
                         .text("% LEAD VOCALS OF ALBUM PER MEMBER:")
                         .append("h3")
                         .attr("class", "donutTitle")
                         .text(albumTitle);
+
+    updateDonut = updateDonutChart;
+
+    var margin = {top: 100, bottom: 50, left: 50, right: 50};
+	var width = 500 - margin.left - margin.right,
+    	height = 500,
+    	radius = Math.min(width, height) / 2;
+        		var donutWidth = 100;
+
+    var keys = [
+        "McCartney",
+        "Lennon",
+        "Harrison",
+        "Starr",
+        "Lennon & McCartney",
+        "Lennon & Harrison",
+        "Lennon & McCartney & Harrison",
+        "Lennon & McCartney & Harrison & Starr",
+        "Instrumental"
+    ];
+
+    var color = d3.scale.category20b();
+
+    var svg = d3.select('#donutChart')
+    .append("svg")
+        .attr("width", width)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform", "translate(" + width / 2 + "," + ((height / 2) - 50) + ")");
+
+    svg.append("g").attr("class", "slices");
+
+    var pie = d3.layout.pie()
+        .sort(null)
+        .value(function(d) { return d.value; });
+
+    // Declare an arc generator function
+    var arc = d3.svg.arc()
+        .outerRadius(radius - 20)
+        .innerRadius(radius - donutWidth);
+
+    var key = function(d) { return d.data.singer; };
+
+    var tooltip = d3.select("#donutChart")
+    	.append('div')
+    	.attr('class', 'tooltip');
+
+    tooltip.append('div')
+    	.attr('class', 'singer');
+
+    tooltip.append('div')
+        .attr('id', 'percent');
+
+    // //Select paths, use arc generator to draw
+    var arcs = svg.selectAll(".slice")
+        .data(pie(data))
+        .enter().append("svg:g")
+        .attr("class", "slice");
+
+    updateDonut(data, albumTitle);
 
     function mergeWithFirstEqualZero(first, second){
 
@@ -763,7 +758,7 @@ function makeDonutChart(data, albumTitle) {
               });
 
         return sortedMerge;
-    }
+    };
 
     function updateDonutChart(data) {
 
@@ -876,79 +871,14 @@ function makeDonutChart(data, albumTitle) {
 
         legend.append("text") // add the text
             .text(function(d){
-                console.log(d);
                 if (d.data.singer != "no data")  {
                     return d.data.singer;
                 }
             })
-            .style("font-size", 12)
-            .style("fill", "white")
             .attr("y", 15)
             .attr("x", 23);
 
         legend.select("#nodata")
             .remove()
-    }
-
-    updateDonut = updateDonutChart;
-
-    var margin = {top: 100, bottom: 50, left: 50, right: 50};
-	var width = 500 - margin.left - margin.right,
-    	height = 500,
-    	radius = Math.min(width, height) / 2;
-        		var donutWidth = 100;
-        		// var legendRectSize = 18;
-        		// var legendSpacing = 4;
-
-    var keys = [
-        "McCartney",
-        "Lennon",
-        "Harrison",
-        "Starr",
-        "Lennon & McCartney",
-        "Lennon & Harrison",
-        "Lennon & McCartney & Harrison",
-        "Lennon & McCartney & Harrison & Starr",
-        "instrumental"
-    ];
-
-    var color = d3.scale.category20b();
-
-    var svg = d3.select('#donutChart')
-    .append("svg")
-        .attr("width", width)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + ((height / 2) - 50) + ")");
-
-    svg.append("g").attr("class", "slices");
-
-    var pie = d3.layout.pie()
-        .sort(null)
-        .value(function(d) { return d.value; });
-
-    // Declare an arc generator function
-    var arc = d3.svg.arc()
-        .outerRadius(radius - 20)
-        .innerRadius(radius - donutWidth);
-
-    var key = function(d) { return d.data.singer; };
-
-    var tooltip = d3.select("#donutChart")
-    	.append('div')
-    	.attr('class', 'tooltip');
-
-    tooltip.append('div')
-    	.attr('class', 'singer');
-
-    tooltip.append('div')
-        .attr('id', 'percent');
-
-    // //Select paths, use arc generator to draw
-    var arcs = svg.selectAll(".slice")
-        .data(pie(data))
-        .enter().append("svg:g")
-        .attr("class", "slice");
-
-    updateDonut(data, albumTitle);
-}
+    };
+};

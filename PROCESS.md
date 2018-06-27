@@ -85,3 +85,4 @@ and try to improve for colorblind (grouped bar chart)
 * bubble chart: code minimalization
 * added text in pie chart: percentage
 * changed pie chart to donut chart (names in code)
+* grouped bar chart: code minimalization

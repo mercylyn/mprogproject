@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <!--    Name: Mercylyn Wiemer (10749306)
         Course: programming project
+        Date: 28-06-2018
+        The Beatles: albums and singles in the official charts company.
+        Highest position, no 1 albums and singles, and lead vocals.
+
+        website themes:
+        https://www.w3schools.com/bootstrap/bootstrap_theme_band.asp
+        https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp
 -->
 <html lang="en">
 <head>
     <title>The Beatles</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Boostrap, CSS, fonts-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="code/css/index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!--D3-->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="https://d3js.org/queue.v1.min.js"></script>
 
@@ -24,16 +33,17 @@
     <script src="code/javascripts/scroll.js"></script>
 
 </head>
+
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
 
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
@@ -53,28 +63,27 @@
 
 
 <div id="home" class="container-fluid bg-1 text-center">
-  <img src="images/logo.jpg" class="img-circle" alt="Random Name">
-  <br>
-  <div class="row">
-    <div class="col-sm-3">
-      <img src="images/lennon.jpg" class="person" alt="Random Name" width="255" height="255" border="5">
+    <img src="images/logo.jpg" class="img-circle" alt="Random Name">
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+            <img src="images/lennon.jpg" class="person" alt="Random Name" width="255" height="255" border="5">
+        </div>
+        <div class="col-sm-3">
+            <img src="images/mccartney.jpg" class="person" alt="Random Name" width="255" height="255">
+        </div>
+        <div class="col-sm-3">
+            <img src="images/harrison.jpg" class="person" alt="Random Name" width="255" height="255">
+        </div>
+        <div class="col-sm-3">
+            <img src="images/starr.jpg" class="person" alt="Random Name" width="255" height="255">
+        </div>
+        <a href="#part1">
+            <i class="fa fa-angle-double-down"></i>
+        </a>
     </div>
-    <div class="col-sm-3">
-      <img src="images/mccartney.jpg" class="person" alt="Random Name" width="255" height="255">
-    </div>
-    <div class="col-sm-3">
-      <img src="images/harrison.jpg" class="person" alt="Random Name" width="255" height="255">
-    </div>
-    <div class="col-sm-3">
-      <img src="images/starr.jpg" class="person" alt="Random Name" width="255" height="255">
-    </div>
-    <a href="#part1">
-        <i class="fa fa-angle-double-down"></i>
-    </a>
-  </div>
 </div>
 
-<!-- <div id="visual" class="bg-2"> -->
 <div id="part1" class="container-fluid bg-2 text-center">
     <h3 class="text-center">THE BEATLES ALBUMS AND SINGLES</h3>
     <p class="text-center">Timeline of years in which albums or singles of the Beatles reached the charts in the UK</p>
@@ -88,7 +97,6 @@
                 <input type="radio" value="singles" name="music">Singles
             </label>
         </form>
-
     </div>
 
     <div class="row text-center">
@@ -104,7 +112,6 @@
 </div>
 
 <div id="part2" class="container-fluid bg-2 text-center">
-
     <div class="row text-center">
             <div class="col-sm-6" id="bubbleChart">
             </div>
@@ -117,6 +124,7 @@
                 <a href="#part1">
                     <i class="fa fa-angle-double-up"></i>
                 </a>
+
                 <a href="#source">
                     <i class="fa fa-angle-double-down"></i>
                 </a>
@@ -126,7 +134,6 @@
             </div>
     </div>
 </div>
-
 
 <div id="source" class="container-fluid bg-3 text-left">
     <div class="col-sm-2">
@@ -140,6 +147,7 @@
         <div class="row">
         <h4>The Beatles: every album and single, with its chart position</h4>
         </div>
+
         <ul style="list-style-type:none">
             <li><a href="https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band" target="_blank"> The Guardian </a></li>
         </ul>
@@ -166,7 +174,7 @@
 </div>
 
 <footer id="creator" class="container-fluid bg-4 text-center">
-    <p>Mercylyn Wiemer (10749306), Minor programming</p>
+    <p>Mercylyn Wiemer (10749306), Minor programming (University of Amsterdam)</p>
     <a href="#myPage" title="To Top">
         <i class="fa fa-angle-double-up"></i>
     </a>

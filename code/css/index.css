@@ -1,3 +1,22 @@
+/**
+ * Name: Mercylyn Wiemer (10749306)
+ * Course: Programming Project
+ * Date: 28-06-2018
+ * The Beatles: albums and singles in the official charts company.
+ * Highest position, no 1 albums and singles, and lead vocals.
+ *
+ * dropdown menu
+ * https://www.w3schools.com/howto/howto_js_dropdown.asp
+ *
+ * website themes:
+ * https://www.w3schools.com/bootstrap/bootstrap_theme_band.asp
+ * https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp
+ *
+ * tooltip:
+ * http://bl.ocks.org/Caged/6476579
+ * http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+ */
+
 .bg-1 {
     background-color: #F7F6E2;
     color: #000000;
@@ -14,6 +33,7 @@
 .bg-1 .fa:hover {
     color: #1F8093;
 }
+
 .bg-2 {
     background-color: #1F8093; /* Dark Blue */
     color: #ffffff;
@@ -56,10 +76,12 @@ footer .fa {
 footer .fa:hover {
     color: #1F8093;
 }
+
 .open .dropdown-toggle {
     color: #fff;
     background-color: #555 !important;
 }
+
 .dropdown-menu li a {
     color: #000 !important;
     background-color: black;
@@ -67,11 +89,6 @@ footer .fa:hover {
 .dropdown-menu li a:hover {
     background-color: red !important;
 }
-
-/* .container-fluid {
-    padding-top: 80px;
-    padding-bottom: 80px;
-} */
 
 h2 {
     font-size: 24px;
@@ -91,24 +108,10 @@ body {
     font: 20px "Montserrat", sans-serif;
     line-height: 1.8;
     color: #E4C85D;
-    /* overflow-y: hidden; */
 }
 
 p {
     font-size: 16px;
-}
-
-.btn {
-    padding: 10px 20px;
-    background-color: #333;
-    color: #f1f1f1;
-    border-radius: 0;
-    transition: .2s;
-}
-.btn:hover, .btn:focus {
-    border: 1px solid #333;
-    background-color: #fff;
-    color: #000;
 }
 
 .navbar {
@@ -135,18 +138,18 @@ p {
 }
 
 /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-.row.content {
+/* .row.content {
     height: 450px;
-}
+} */
 
 /* On small screens, set height to 'auto' for sidenav and grid */
-@media screen and (max-width: 767px) {
+/* @media screen and (max-width: 767px) {
   .sidenav {
     height: auto;
     padding: 15px;
   }
   .row.content {height:auto;}
-}
+} */
 
 /* style settings for svg*/
 svg {
@@ -215,5 +218,10 @@ svg {
 .slice text {
   font: 18px sans-serif;
   text-anchor: middle;
+  fill: #ffffff;
+}
+
+.legend text {
+  font: 12px sans-serif;
   fill: #ffffff;
 }
