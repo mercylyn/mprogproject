@@ -15,9 +15,9 @@ window.onload = function() {
 
     // request queries: when fulfilled, continue
     queue()
-        .defer(d3.csv, "data/beatles_chart_albums.csv")
-        .defer(d3.csv, "data/beatles_chart_singles.csv")
-        .defer(d3.csv, "data/lead_vocals_albums.csv")
+        .defer(d3.csv, "project/data/beatles_chart_albums.csv")
+        .defer(d3.csv, "project/data/beatles_chart_singles.csv")
+        .defer(d3.csv, "project/data/lead_vocals_albums.csv")
         .await(convertData);
 
     // convert data to dictionary
