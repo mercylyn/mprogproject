@@ -11,8 +11,8 @@ https://plnkr.co/edit/L0eQwtEMQ413CpoS5nvo?p=preview
 https://stackoverflow.com/questions/43903145/d3-position-x-axis-label-within-rectangle-and-rotate-90-degrees?rq=1
  **/
 
-var dataAlbumsBar, dataSinglesBar, dataBubbleAlbums, dataBubbleSingles, dataPie,
-    updateBubble, dataName, updatePie;
+var dataAlbumsBar, dataSinglesBar, dataBubbleAlbums, dataBubbleSingles, dataDonut,
+    updateBubble, dataName, updateDonut;
 
 window.onload = function() {
 
@@ -64,7 +64,7 @@ window.onload = function() {
         dataBubbleAlbums = convertForBubble(dataAlbums);
         dataBubbleSingles = convertForBubble(dataSingles);
 
-        dataPie = calculatePercentage(dataLead);
+        dataDonut = calculatePercentage(dataLead);
 
         // makeBarChart(dataArray);
         makeBarChart(dataAlbumsBar);
@@ -73,7 +73,7 @@ window.onload = function() {
         makeBubbleChart(dataBubbleAlbums);
 
         // select first album of the timeline
-        makePieChart(dataPie[0].lead, dataPie[0].title);
+        makeDonutChart(dataDonut[0].lead, dataDonut[0].title);
     };
 };
 
@@ -96,7 +96,8 @@ function calculatePercentage(data) {
                 {singer: "Lennon & McCartney", value: Math.round((album.lennonMcCartney / noTracks) * 100)},
                 {singer: "Lennon & Harrison", value: Math.round((album.lennonHarrison / noTracks) * 100)},
                 {singer: "Lennon & McCartney & Harrison", value: Math.round((album.lennonMcCartneyHarrison / noTracks) * 100)},
-                {singer: "Lennon & McCartney & Harrison & Starr", value: Math.round((album.lennonMcCartneyHarrisonStarr / noTracks) * 100)}
+                {singer: "Lennon & McCartney & Harrison & Starr", value: Math.round((album.lennonMcCartneyHarrisonStarr / noTracks) * 100)},
+                {singer: "instrumental", value: Math.round((album.instrumental / noTracks) * 100)}
         ]});
     };
 
@@ -111,6 +112,7 @@ function convertForBubble(dataset) {
         if (dataset[i].highestPosition === 1) {
             data.push({
                 title: dataset[i].title,
+                year: dataset[i].date.getFullYear(),
                 weeks: dataset[i].weeksChart,
                 usNo: dataset[i].usNo1
             })
@@ -548,7 +550,7 @@ function makeBarChart(data) {
                     update(dataAlbumsBar)
                     updateBubble(dataBubbleAlbums);
 
-                let updateTitle = d3.selectAll(".pieTitle")
+                let updateTitle = d3.selectAll(".donutTitle")
                                     .text("* Select an album");
 
                 let updateTitleBubble = d3.selectAll(".bubbleTitle")
@@ -561,9 +563,9 @@ function makeBarChart(data) {
                     // aanpassen
                     let data = [{singer: "no data", value: 0}];
 
-                    updatePie(data);
+                    updateDonut(data);
 
-                    let updateTitle = d3.selectAll(".pieTitle")
+                    let updateTitle = d3.selectAll(".donutTitle")
                                         .text("*Only possible for albums");
 
                     let updateTitleBubble = d3.selectAll(".bubbleTitle")
@@ -575,6 +577,7 @@ function makeBarChart(data) {
             .on("change", radioButtonChange);
 }
 
+/* Set up SVG and create bubble chart. */
 function makeBubbleChart(data) {
 
     let bubbleTitle = d3.select("#bubbleChart")
@@ -582,7 +585,39 @@ function makeBubbleChart(data) {
                         .attr("class", "bubbleTitle")
                         .text("UK ALBUMS CHART NUMBER ONES")
 
-    // update bubble chart when user switches input
+    updateBubble = updateBubbleChart;
+
+    // define chart parameters
+    let diameter = 725,
+        color    = d3.scale.category20b();
+
+    let bubble = d3.layout.pack()
+        .sort(null)
+        .size([diameter, diameter])
+        .padding(3.5);
+
+    let svg = d3.select("#bubbleChart")
+        .append("svg")
+        .attr("width", diameter)
+        .attr("height", diameter)
+        .attr("class", "bubble");
+
+    let tooltip = d3.select("#bubbleChart")
+        .append('div')
+        .attr('class', 'tooltip');
+
+    tooltip.append('div')
+        .attr('class', 'title');
+
+    tooltip.append('div')
+        .attr('class', 'weeks');
+
+    tooltip.append('div')
+        .attr('class', 'year');
+
+    updateBubble(data);
+
+    /* Update bubble chart when user switches input: album - singles. */
     function updateBubbleChart(dataset) {
 
         // transform data to numbers
@@ -593,13 +628,13 @@ function makeBubbleChart(data) {
 
         var node = svg.selectAll(".node")
             .data(nodes);
-            var text = svg.selectAll("text")
-                .data(nodes);
 
-        var text = svg.selectAll(".names")
+        var text = svg.selectAll("text")
             .data(nodes);
 
-        //setup the chart
+        var names = svg.selectAll(".names")
+            .data(nodes);
+
         var nodeEnter = node.enter()
             .append("g")
             .attr("class", "node")
@@ -610,8 +645,73 @@ function makeBubbleChart(data) {
             .attr("r", function(d) { return d.r; })
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
-            .style("fill", function(d, i) { return color[i]; })
+            .style("fill", function(d, i) { return color(d.year); })
+            .on('mouseover', function(d) {
 
+                tooltip.select('.title').html(d.title);
+                tooltip.select('.weeks').html(d.weeks + " weeks");
+                tooltip.select('.year').html("in " + d.year);
+
+                tooltip.style('display', 'block');
+                tooltip.style('opacity',2);
+
+            })
+            .on('mousemove', function(d) {
+                tooltip.style('top', (d3.event.layerY + 10) + 'px')
+                .style('left', (d3.event.layerX - 25) + 'px');
+            })
+
+            .on('mouseout', function() {
+                tooltip.style('display', 'none');
+                tooltip.style('opacity',0);
+            })
+            .on("click", function(d) {
+                if (dataName == "singles") {
+
+                    let data = [{singer: "no data", value: 0}];
+
+                    updateDonut(data);
+
+                    let updateTitle = d3.selectAll(".donutTitle")
+                                        .text("*Only possible for albums");
+                }
+                else {
+                    var title = d.title, lead;
+
+                    for (var album in dataDonut) {
+                        if (title === dataDonut[album].title) {
+                            lead = dataDonut[album].lead
+                        }
+                    };
+
+                    if (lead) {
+                        updateDonut(lead);
+                        let updateTitle = d3.selectAll(".donutTitle")
+                                            .text(title);
+                    }
+                    else {
+                        let data = [{singer: "no data", value: 0}];
+
+                        updateDonut(data);
+
+                        let updateTitle = d3.selectAll(".donutTitle")
+                                            .text("Sorry, no data available");
+                    };
+                };
+            });
+
+        node.select("circle")
+            .attr("r", function(d) { return d.r; })
+            .attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; })
+            .style("fill", function(d) { return color(d.year); })
+
+        node
+            .transition().duration(750)
+            .attr("class", "node")
+            .attr("transform", "translate(0,0)")
+
+        node.exit().remove();
 
         text
             .enter().append("text")
@@ -633,165 +733,18 @@ function makeBubbleChart(data) {
             .attr("y", function(d){ return d.y + 5; })
             .text(function(d){ return d["title"]; });
 
-        node.select("circle")
-            .attr("r", function(d) { return d.r; })
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; })
-            .style("fill", function(d) { return color(d.value); })
-            .on('mouseover', function(d) {
-                tooltip.select('.title').html(d.title);
-                tooltip.select('.weeks').html(d.weeks + " weeks");
-
-                tooltip.style('display', 'block');
-                tooltip.style('opacity',2);
-
-            })
-            .on('mousemove', function(d) {
-                tooltip.style('top', (d3.event.layerY + 10) + 'px')
-                .style('left', (d3.event.layerX - 25) + 'px');
-            })
-            .on('mouseout', function() {
-                tooltip.style('display', 'none');
-                tooltip.style('opacity',0);
-            });
-
-        node
-            .transition().duration(750)
-            .attr("class", "node")
-            .attr("transform", "translate(0,0)")
-
-        node.exit().remove();
-
         text.exit().remove();
     };
-
-    updateBubble = updateBubbleChart;
-
-    var diameter = 725,
-        color    = d3.scale.category20b();
-
-    var bubble = d3.layout.pack()
-        .sort(null)
-        .size([diameter, diameter])
-        .padding(3.5);
-
-    var svg = d3.select("#bubbleChart")
-        .append("svg")
-        .attr("width", diameter)
-        .attr("height", diameter)
-        .attr("class", "bubble");
-
-    // convert numerical values from strings to numbers
-    var data = data.map(function(d){ d.value = +d["weeks"]; return d; });
-
-    // bubbles needs very specific format, convert data to this.
-    var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
-
-    //setup the chart
-    var node = svg.selectAll(".node")
-        .data(nodes)
-        .enter().append("g")
-        .attr("class", "node")
-        .attr("transform", "translate(0,0)");
-        // .selectAll(".bubble")
-
-    var tooltip = d3.select("#bubbleChart")
-        .append('div')
-        .attr('class', 'tooltip');
-
-    tooltip.append('div')
-        .attr('class', 'title');
-    tooltip.append('div')
-        .attr('class', 'weeks');
-
-    //create the bubbles
-    node.append("circle")
-        .attr("r", function(d) { return d.r; })
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; })
-        .style("fill", function(d) { return color(d.value); })
-        .on('mouseover', function(d) {
-
-            tooltip.select('.title').html(d.title);
-            tooltip.select('.weeks').html(d.weeks + " weeks");
-
-            tooltip.style('display', 'block');
-            tooltip.style('opacity',2);
-
-        })
-        .on('mousemove', function(d) {
-            tooltip.style('top', (d3.event.layerY + 10) + 'px')
-            .style('left', (d3.event.layerX - 25) + 'px');
-        })
-
-        .on('mouseout', function() {
-            tooltip.style('display', 'none');
-            tooltip.style('opacity',0);
-        })
-        .on("click", function(d) {
-            if (dataName == "singles") {
-
-                let data = [{singer: "no data", value: 0}];
-
-                updatePie(data);
-
-                let updateTitle = d3.selectAll(".pieTitle")
-                                    .text("*Only possible for albums");
-            }
-            else {
-                // updatePie(dataPie)
-                // var album t
-                var title = d.title, lead;
-
-                for (var album in dataPie) {
-                    if (title === dataPie[album].title) {
-                        lead = dataPie[album].lead
-                    }
-                };
-
-                if (lead) {
-                    updatePie(lead);
-                    let updateTitle = d3.selectAll(".pieTitle")
-                                        .text(title);
-                }
-                else {
-                    let data = [{singer: "no data", value: 0}];
-
-                    updatePie(data);
-
-                    let updateTitle = d3.selectAll(".pieTitle")
-                                        .text("Sorry, no data available");
-                };
-            };
-        });
-
-    var text = svg.selectAll(".names")
-        .data(nodes);
-
-    text
-        .enter().append("text")
-        .attr("class", "names")
-        .attr("x", function(d){ return d.x; })
-        .attr("y", function(d){ return d.y + 5; })
-        .attr("text-anchor", "middle")
-        .text(function(d){ return d["title"]; })
-        .style({
-            "fill":"white",
-            "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
-            "font-size": "12px"
-        })
-        // .style("font-size", function(d) { return Math.min(2 * d.radius, (2 * d.radius - 8) / this.getComputedTextLength() * 24) + "px"; })
-        .attr("dy", ".35em");
 }
 
 // http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
-function makePieChart(data, albumTitle) {
+function makeDonutChart(data, albumTitle) {
 
-    let pieTitle = d3.select("#pieChart")
+    let donutTitle = d3.select("#donutChart")
                         .append("h3")
-                        .text("% LEAD VOCALS PER MEMBER OF ALBUM:")
+                        .text("% LEAD VOCALS OF ALBUM PER MEMBER:")
                         .append("h3")
-                        .attr("class", "pieTitle")
+                        .attr("class", "donutTitle")
                         .text(albumTitle);
 
     function mergeWithFirstEqualZero(first, second){
@@ -812,7 +765,7 @@ function makePieChart(data, albumTitle) {
         return sortedMerge;
     }
 
-    function updatePieChart(data) {
+    function updateDonutChart(data) {
 
         var oldData = svg.select(".slices")
           .selectAll("path")
@@ -820,8 +773,11 @@ function makePieChart(data, albumTitle) {
 
         if (oldData.length == 0) oldData = data;
 
-        var was = mergeWithFirstEqualZero(data, oldData);
-        var is = mergeWithFirstEqualZero(oldData, data);
+        var was = mergeWithFirstEqualZero(data, oldData),
+            is = mergeWithFirstEqualZero(oldData, data);
+
+        var text = arcs.selectAll("text")
+            .data(pie(data));
 
         var slice = svg.select(".slices")
           .selectAll("path")
@@ -876,33 +832,66 @@ function makePieChart(data, albumTitle) {
             .duration(0)
             .remove();
 
+        text
+            .enter().append("text").transition().delay(500).duration(100)
+            .attr("class", "percentage")
+            .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .attr("text-anchor", "middle")
+            .text(function(d) {
+                if (d.data.value > 0) {
+                    return d.data.value + "%";
+                }
+            });
 
+        text
+            .transition().delay(500).duration(100)
+            .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .text(function(d) {
+                if (d.data.value > 0) {
+                    return d.data.value + "%";
+                }
+            });
+
+        text.exit().remove()
+
+        console.log(is);
         var legend = svg.selectAll(".legend")
           .data(pie(is))
           .enter().append("g")
-          .attr("transform", function(d,i){
+          .attr("transform", function(d, i){
             return "translate(" + (width - 600) + "," + (i * 30 + 125) + ")";
           })
           .attr("class", "legend");
 
         legend.append("rect")
-          .attr("width", 20)
-          .attr("height", 20)
-          .attr("fill", function(d, i) { console.log(d);
+            .attr("id", function(d) {
+                return (d.data.singer).replace(/\s+/g, '');
+            })
+            .attr("width", 20)
+            .attr("height", 20)
+            .attr("fill", function(d, i) {
             return color(i);
-          });
+            });
 
         legend.append("text") // add the text
             .text(function(d){
-            return d.data.singer;
+                console.log(d);
+                if (d.data.singer != "no data")  {
+                    return d.data.singer;
+                }
             })
             .style("font-size", 12)
             .style("fill", "white")
             .attr("y", 15)
             .attr("x", 23);
+
+        legend.select("#nodata")
+            .remove()
     }
 
-    updatePie = updatePieChart;
+    updateDonut = updateDonutChart;
 
     var margin = {top: 100, bottom: 50, left: 50, right: 50};
 	var width = 500 - margin.left - margin.right,
@@ -926,7 +915,7 @@ function makePieChart(data, albumTitle) {
 
     var color = d3.scale.category20b();
 
-    var svg = d3.select('#pieChart')
+    var svg = d3.select('#donutChart')
     .append("svg")
         .attr("width", width)
         .attr("height", height + margin.top + margin.bottom)
@@ -946,7 +935,7 @@ function makePieChart(data, albumTitle) {
 
     var key = function(d) { return d.data.singer; };
 
-    var tooltip = d3.select("#pieChart")
+    var tooltip = d3.select("#donutChart")
     	.append('div')
     	.attr('class', 'tooltip');
 
@@ -962,5 +951,5 @@ function makePieChart(data, albumTitle) {
         .enter().append("svg:g")
         .attr("class", "slice");
 
-    updatePie(data, albumTitle);
+    updateDonut(data, albumTitle);
 }

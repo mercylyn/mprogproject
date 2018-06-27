@@ -6,7 +6,13 @@
 }
 
 .bg-1 .fa {
+    font-size: 36px;
+    margin-bottom: 20px;
     color: #000000;
+}
+
+.bg-1 .fa:hover {
+    color: #1F8093;
 }
 .bg-2 {
     background-color: #1F8093; /* Dark Blue */
@@ -16,9 +22,13 @@
 }
 
 .bg-2 .fa {
-        font-size: 22px;
+        font-size: 36px;
         margin-bottom: 20px;
         color: #F7F6E2;
+}
+
+.bg-2 .fa:hover {
+        color: #000000;
 }
 
 .bg-3 {
@@ -36,11 +46,15 @@
 }
 
 footer .fa {
-    font-size: 22px;
+    font-size: 36px;
     margin-bottom: 20px;
     color: #F7F6E2;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+footer .fa:hover {
+    color: #1F8093;
 }
 .open .dropdown-toggle {
     color: #fff;
@@ -197,12 +211,9 @@ svg {
 	opacity: 0;
 }
 
-/* pie chart */
-.arc text {
-  font: 10px sans-serif;
+/* donut chart */
+.slice text {
+  font: 18px sans-serif;
   text-anchor: middle;
-}
-
-.arc path {
-  stroke: #fff;
+  fill: #ffffff;
 }
