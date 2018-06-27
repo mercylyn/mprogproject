@@ -78,3 +78,9 @@ and try to improve for colorblind (grouped bar chart)
 * adjusted scroll spy for visualisations: from gouped bar chart to pie chart/bubble chart
 * adjusted grid for the visualisations
 * updated the title of bubble chart
+
+# 27-06-2018
+* adjusted colors of bubble chart: based upon year
+* bubble chart: code minimalization
+* added text in pie chart: percentage
+* changed pie chart to donut chart (names in code)

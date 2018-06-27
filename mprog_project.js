@@ -833,7 +833,7 @@ function makeDonutChart(data, albumTitle) {
             .remove();
 
         text
-            .enter().append("text").transition().delay(500).duration(100)
+            .enter().append("text").transition().delay(500).duration(750)
             .attr("class", "percentage")
             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
             .attr("dy", ".35em")
@@ -845,7 +845,7 @@ function makeDonutChart(data, albumTitle) {
             });
 
         text
-            .transition().delay(500).duration(100)
+            .transition().delay(100).duration(750)
             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
             .attr("dy", ".35em")
             .text(function(d) {
@@ -856,7 +856,6 @@ function makeDonutChart(data, albumTitle) {
 
         text.exit().remove()
 
-        console.log(is);
         var legend = svg.selectAll(".legend")
           .data(pie(is))
           .enter().append("g")
