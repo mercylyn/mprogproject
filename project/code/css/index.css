@@ -21,7 +21,7 @@
     background-color: #F7F6E2;
     color: #000000;
     padding-top: 80px;
-    padding-bottom: 80px;
+    padding-bottom: 60px;
 }
 
 .bg-1 .fa {
@@ -35,30 +35,47 @@
 }
 
 .bg-2 {
+    background-color: #F7F6E2;
+    color: #000000;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.bg-2 .fa {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.bg-2 .fa:hover {
+    color: #1F8093;
+}
+
+.bg-3 {
     background-color: #1F8093; /* Dark Blue */
     color: #ffffff;
     padding-top: 40px;
     padding-bottom: 20px;
 }
 
-.bg-2 .fa {
+.bg-3 .fa {
         font-size: 36px;
         margin-bottom: 20px;
         color: #F7F6E2;
 }
 
-.bg-2 .fa:hover {
+.bg-3 .fa:hover {
         color: #000000;
 }
 
-.bg-3 {
+.bg-4 {
     background-color: #F7F6E2; /* White */
     color: #555555;
     padding-top: 50px;
     padding-bottom: 30px;
 }
 
-.bg-4 {
+.bg-5 {
     background-color: #000000;
     color: #ffffff;
     padding-top: 30px;

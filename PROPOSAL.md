@@ -2,7 +2,7 @@
 
 Mercylyn Wiemer (10749306)
 
-[The Beatles Albums and Charts](https://mercylyn.github.io/mprogproject/index.html)
+[The Beatles chart position analysis](https://mercylyn.github.io/mprogproject/index.html)
 
 ## The Beatles chart position analysis ##
 
@@ -23,27 +23,27 @@ Visualizing the albums and singles that reached the Charts!
 
 ![](docs/beatles_project_proposal.png)
 
-### main features ###
+### Main features ###
 * Number of albums and singles in top chart per year (options: albums - singles)
 * Albums and singles that reached no. 1 in the UK or US
 * Lead Vocals in percentage per band member by selecting an album that reached no. 1 in the UK or US
 ## Prerequisities ##
 
-### data sources ###
+### Data sources ###
 * https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band
 * https://docs.google.com/spreadsheets/d/1VI7e2yYOWcHnAG-0DaFJfbts-iT6QHU5pOq-Ajd62HE/edit
 * https://en.wikipedia.org/wiki/Please_Please_Me
 * https://nl.wikipedia.org/wiki/The_Beatles
 
 
-### external components ###
+### External components ###
 * d3-tip
 
-### similar visualizations ###
+### Similar visualizations ###
 * https://public.tableau.com/en-us/s/gallery/beatles-analysis
 * http://research.google.com/bigpicture/music/
 * https://artist-explorer.glitch.me/
 
-### hardest parts ###
+### Hardest parts ###
 * linking the visualisations
 * separately going through every album that reached no. 1 in the UK/US for the lead vocals

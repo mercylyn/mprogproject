@@ -198,11 +198,16 @@ function makeBarChart(data) {
         "#b4a170", "#da896b", "#bf8981"];
 
     // set dimensions of svg
-    const margin = {top: 20, right: 30, bottom: 30, left: 40},
+    const margin = {top: 20, right: 30, bottom: 50, left: 40},
         width = 1280 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom;
 
-    let barPadding = 10;
+    let barPadding = 10,
+        axisPadding = 10,
+        yLabelPosition = 6,
+        yTicks = 14,
+        offsetTip = -10,
+        duration = 500;
 
     let y = d3.scale.linear()
       .range([height, 0]);
@@ -218,12 +223,12 @@ function makeBarChart(data) {
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left")
-        .ticks(14);
+        .ticks(yTicks);
 
     // Setup the tool tip
     var tip = d3.tip()
         .attr('class', 'd3-tip')
-        .offset([-10, 0])
+        .offset([offsetTip, 0])
         .html(function(d) {
           return "<strong>Album:</strong> <span style='color:red'>" + d.key +
                     "</span> <br> <strong>Weeks in chart:</strong> \
@@ -240,15 +245,26 @@ function makeBarChart(data) {
 
     svg.call(tip);
 
+    // y-axis label
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
         .attr("transform", "rotate(-90)")
-        .attr("y", 6)
+        .attr("y", yLabelPosition)
         .attr("dy", ".71em")
+        .style("font-size", "14px")
         .style("text-anchor", "end")
         .text("Weeks in chart");
+
+        // X axis label
+        svg.append("g")
+            .append("text")
+            .attr("x", width / 2)
+            .attr("y", height + margin.bottom - axisPadding)
+            .style("font-size", "14px")
+            .attr("text-anchor", "middle")
+            .text("year music appeared in chart");
 
         updateBar(data);
 
@@ -336,7 +352,7 @@ function makeBarChart(data) {
             .ticks(14);
 
         svg.selectAll("g.y.axis")
-            .transition().duration(500)
+            .transition().duration(duration)
             .call(yAxis)
 
         // add all category groups: years
@@ -356,7 +372,7 @@ function makeBarChart(data) {
 
           // Update old ones, already have x / width from before
         category_g
-            .transition().duration(500)
+            .transition().duration(duration)
             .attr("class", function(d) {
               return 'category category-' + d.key;
             })
@@ -391,7 +407,7 @@ function makeBarChart(data) {
             .attr('text-anchor', 'middle');
 
         category_label
-            .transition().duration(500)
+            .transition().duration(duration)
             .attr("class", function(d) {
             return 'category-label category-label-' + d.key;
             })
@@ -423,7 +439,7 @@ function makeBarChart(data) {
           });
 
         inner_g
-              .transition().duration(500)
+              .transition().duration(duration)
               .attr("class", function(d) {
                 return 'inner inner-' + d.key;
               })
@@ -455,7 +471,7 @@ function makeBarChart(data) {
         .on('mouseout', tip.hide);
 
         rects
-            .transition().duration(500)
+            .transition().duration(duration)
             .attr("y", function(d) {
                 return y(d.value);
             })
@@ -491,7 +507,7 @@ function makeBarChart(data) {
             .attr("font-size", "12px");
 
         inner_label
-            .transition().duration(500)
+            .transition().duration(duration)
             .attr("class", function(d) {
               return 'inner-label inner-label-' + d.key;
             })
@@ -515,6 +531,11 @@ function makeBubbleChart(data) {
                         .attr("class", "bubbleTitle")
                         .text("UK ALBUMS CHART NUMBER ONES")
 
+    // information about the color and size of bubble
+    let bubbleInfo = d3.select("#bubbleChart")
+                        .append("h5")
+                        .attr("class", "bubbleInfo")
+                        .text("* Colors indicate year, size of bubble indicate number of weeks in chart")
     updateBubble = updateBubbleChart;
 
     // define chart parameters
