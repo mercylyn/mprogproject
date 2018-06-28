@@ -7,7 +7,7 @@
 # 08-06-2018
 Feedback
 
-* selecting albums: pie chart shows, which album constists of single or
+* selecting albums: pie chart shows, which album consists of single or
 hide pie chart
 * select album/hover in stacked bar chart: in bubble chart highlight of bubble with album
 * scraping data with google sheets
