@@ -55,7 +55,7 @@
     background-color: #1F8093; /* Dark Blue */
     color: #ffffff;
     padding-top: 40px;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 }
 
 .bg-3 .fa {
@@ -119,6 +119,13 @@ h4 {
     line-height: 1.375em;
     font-weight: 400;
     margin-bottom: 30px;
+}
+
+h5 {
+    font-size: 14px;
+    line-height: 1.375em;
+    font-weight: 400;
+    margin-bottom: 0px;
 }
 
 body {

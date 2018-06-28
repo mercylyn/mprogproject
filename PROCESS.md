@@ -1,6 +1,4 @@
-
-
-# week 1
+# 06-06-2018
 * work out the programming project proposal: The Beatles albums and singles that reached the Charts (UK - US)
 
 # 07-06-2018

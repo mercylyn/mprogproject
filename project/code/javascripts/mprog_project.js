@@ -225,7 +225,7 @@ function makeBarChart(data) {
         .orient("left")
         .ticks(yTicks);
 
-    // Setup the tool tip
+    // Set up the tool tip
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([offsetTip, 0])
@@ -539,7 +539,7 @@ function makeBubbleChart(data) {
     updateBubble = updateBubbleChart;
 
     // define chart parameters
-    let diameter = 725,
+    let diameter = 715,
         color    = d3.scale.category20b();
 
     let bubble = d3.layout.pack()
@@ -685,9 +685,9 @@ function makeBubbleChart(data) {
             .text(function(d){ return d["title"]; })
             .style({
                 "fill":"white",
-                "font-family":"Helvetica Neue, Helvetica, Arial, san-serif"
+                "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
+                "font-size": "12px"
             })
-            .style("font-size", function(d) { return Math.min(2 * d.radius, (2 * d.radius - 8) / this.getComputedTextLength() * 24) + "px"; })
             .attr("dy", ".35em");
 
         text
@@ -700,6 +700,8 @@ function makeBubbleChart(data) {
     };
 };
 
+/* Create and update donut chart with % starring lead vocals per category: bandmember or
+   instrumental. */
 function makeDonutChart(data, albumTitle) {
     let donutTitle = d3.select("#donutChart")
                         .append("h3")
@@ -708,29 +710,21 @@ function makeDonutChart(data, albumTitle) {
                         .attr("class", "donutTitle")
                         .text(albumTitle);
 
+    // set update function for donut chart global
     updateDonut = updateDonutChart;
 
-    var margin = {top: 100, bottom: 50, left: 50, right: 50};
-	var width = 500 - margin.left - margin.right,
-    	height = 500,
-    	radius = Math.min(width, height) / 2;
-        		var donutWidth = 100;
+    // set dimensions of canvas
+    const margin = {top: 100, bottom: 50, left: 50, right: 50},
+	    width = 500 - margin.left - margin.right,
+        height = 500,
+        radius = Math.min(width, height) / 2,
+        donutWidth = 100;
 
-    var keys = [
-        "McCartney",
-        "Lennon",
-        "Harrison",
-        "Starr",
-        "Lennon & McCartney",
-        "Lennon & Harrison",
-        "Lennon & McCartney & Harrison",
-        "Lennon & McCartney & Harrison & Starr",
-        "Instrumental"
-    ];
+    // builtin range of colors
+    const color = d3.scale.category20b();
 
-    var color = d3.scale.category20b();
-
-    var svg = d3.select('#donutChart')
+    // create SVG element
+    let svg = d3.select('#donutChart')
     .append("svg")
         .attr("width", width)
         .attr("height", height + margin.top + margin.bottom)
@@ -739,17 +733,19 @@ function makeDonutChart(data, albumTitle) {
 
     svg.append("g").attr("class", "slices");
 
-    var pie = d3.layout.pie()
+    // create arc data for given list of values
+    let pie = d3.layout.pie()
         .sort(null)
         .value(function(d) { return d.value; });
 
-    // Declare an arc generator function
-    var arc = d3.svg.arc()
+    // declare an arc generator function
+    let arc = d3.svg.arc()
         .outerRadius(radius - 20)
         .innerRadius(radius - donutWidth);
 
     var key = function(d) { return d.data.singer; };
 
+    // set up tooltip
     var tooltip = d3.select("#donutChart")
     	.append('div')
     	.attr('class', 'tooltip');
@@ -760,7 +756,7 @@ function makeDonutChart(data, albumTitle) {
     tooltip.append('div')
         .attr('id', 'percent');
 
-    // //Select paths, use arc generator to draw
+    // select paths, use arc generator to draw
     var arcs = svg.selectAll(".slice")
         .data(pie(data))
         .enter().append("svg:g")
@@ -768,42 +764,48 @@ function makeDonutChart(data, albumTitle) {
 
     updateDonut(data, albumTitle);
 
+    /* Returns data sorted by category: singer or instrumental. */
     function mergeWithFirstEqualZero(first, second){
 
-        var secondSet = d3.set();
+        let secondSet = d3.set();
 
         second.forEach(function(d) { secondSet.add(d.singer); });
 
-        var onlyFirst = first
+        let onlyFirst = first
             .filter(function(d){ return !secondSet.has(d.singer) })
             .map(function(d) { return {singer: d.singer, value: 0}; });
 
-        var sortedMerge = d3.merge([ second, onlyFirst ])
+        // sort by singer
+        let sortedMerge = d3.merge([second, onlyFirst])
             .sort(function(a, b) {
                 return d3.ascending(a.singer, b.singer);
-              });
+            });
 
         return sortedMerge;
     };
 
+    /* Updates donut chart by user input: album bubble. */
     function updateDonutChart(data) {
 
-        var oldData = svg.select(".slices")
-          .selectAll("path")
-          .data().map(function(d) { return d.data });
+        let oldData = svg.select(".slices")
+            .selectAll("path")
+            .data().map(function(d) { return d.data });
 
+        // check for old data
         if (oldData.length == 0) oldData = data;
 
-        var was = mergeWithFirstEqualZero(data, oldData),
+        let was = mergeWithFirstEqualZero(data, oldData),
             is = mergeWithFirstEqualZero(oldData, data);
 
-        var text = arcs.selectAll("text")
+        let text = arcs.selectAll("text")
             .data(pie(data));
 
-        var slice = svg.select(".slices")
-          .selectAll("path")
-          .data(pie(was), key);
+        let slice = svg.select(".slices")
+            .selectAll("path")
+            .data(pie(was), key);
 
+
+        // create and update slices of donut chart
         slice.enter()
             .insert("path")
             .attr("class", "slice")
@@ -853,6 +855,7 @@ function makeDonutChart(data, albumTitle) {
             .duration(0)
             .remove();
 
+        // add and update percentage to donut slices
         text
             .enter().append("text").transition().delay(500).duration(750)
             .attr("class", "percentage")
@@ -877,6 +880,7 @@ function makeDonutChart(data, albumTitle) {
 
         text.exit().remove()
 
+        // add legend to donut chart
         var legend = svg.selectAll(".legend")
           .data(pie(is))
           .enter().append("g")
@@ -897,6 +901,7 @@ function makeDonutChart(data, albumTitle) {
 
         legend.append("text") // add the text
             .text(function(d){
+                // remove no data text
                 if (d.data.singer != "no data")  {
                     return d.data.singer;
                 }
@@ -904,6 +909,7 @@ function makeDonutChart(data, albumTitle) {
             .attr("y", 15)
             .attr("x", 23);
 
+        // remove no data rectangle
         legend.select("#nodata")
             .remove()
     };

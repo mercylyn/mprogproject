@@ -1,12 +1,13 @@
-# Programming project - Project Proposal #
+# Programming project #
 
 Mercylyn Wiemer (10749306)
+Minor Programming, University of Amsterdam
 
 [The Beatles chart position analysis](https://mercylyn.github.io/mprogproject/index.html)
 
 # The Beatles chart position analysis #
 
-The Beatles were an English rockband from Liverpool England 1960. The band is considered as the most influential music band in history. The visualisations will present the number of albums and singles from the year 1963 to 2009 that reached the Official Charts Company. The Albums/Singles that reached No. 1 are visualised separately. Furthermore, there is the possibility to see the percentage of Lead Vocals per band member of selected albums (chart position no. 1).
+The Beatles were an English rockband from Liverpool, England. The band is considered as the most influential music band in history. The visualisations will present the number of albums and singles from the year 1963 to 2009 that reached the Official Charts Company. The albums and singles that reached No. 1 are visualised separately. Furthermore, there is the possibility to see the percentage of Lead Vocals per band member of selected albums (chart position no. 1).
 
 Three visualisations:
 1) Grouped bar chart: albums or singles that reached the Charts (The Official Charts Company) with number of weeks in chart
