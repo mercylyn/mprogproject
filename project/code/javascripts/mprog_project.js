@@ -714,7 +714,7 @@ function makeBubbleChart(data) {
             .transition().duration(750)
             .attr("x", function(d) { return d.x; })
             .attr("y", function(d) { return d.y + 5; })
-            .text(function(d { return d["title"]; });
+            .text(function(d) { return d["title"]; });
 
         text.exit().remove();
     };
