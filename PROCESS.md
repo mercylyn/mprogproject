@@ -83,3 +83,10 @@ and try to improve for colorblind (grouped bar chart)
 * added text in pie chart: percentage
 * changed pie chart to donut chart (names in code)
 * grouped bar chart: code minimalization
+
+# 28-06-2018
+* story and guide: web page
+* organize repository
+* add explanation visualizations to story
+* title grouped bar chart
+* organize code

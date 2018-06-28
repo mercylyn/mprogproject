@@ -25,20 +25,20 @@ of albums and singles that reached the top chart in the UK (Official Charts Comp
 
 [PROJECT - The Beatles chart analysis](https://mercylyn.github.io/mprogproject/index.html)
 
-![Home](docs/home.png)
+![Home](doc/home.png)
 
-![Story](docs/story.png)
+![Story](doc/story.png)
 
-![Chart Overview](docs/chart_overview.png)
+![Chart Overview](doc/chart_overview.png)
 
-![No. 1 & Lead Vocals](docs/music_info.png)
+![No. 1 & Lead Vocals](doc/music_info.png)
 
-![Source](docs/source.png)
+![Source](doc/source.png)
 
-![Creator](docs/creator.png)
+![Creator](doc/creator.png)
 
 ### Data sources ###
-* https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band Creative Commons Attribution-ShareAlike
+* https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band
 * https://en.wikipedia.org/wiki/Please_Please_Me Creative Commons Attribution-ShareAlike License
 * https://en.wikipedia.org/wiki/With_the_Beatles Creative Commons Attribution-ShareAlike License
 * https://en.wikipedia.org/wiki/A_Hard_Day%27s_Night_(album) Creative Commons Attribution-ShareAlike License
@@ -54,16 +54,16 @@ of albums and singles that reached the top chart in the UK (Official Charts Comp
 
 ### External code sources ###
 Grouped bar chart
-* https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3
+* https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3 cc by-sa 3.0
 * https://plnkr.co/edit/L0eQwtEMQ413CpoS5nvo?p=preview
 
 Bubble chart
 * https://bl.ocks.org/alokkshukla/3d6be4be0ef9f6977ec6718b2916d168
-* https://bl.ocks.org/mbostock/4063269
+* https://bl.ocks.org/mbostock/4063269 GNU General Public License, version 3.
 
 Donut chart
-* http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9
-* https://bl.ocks.org/rshaker/225c6df494811f46f6ea53eba63da817
+* http://bl.ocks.org/arpitnarechania/577bd1d188d66dd7dffb69340dc2d9c9 The MIT License
+* https://bl.ocks.org/rshaker/225c6df494811f46f6ea53eba63da817 The MIT License
 
 Tooltip
 * http://bl.ocks.org/Caged/6476579
@@ -75,7 +75,7 @@ Html themes
 
 ### External images sources ###
 The Beatles logo
-* https://commons.wikimedia.org/wiki/File:Beatles_logo.svg
+* https://commons.wikimedia.org/wiki/File:Beatles_logo.svg Creative Commons Attribution-ShareAlike
 
 The Beatles drawings
 * http://getdrawings.com/beatles-drawing#beatles-drawing-61.jpg  CC BY-NC 4.0 Licence
