@@ -1,17 +1,42 @@
-# The Beatles chart position analysis - Report #
+# The Beatles charts analysis - Report #
 
 Mercylyn Wiemer (10749306)
-Minor Programming, University of Amsterdam8
+Minor Programming, University of Amsterdam
 
 The Beatles were a English rockband from Liverpool, England. In the current project their music: albums and singles are analysed. Which music reached the Official Charts Company. The albums and singles that reached No. 1 in the charts are visualised separately. Furthermore, there is the possibility to see the percentage of starring lead Vocalists per album of albums that reached chart position no. 1.
+
 
 ![](docs/chart_overview.png)
 
 # Technical design #
 
-high level overview: navigate and understand total of code (components)
+## data sources ##
+Some of the lead vocals data was not available directly from the wikipedia page, e.g.
+"The Beatles at the Hollywood Bowl". So, I solved this by alerting the user that no data was available.
 
-detail: files/functions, how they relate
+## technical components ##
+### navigation bar ###
+Use the the navigation bar on top of the website to navigate through the website
+or scroll bar. The arrows found on the pages (begin on the home page) will guide
+you to the visualisations.
+
+### grouped bar chart ###
+In the grouped bar chart the albums or singles are shown that reached the charts.
+On the X-axis are the years in which the music appeared in the music chart. The
+Y-axis is the number of weeks the music was in the chart. The colors of the bars
+indicate a different year. Furthermore, it is possible to switch music data:
+albums and singles. By switching the data in the bar chart the data of the
+bubble chart and pie chart are altered. By hovering over the bars a tooltip
+will pop up with more information about the selected music.
+
+### bubble chart ###
+Every bubble represents an album or single that reached no. 1 as highest chart position.
+The colors represent the year in which the music reached the charts (same color is same year).
+The size of the bubble represents the number of weeks the album or single was on position 1.
+The higher the number the larger the bubble. Selecting albums or singles is possible by clicking the button
+above the grouped bar chart. By clicking an album bubble the pie chart will show
+the members staring in the lead vocals of the selected album. By hovering over
+a bubble more information about the album will show up.
 
 # challenges #
 * stacked bar chart to grouped bar chart
