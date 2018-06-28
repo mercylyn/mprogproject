@@ -8,7 +8,7 @@
  * - Bubble chart: albums or singles with highest position no. 1
  * - Donut chart: members of the band starring as lead vocals position no. 1 albums only
  *
- * Data chart from The Guardian & lead vocals from Wikipedia: albums of The Beatles.
+ * Data chart from The Guardian & lead vocals from Wikipedia: albums of The Beatles
 **/
 
 // global variables for grouped bar chart, bubble chart and donut chart
