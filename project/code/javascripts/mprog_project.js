@@ -3,8 +3,8 @@
  * Course: programming project
  *
  * Programming Project: The Beatles chart analysis.
- * - Grouped bar chart: albums or singles that reached the Charts
- * (The Official Charts Company) with number of weeks in chart
+ * - Grouped bar chart: albums or singles that were on the chart
+ * (The Official Charts Company) with number of weeks on chart
  * - Bubble chart: albums or singles with highest position no. 1
  * - Donut chart: members of the band starring as lead vocals position no. 1 albums only
  *
@@ -142,7 +142,7 @@ function convertToDictionary(dataset) {
     let years = [];
     let valuesArray = [];
 
-    // get data per album or single: year in chart, title and chart position
+    // get data per album or single: year on chart, title and chart position
     for (let key in dataset) {
         dataPerType.push([dataset[key].date.getFullYear(), dataset[key].title,
                           dataset[key].weeksChart, dataset[key].highestPosition]);
@@ -151,7 +151,7 @@ function convertToDictionary(dataset) {
     // add year of first album to for sorting the dictionary
     years.push(dataPerType[0][0]);
 
-    // convert data to dictionary based upon year in chart
+    // convert data to dictionary based upon year on chart
     for (let i = 0; i < dataPerType.length; i++) {
 
         let values = {
@@ -165,7 +165,7 @@ function convertToDictionary(dataset) {
             valuesArray.push(values);
         }
 
-        // found album/single in chart in a new year
+        // found album/single on chart in a new year
         else {
 
             // add data of the last occuring year to main array
@@ -238,7 +238,7 @@ function makeBarChart(data) {
         .offset([offsetTip, 0])
         .html(function(d) {
           return "<strong>Album:</strong> <span style='color:red'>" + d.key +
-                    "</span> <br> <strong>Weeks in chart:</strong> \
+                    "</span> <br> <strong>Weeks on chart:</strong> \
                     <span style='color:red'>" + d.value + "</span> <br> \
                     <strong>Highest chart position:</strong> <span \
                     style='color:red'>" + d.highestPosition + "</span>";
@@ -264,7 +264,7 @@ function makeBarChart(data) {
         .attr("dy", ".71em")
         .style("font-size", "14px")
         .style("text-anchor", "end")
-        .text("Weeks in chart");
+        .text("Weeks on chart");
 
         // X axis label
         svg.append("g")
@@ -273,7 +273,7 @@ function makeBarChart(data) {
             .attr("y", height + margin.bottom - axisPadding)
             .style("font-size", "14px")
             .attr("text-anchor", "middle")
-            .text("year music appeared in chart");
+            .text("year music appeared on chart");
 
         updateBar(data);
 
@@ -551,7 +551,7 @@ function makeBubbleChart(data) {
     let bubbleInfo = d3.select("#bubbleChart")
                         .append("h5")
                         .attr("class", "bubbleInfo")
-                        .text("* Colors indicate year, size of bubble indicate number of weeks no. 1 in chart")
+                        .text("* Colors indicate year, size of bubble indicate number of weeks no. 1 on chart")
     updateBubble = updateBubbleChart;
 
     // define chart parameters

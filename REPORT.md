@@ -5,12 +5,12 @@ Minor Programming, University of Amsterdam
 
 The Beatles were a English rockband from Liverpool, England. In the current
 project their music: albums and singles are analysed. Which music reached the
-Official Charts Company. The albums and singles that reached No. 1 in the charts
+Official Charts Company. The albums and singles that reached No. 1 on the chart
 are visualised separately. Furthermore, there is the possibility to see the
 percentage of starring lead vocalists per album of albums that reached chart position no. 1.
 
 
-![](docs/chart_overview.png)
+![](doc/chart_overview.png)
 
 # Technical design #
 
@@ -28,8 +28,8 @@ you to the visualisations.
 
 ### grouped bar chart ###
 In the grouped bar chart the albums or singles are shown that reached the charts.
-On the X-axis are the years in which the music appeared in the music chart. The
-Y-axis is the number of weeks the music was in the chart. The colors of the bars
+On the X-axis are the years in which the music appeared on the music chart. The
+Y-axis is the number of weeks the music was on the chart. The colors of the bars
 indicate a different year. Furthermore, it is possible to switch music data:
 albums and singles. By switching the data in the bar chart the data of the
 bubble chart and donut chart are altered. By hovering over the bars a tooltip
@@ -87,17 +87,29 @@ Not every album has data available. The % lead vocalist is only possible for alb
 Converting the data to use for the stacked bar chart was a big challenge.
 Eventually, I decided to use a grouped bar chart, because it was easier to
 convert the data for this visualization and it would give a clear overview of
-the different years in which music of The Beatles appeared in the charts.
+the different years in which music of The Beatles appeared on the chart.
 It would have been educational to make a stacked bar chart, but I also had to
-made the decision to switch to be on schedule.
+made the decision to switch to be on schedule. Otherwise, I think the stacked bar
+chart would have been more compact and thus better accessible.
 
 ## positioning elements on website including the visualisations: grid system ##
 I choose to put the grouped bar chart as main chart and give it many space.
-Otherwise, the albums or singles wouldn't be clearly visible. Underneath the donut
-chart and the bubble chart sharing the row. These charts are smaller and therefor
-fit better next to each other.
+Otherwise, the albums or singles wouldn't be clearly visible. Underneath the
+grouped bar chart I positioned the donut chart and the bubble chart sharing the
+row. These charts are smaller and therefor better next to each other.
 
 ## updating charts especially the donut chart ##
-For the donut chart it is needed to calculate that arc of the slices. This was
+For the donut chart it was needed to calculate that arc of the slices. This was
 new for me and took some time to understand. However, looking at examples helped
-me to be able to update the donut chart correctly.
+me to be able to update the donut chart correctly. Also, going through the
+example code with a TA made it more clear.
+
+## getting data for the lead vocals ##
+For a good amount of albums the lead vocals was accessible on Wikipedia. However,
+for few of the albums a different layout was used where the lead vocals weren't
+mentioned or the data was incomplete. For example, anthology 2 with 45 songs. I choose
+to not individually go through all the songs for collecting the lead vocals, because
+this would have been time consuming and I wanted to have enough time for creating the
+visualisations. Because of previous experience with looking for data to long I
+wanted to beat the clock for this project. As a solution I informed the web user
+that for the selected album unfortunately no data was available.
