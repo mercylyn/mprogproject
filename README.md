@@ -5,12 +5,17 @@ Minor Programming, University of Amsterdam
 
 [The Beatles chart position analysis](https://mercylyn.github.io/mprogproject/index.html)
 
-![Home](docs/home.png){:height="50%" width="50%"}
-![Story](docs/story.png){:height="50%" width="50%"}
-![Chart Overview](docs/chart_overview.png){:height="50%" width="50%"}
-![No. 1 & Lead Vocals](docs/music_info.png){:height="50%" width="50%"}
-![Source](docs/source.png){:height="50%" width="50%"}
-![Creator](docs/creator.png){:height="50%" width="50%"}
+![Home](docs/home.png)
+
+![Story](docs/story.png)
+
+![Chart Overview](docs/chart_overview.png)
+
+![No. 1 & Lead Vocals](docs/music_info.png)
+
+![Source](docs/source.png)
+
+![Creator](docs/creator.png)
 
 # The Beatles chart position analysis #
 
@@ -26,8 +31,6 @@ Source: https://nl.wikipedia.org/wiki/The_Beatles
 ## Main Purpose ##
 The Beatles wrote more than 300 songs. The goal of this project is to give an overview
 of albums and singles that reached the top chart in the UK (Official Charts Company).
-
-![](docs/beatles_project_proposal.png)
 
 ### Main features ###
 * Number of albums and singles in top chart per year (options: albums - singles)
