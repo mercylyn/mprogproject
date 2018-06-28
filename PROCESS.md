@@ -11,7 +11,6 @@ Feedback
 hide pie chart
 * select album/hover in stacked bar chart: in bubble chart highlight of bubble with album
 * scraping data with google sheets
-
 * continuing with converting the data: lead vocals data.
 
 # 11-06-2018

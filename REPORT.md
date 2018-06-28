@@ -25,7 +25,7 @@ or scroll bar. The arrows found on the pages (begin on the home page) will guide
 you to the visualisations.
 
 * An JS scrollspy is used to automatically update the navbar links when scrolling.
-* Addiontal nagivation via awesome font icons: guide from home to visualizations and visa versa.
+* Addiontal nagivation via awesome font icons: guide from home to visualizations and vice versa.
 
 ### grouped bar chart ###
 In the grouped bar chart the albums or singles are shown that reached the charts.
@@ -35,6 +35,14 @@ indicate a different year. Furthermore, it is possible to switch music data:
 albums and singles. By switching the data in the bar chart the data of the
 bubble chart and pie chart are altered. By hovering over the bars a tooltip
 will pop up with more information about the selected music.
+
+* data from The Guardian: albums/singles chart position and weeks in chart
+* colors: improve for the colorblind http://tools.medialab.sciences-po.fr/iwanthue/
+* tooltips: D3 tooltip
+* create and update grouped bar chart with makeBarChart() and the updateBar() function
+* used d3 for adding radio button for switching data from albums to singles and vice versa
+* anonymous function for the radio button change: update bar chart and bubble chart         including title of bubble chart and instruction text for donut chart. If singles dataset
+is selected: changed instruction donut chart with warning that bubble chart is not available for selecting music.
 
 ### bubble chart ###
 Every bubble represents an album or single that reached no. 1 as highest chart position.
