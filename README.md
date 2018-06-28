@@ -3,6 +3,8 @@
 Mercylyn Wiemer (10749306)
 Minor Programming, University of Amsterdam
 
+[PROJECT - The Beatles chart analysis](https://mercylyn.github.io/mprogproject/index.html)
+
 # The Beatles chart analysis #
 
 The Beatles were an English rockband from Liverpool, England. The band is considered as the most influential music band in history. The visualisations will present the number of albums and singles from the year 1963 to 2009 that reached the Official Charts Company. The albums and singles that reached No. 1 are visualised separately. Furthermore, there is the possibility to see the percentage of Lead Vocals per band member of selected albums (chart position no. 1).
@@ -22,8 +24,6 @@ of albums and singles that reached the top chart in the UK (Official Charts Comp
 * Number of albums and singles in top chart per year (options: albums - singles)
 * Albums and singles that reached no. 1 in the UK
 * Lead Vocals in percentage per band member by selecting an album that reached no. 1 in the UK
-
-[PROJECT - The Beatles chart analysis](https://mercylyn.github.io/mprogproject/index.html)
 
 ![Home](doc/home.png)
 
@@ -80,8 +80,9 @@ The Beatles logo
 The Beatles drawings
 * http://getdrawings.com/beatles-drawing#beatles-drawing-61.jpg  CC BY-NC 4.0 Licence
 
-## Author ##
+## Author & copyright statement ##
 * Mercylyn Wiemer
+* Apache License 2.0
 
 ## Acknowledgements ##
 University of Amsterdam - Minor Progamming

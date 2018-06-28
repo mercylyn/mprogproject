@@ -52,7 +52,7 @@
 }
 
 .bg-3 {
-    background-color: #1F8093; /* Dark Blue */
+    background-color: #1F8093;
     color: #ffffff;
     padding-top: 40px;
     padding-bottom: 30px;
@@ -69,10 +69,10 @@
 }
 
 .bg-4 {
-    background-color: #F7F6E2; /* White */
+    background-color: #F7F6E2;
     color: #555555;
     padding-top: 50px;
-    padding-bottom: 30px;
+    padding-bottom: 50px;
 }
 
 .bg-5 {
@@ -103,6 +103,7 @@ footer .fa:hover {
     color: #000 !important;
     background-color: black;
 }
+
 .dropdown-menu li a:hover {
     background-color: red !important;
 }
@@ -147,35 +148,24 @@ p {
     letter-spacing: 4px;
     opacity: 0.9;
 }
+
 .navbar li a, .navbar .navbar-brand {
     color: #d5d5d5 !important;
 }
+
 .navbar-nav li a:hover {
     color: #fff !important;
 }
+
 .navbar-nav li.active a {
     color: #fff !important;
     background-color: #29292c !important;
 }
+
 .navbar-default .navbar-toggle {
     border-color: transparent;
 }
 
-/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-/* .row.content {
-    height: 450px;
-} */
-
-/* On small screens, set height to 'auto' for sidenav and grid */
-/* @media screen and (max-width: 767px) {
-  .sidenav {
-    height: auto;
-    padding: 15px;
-  }
-  .row.content {height:auto;}
-} */
-
-/* style settings for svg*/
 svg {
     font: 10px sans-serif;
     shape-rendering: crispEdges;
@@ -183,69 +173,69 @@ svg {
 
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .x.axis path {
-  display: none;
+    display: none;
 }
 
 /* Tooltip */
 .d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
 }
 
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
 }
 
 /* Style northward tooltips differently */
 .d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
 }
 
 .tooltip {
-	background: #eee;
-	box-shadow: 0 0 5px #999999;
-	color: #333;
-	font-size: 12px;
-	left: 130px;
-	padding: 10px;
-	position: absolute;
-	text-align: center;
-	top: 95px;
-	width: 125px;
-	z-index: 10;
-	display: block;
-	opacity: 0;
+    background: #eee;
+    box-shadow: 0 0 5px #999999;
+    color: #333;
+    font-size: 12px;
+    left: 130px;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    top: 95px;
+    width: 125px;
+    z-index: 10;
+    display: block;
+    opacity: 0;
 }
 
 /* donut chart */
 .slice text {
-  font: 18px sans-serif;
-  text-anchor: middle;
-  fill: #ffffff;
+    font: 18px sans-serif;
+    text-anchor: middle;
+    fill: #ffffff;
 }
 
 .legend text {
-  font: 12px sans-serif;
-  fill: #ffffff;
+    font: 12px sans-serif;
+    fill: #ffffff;
 }

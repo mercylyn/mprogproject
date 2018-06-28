@@ -1,9 +1,14 @@
 /**
  * Name: Mercylyn Wiemer (10749306)
  * Course: programming project
-
- * https://stackoverflow.com/questions/37812922/grouped-category-bar-chart-with-different-groups-in-d3
- * https://plnkr.co/edit/L0eQwtEMQ413CpoS5nvo?p=preview
+ *
+ * Programming Project: The Beatles chart analysis.
+ * - Grouped bar chart: albums or singles that reached the Charts
+ * (The Official Charts Company) with number of weeks in chart
+ * - Bubble chart: albums or singles with highest position no. 1
+ * - Donut chart: members of the band starring as lead vocals position no. 1 albums only
+ *
+ * Data chart from The Guardian & lead vocals from Wikipedia: albums of The Beatles.
 **/
 
 // global variables for grouped bar chart, bubble chart and donut chart
@@ -140,7 +145,7 @@ function convertToDictionary(dataset) {
     // get data per album or single: year in chart, title and chart position
     for (let key in dataset) {
         dataPerType.push([dataset[key].date.getFullYear(), dataset[key].title,
-                          dataset[key].weeksChart]);
+                          dataset[key].weeksChart, dataset[key].highestPosition]);
     }
 
     // add year of first album to for sorting the dictionary
@@ -151,13 +156,15 @@ function convertToDictionary(dataset) {
 
         let values = {
             key: dataPerType[i][1],
-            value: dataPerType[i][2]
+            value: dataPerType[i][2],
+            highestPosition: dataPerType[i][3]
         };
 
         // keep track of years
         if (years.includes(dataPerType[i][0])) {
             valuesArray.push(values);
         }
+
         // found album/single in chart in a new year
         else {
 
@@ -220,23 +227,25 @@ function makeBarChart(data) {
     ]);
 
     // Define Y axis
-    var yAxis = d3.svg.axis()
+    let yAxis = d3.svg.axis()
         .scale(y)
         .orient("left")
         .ticks(yTicks);
 
     // Set up the tool tip
-    var tip = d3.tip()
+    let tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([offsetTip, 0])
         .html(function(d) {
           return "<strong>Album:</strong> <span style='color:red'>" + d.key +
                     "</span> <br> <strong>Weeks in chart:</strong> \
-                    <span style='color:red'>" + d.value + "</span>";
+                    <span style='color:red'>" + d.value + "</span> <br> \
+                    <strong>Highest chart position:</strong> <span \
+                    style='color:red'>" + d.highestPosition + "</span>";
     });
 
     // create SVG element
-    var svg = d3.select("#barChart").append("svg")
+    let svg = d3.select("#barChart").append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .style('background-color', '#F7F6E2')
@@ -269,7 +278,7 @@ function makeBarChart(data) {
         updateBar(data);
 
         // add button to switch data: album or single data
-        var radioButtonChange = function() {
+        let radioButtonChange = function() {
             dataName = d3.select(this).property('value');
 
             // check user input: albums or singles and update charts
@@ -302,24 +311,25 @@ function makeBarChart(data) {
             }
         };
 
-        var radioButtons = d3.selectAll("input")
+        let radioButtons = d3.selectAll("input")
             .on("change", radioButtonChange);
 
     /* Updates the bar chart based upon user input: album or singles. */
     function updateBar(data) {
 
-        // dummy array
         let rangeBands = [];
+        let yPadding = 20;
 
         // cummulative value to position our bars
         let cummulative = 0;
+
         data.forEach(function(val, i) {
-          val.cummulative = cummulative;
-          cummulative += val.values.length;
-          val.values.forEach(function(values) {
-            values.parentKey = val.key;
-            rangeBands.push(i);
-          })
+            val.cummulative = cummulative;
+            cummulative += val.values.length;
+            val.values.forEach(function(values) {
+                values.parentKey = val.key;
+                rangeBands.push(i);
+            })
         });
 
         // set scale to cover whole svg
@@ -335,10 +345,11 @@ function makeBarChart(data) {
 
         x_category.domain([0, x_category_domain]);
 
-
+        // set y range
         let y = d3.scale.linear()
           .range([height, 0]);
 
+        // set y domain
         y.domain([0, d3.max(data, function(cat) {
             return d3.max(cat.values, function(def) {
                 return def.value;
@@ -346,129 +357,136 @@ function makeBarChart(data) {
             }) * 2
         ]);
 
-        var yAxis = d3.svg.axis()
+        // define Y axis
+        let yAxis = d3.svg.axis()
             .scale(y)
             .orient("left")
             .ticks(14);
 
+        // update y axis
         svg.selectAll("g.y.axis")
             .transition().duration(duration)
             .call(yAxis)
 
         // add all category groups: years
-        var category_g = svg.selectAll(".category")
-          .data(data)
+        let category_g = svg.selectAll(".category")
+            .data(data);
 
-          category_g.enter().append("g")
-          .attr("class", function(d) {
-            return 'category category-' + d.key;
-          })
-          .attr("transform", function(d) {
-            return "translate(" + x_category((d.cummulative * x_inner.rangeBand())) + ",0)";
-          })
-          .attr("fill", function(d, i) {
-            return color[i];
-          });
+        category_g
+            .enter().append("g")
+            .attr("class", function(d) {
+                return 'category category-' + d.key;
+            })
+            .attr("transform", function(d) {
+                return "translate(" + x_category((d.cummulative * x_inner.rangeBand())) + ",0)";
+            })
+            .attr("fill", function(d, i) {
+                return color[i];
+            });
 
-          // Update old ones, already have x / width from before
+        // update old ones, already have x / width from before
         category_g
             .transition().duration(duration)
             .attr("class", function(d) {
-              return 'category category-' + d.key;
+                return 'category category-' + d.key;
             })
             .attr("transform", function(d) {
-              return "translate(" + x_category((d.cummulative * x_inner.rangeBand())) + ",0)";
+                return "translate(" + x_category((d.cummulative * x_inner.rangeBand())) + ",0)";
             })
             .attr("fill", function(d, i) {
-              return color[i];
+                return color[i];
             });
 
         // Remove old ones
         category_g.exit().remove();
 
-        var category_label = category_g.selectAll(".category-label")
-          .data(function(d) {
-            return [d];
-          })
+        // create and update category labels: years
+        let category_label = category_g.selectAll(".category-label")
+            .data(function(d) { return [d]; });
 
-          category_label
+        // add all category labels: years
+        category_label
             .enter().append("text")
             .attr("class", function(d) {
-            return 'category-label category-label-' + d.key;
+                return 'category-label category-label-' + d.key;
             })
             .attr("transform", function(d) {
-            var x_label = x_category((d.values.length * x_inner.rangeBand() + barPadding) / 2);
-            var y_label = height + 20;
-            return "translate(" + x_label + "," + y_label + ")";
+                let x_label = x_category((d.values.length * x_inner.rangeBand() + barPadding) / 2);
+                let y_label = height + yPadding;
+
+                return "translate(" + x_label + "," + y_label + ")";
             })
             .text(function(d) {
-            return d.key;
+                return d.key;
             })
             .attr('text-anchor', 'middle');
 
+        // update
         category_label
             .transition().duration(duration)
             .attr("class", function(d) {
-            return 'category-label category-label-' + d.key;
+                return 'category-label category-label-' + d.key;
             })
             .attr("transform", function(d) {
-            var x_label = x_category((d.values.length * x_inner.rangeBand() + barPadding) / 2);
-            var y_label = height + 20;
-            return "translate(" + x_label + "," + y_label + ")";
+                let x_label = x_category((d.values.length * x_inner.rangeBand() + barPadding) / 2);
+                let y_label = height + 20;
+
+                return "translate(" + x_label + "," + y_label + ")";
             })
             .text(function(d) {
-            return d.key;
+                return d.key;
             })
             .attr('text-anchor', 'middle');
 
         category_label.exit().remove();
 
         // adding inner groups g elements
-        var inner_g = category_g.selectAll(".inner")
-          .data(function(d) {
-            return d.values;
-          })
-
-        inner_g
-          .enter().append("g")
-          .attr("class", function(d) {
-            return 'inner inner-' + d.key;
-          })
-          .attr("transform", function(d, i) {
-            return "translate(" + x_category((i * x_inner.rangeBand())) + ",0)";
+        let inner_g = category_g.selectAll(".inner")
+            .data(function(d) {
+                return d.values;
           });
 
         inner_g
-              .transition().duration(duration)
-              .attr("class", function(d) {
+            .enter().append("g")
+            .attr("class", function(d) {
                 return 'inner inner-' + d.key;
-              })
-              .attr("transform", function(d, i) {
+            })
+            .attr("transform", function(d, i) {
                 return "translate(" + x_category((i * x_inner.rangeBand())) + ",0)";
-              });
+            });
+
+        inner_g
+            .transition().duration(duration)
+            .attr("class", function(d) {
+                return 'inner inner-' + d.key;
+            })
+            .attr("transform", function(d, i) {
+                return "translate(" + x_category((i * x_inner.rangeBand())) + ",0)";
+            });
 
         inner_g.exit().remove();
 
-        var rects = inner_g.selectAll('.rect')
-          .data(function(d) {
-            return [d];
-          })
+        // create and update rectangles
+        let rects = inner_g.selectAll('.rect')
+            .data(function(d) {
+                return [d];
+          });
 
-          rects
-          .enter().append("rect")
-          .attr("class", "rect")
-          .attr("width", x_category(x_inner.rangeBand() - barPadding))
-          .attr("x", function(d) {
-            return x_category(barPadding);
+        rects
+            .enter().append("rect")
+            .attr("class", "rect")
+            .attr("width", x_category(x_inner.rangeBand() - barPadding))
+            .attr("x", function(d) {
+                return x_category(barPadding);
           })
-          .attr("y", function(d) {
-            return y(d.value);
-          })
-          .attr("height", function(d) {
-            return height - y(d.value);
+            .attr("y", function(d) {
+                return y(d.value);
+            })
+            .attr("height", function(d) {
+                return height - y(d.value);
         })
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
         rects
             .transition().duration(duration)
@@ -477,31 +495,29 @@ function makeBarChart(data) {
             })
             .attr("height", function(d) {
                 return height - y(d.value);
-            })
+            });
 
         rects.exit().remove();
 
         // add labels to g elements
-        var inner_label = inner_g.selectAll(".inner-label")
+        let inner_label = inner_g.selectAll(".inner-label")
             .data(function(d) {
-              return [d];
-            })
+                return [d];
+            });
 
         inner_label
             .enter().append("text")
             .attr("class", function(d) {
-
-              return 'inner-label inner-label-' + d.key;
+                return 'inner-label inner-label-' + d.key;
             })
-
             .text(function(d) {
                 return d.key;
             })
             .attr("transform", function(d) {
-                    var x_label =  x_category(x_inner.rangeBand() - barPadding);
-                    var y_label =  y(d.value);
-                    return "translate(" + x_label + "," + y_label + ") rotate(270)";
+                    let x_label =  x_category(x_inner.rangeBand() - barPadding);
+                    let y_label =  y(d.value);
 
+                    return "translate(" + x_label + "," + y_label + ") rotate(270)";
             })
             .style('fill', 'black')
             .attr("font-size", "12px");
@@ -509,16 +525,16 @@ function makeBarChart(data) {
         inner_label
             .transition().duration(duration)
             .attr("class", function(d) {
-              return 'inner-label inner-label-' + d.key;
+                return 'inner-label inner-label-' + d.key;
             })
             .text(function(d) {
                 return d.key;
             })
             .attr("transform", function(d) {
-                    var x_label =  x_category(x_inner.rangeBand() - barPadding);
-                    var y_label =  y(d.value) - barPadding / 2;
-                    return "translate(" + x_label + "," + y_label + ") rotate(270)";
+                    let x_label =  x_category(x_inner.rangeBand() - barPadding);
+                    let y_label =  y(d.value) - barPadding / 2;
 
+                    return "translate(" + x_label + "," + y_label + ") rotate(270)";
             });
     };
 };
@@ -535,7 +551,7 @@ function makeBubbleChart(data) {
     let bubbleInfo = d3.select("#bubbleChart")
                         .append("h5")
                         .attr("class", "bubbleInfo")
-                        .text("* Colors indicate year, size of bubble indicate number of weeks in chart")
+                        .text("* Colors indicate year, size of bubble indicate number of weeks no. 1 in chart")
     updateBubble = updateBubbleChart;
 
     // define chart parameters
@@ -571,29 +587,30 @@ function makeBubbleChart(data) {
     // create or update bubble chart
     updateBubble(data);
 
-    /* Update bubble chart when user switches input: album - singles. */
+    /* Update bubble chart when user switches input: album - singles above bar chart. */
     function updateBubbleChart(dataset) {
 
         // transform data to numbers
-        var data = dataset.map(function(d){ d.value = +d["weeks"]; return d; });
+        let data = dataset.map(function(d){ d.value = +d["weeks"]; return d; });
 
         // bubbles needs very specific format, convert data to this
-        var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
+        let nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
 
-        var node = svg.selectAll(".node")
+        let node = svg.selectAll(".node")
             .data(nodes);
 
-        var text = svg.selectAll("text")
+        let text = svg.selectAll("text")
             .data(nodes);
 
-        var names = svg.selectAll(".names")
+        let names = svg.selectAll(".names")
             .data(nodes);
 
-        var nodeEnter = node.enter()
+        let nodeEnter = node.enter()
             .append("g")
             .attr("class", "node")
             .attr("transform", "translate(0,0)");
 
+        // add tooltip to bubbles
         nodeEnter
             .append("circle")
             .attr("r", function(d) { return d.r; })
@@ -635,10 +652,10 @@ function makeBubbleChart(data) {
 
                 // user input: albums
                 else {
-                    var title = d.title, lead;
+                    let title = d.title, lead;
 
                     // find dataset (album) of user input and select lead vocals data
-                    for (var album in dataDonut) {
+                    for (let album in dataDonut) {
                         if (title === dataDonut[album].title) {
                             lead = dataDonut[album].lead
                         }
@@ -663,11 +680,12 @@ function makeBubbleChart(data) {
                 };
             });
 
+        // selects circules and update
         node.select("circle")
             .attr("r", function(d) { return d.r; })
             .attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; })
-            .style("fill", function(d) { return color(d.year); })
+            .style("fill", function(d) { return color(d.year); });
 
         node
             .transition().duration(750)
@@ -676,6 +694,7 @@ function makeBubbleChart(data) {
 
         node.exit().remove();
 
+        // add album or single titles to bubbles
         text
             .enter().append("text")
             .attr("class", "names")
@@ -686,10 +705,11 @@ function makeBubbleChart(data) {
             .style({
                 "fill":"white",
                 "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
-                "font-size": "12px"
+                "font-size": "11px"
             })
             .attr("dy", ".35em");
 
+        // update album or single titles to bubbles
         text
             .transition().duration(750)
             .attr("x", function(d){ return d.x; })
@@ -725,10 +745,10 @@ function makeDonutChart(data, albumTitle) {
 
     // create SVG element
     let svg = d3.select('#donutChart')
-    .append("svg")
+        .append("svg")
         .attr("width", width)
         .attr("height", height + margin.top + margin.bottom)
-    .append("g")
+        .append("g")
         .attr("transform", "translate(" + width / 2 + "," + ((height / 2) - 50) + ")");
 
     svg.append("g").attr("class", "slices");
@@ -743,10 +763,11 @@ function makeDonutChart(data, albumTitle) {
         .outerRadius(radius - 20)
         .innerRadius(radius - donutWidth);
 
-    var key = function(d) { return d.data.singer; };
+    // set key function
+    let key = function(d) { return d.data.singer; };
 
     // set up tooltip
-    var tooltip = d3.select("#donutChart")
+    let tooltip = d3.select("#donutChart")
     	.append('div')
     	.attr('class', 'tooltip');
 
@@ -757,16 +778,15 @@ function makeDonutChart(data, albumTitle) {
         .attr('id', 'percent');
 
     // select paths, use arc generator to draw
-    var arcs = svg.selectAll(".slice")
+    let arcs = svg.selectAll(".slice")
         .data(pie(data))
         .enter().append("svg:g")
         .attr("class", "slice");
 
     updateDonut(data, albumTitle);
 
-    /* Returns data sorted by category: singer or instrumental. */
+    /* Returns data sorted by category: singers or instrumental. */
     function mergeWithFirstEqualZero(first, second){
-
         let secondSet = d3.set();
 
         second.forEach(function(d) { secondSet.add(d.singer); });
@@ -804,7 +824,6 @@ function makeDonutChart(data, albumTitle) {
             .selectAll("path")
             .data(pie(was), key);
 
-
         // create and update slices of donut chart
         slice.enter()
             .insert("path")
@@ -819,7 +838,6 @@ function makeDonutChart(data, albumTitle) {
 
               tooltip.style('display', 'block');
               tooltip.style('opacity',2);
-
             })
             .on('mousemove', function(d) {
               tooltip.style('top', (d3.event.layerY + 10) + 'px')
@@ -837,8 +855,8 @@ function makeDonutChart(data, albumTitle) {
         slice.transition()
             .duration(750)
             .attrTween("d", function(d) {
-                var interpolate = d3.interpolate(this._current, d);
-                var _this = this;
+                let interpolate = d3.interpolate(this._current, d);
+                let _this = this;
                 return function(t) {
                     _this._current = interpolate(t);
                     return arc(_this._current);
@@ -855,7 +873,7 @@ function makeDonutChart(data, albumTitle) {
             .duration(0)
             .remove();
 
-        // add and update percentage to donut slices
+        // add and update percentage text to donut slices
         text
             .enter().append("text").transition().delay(500).duration(750)
             .attr("class", "percentage")
@@ -881,13 +899,13 @@ function makeDonutChart(data, albumTitle) {
         text.exit().remove()
 
         // add legend to donut chart
-        var legend = svg.selectAll(".legend")
-          .data(pie(is))
-          .enter().append("g")
-          .attr("transform", function(d, i){
-            return "translate(" + (width - 600) + "," + (i * 30 + 125) + ")";
-          })
-          .attr("class", "legend");
+        let legend = svg.selectAll(".legend")
+            .data(pie(is))
+            .enter().append("g")
+            .attr("transform", function(d, i){
+                return "translate(" + (width - 600) + "," + (i * 30 + 125) + ")";
+            })
+            .attr("class", "legend");
 
         legend.append("rect")
             .attr("id", function(d) {
@@ -899,8 +917,9 @@ function makeDonutChart(data, albumTitle) {
             return color(i);
             });
 
-        legend.append("text") // add the text
+        legend.append("text")
             .text(function(d){
+
                 // remove no data text
                 if (d.data.singer != "no data")  {
                     return d.data.singer;
@@ -911,6 +930,6 @@ function makeDonutChart(data, albumTitle) {
 
         // remove no data rectangle
         legend.select("#nodata")
-            .remove()
+            .remove();
     };
 };
