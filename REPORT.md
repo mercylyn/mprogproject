@@ -76,8 +76,6 @@ Not every album has data available. The % lead vocalist is only possible for alb
 
 Converting the data to use for the stacked bar chart was a big challenge. Eventually, I decided to use a grouped bar chart, because it was easier to convert the data for this visualization and it would give a clear overview of the different years in which music of The Beatles appeared in the charts. It would have been educational to make a stacked bar chart, but I also had to made the decision to switch to be on schedule.
 
-## positioning elements on website: grid system ##
-* positioning the visualisations to clearly observe the data
-* updating charts especially the pie chart
+## positioning elements on website including the visualisations: grid system ##
 
-- defend decisions
+## updating charts especially the pie chart ##

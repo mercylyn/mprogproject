@@ -38,19 +38,19 @@ of albums and singles that reached the top chart in the UK (Official Charts Comp
 ![Creator](docs/creator.png)
 
 ### Data sources ###
-* https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band
-* https://en.wikipedia.org/wiki/Please_Please_Me
-* https://en.wikipedia.org/wiki/With_the_Beatles
-* https://en.wikipedia.org/wiki/A_Hard_Day%27s_Night_(album)
-* https://en.wikipedia.org/wiki/Beatles_for_Sale
-* https://en.wikipedia.org/wiki/Help!_(album)
-* https://en.wikipedia.org/wiki/Rubber_Soul
-* https://en.wikipedia.org/wiki/Revolver_(Beatles_album)
-* https://en.wikipedia.org/wiki/Sgt._Pepper%27s_Lonely_Hearts_Club_Band
-* https://en.wikipedia.org/wiki/Magical_Mystery_Tour
-* https://en.wikipedia.org/wiki/The_Beatles_(album)
-* https://en.wikipedia.org/wiki/Abbey_Road
-* https://en.wikipedia.org/wiki/Let_It_Be
+* https://www.theguardian.com/news/datablog/2009/sep/09/beatles-albums-singles-music-rock-band Creative Commons Attribution-ShareAlike
+* https://en.wikipedia.org/wiki/Please_Please_Me Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/With_the_Beatles Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/A_Hard_Day%27s_Night_(album) Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Beatles_for_Sale Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Help!_(album) Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Rubber_Soul Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Revolver_(Beatles_album) Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Sgt._Pepper%27s_Lonely_Hearts_Club_Band Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Magical_Mystery_Tour Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/The_Beatles_(album) Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Abbey_Road Creative Commons Attribution-ShareAlike License
+* https://en.wikipedia.org/wiki/Let_It_Be Creative Commons Attribution-ShareAlike License
 
 ### External code sources ###
 Grouped bar chart
@@ -75,10 +75,10 @@ Html themes
 
 ### External images sources ###
 The Beatles logo
-* https://freebiesupply.com/logos/the-beatles-logo/
+* https://commons.wikimedia.org/wiki/File:Beatles_logo.svg
 
 The Beatles drawings
-* http://getdrawings.com/beatles-drawing#beatles-drawing-61.jpg
+* http://getdrawings.com/beatles-drawing#beatles-drawing-61.jpg  CC BY-NC 4.0 Licence
 
 ## Author ##
 * Mercylyn Wiemer
