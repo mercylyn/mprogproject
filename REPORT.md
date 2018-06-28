@@ -35,12 +35,12 @@ albums and singles. By switching the data in the bar chart the data of the
 bubble chart and pie chart are altered. By hovering over the bars a tooltip
 will pop up with more information about the selected music.
 
-* data from The Guardian: albums/singles chart position and weeks in chart
-* colors: improve for the colorblind http://tools.medialab.sciences-po.fr/iwanthue/
-* tooltips: D3 tooltip to hover over the bars and get more information
-* create and update grouped bar chart with makeBarChart() and the updateBar() function
-* used d3 for adding radio button for switching data from albums to singles and vice versa
-* anonymous function for the radio button change: update bar chart and bubble chart         including title of bubble chart and instruction text for donut chart. If singles dataset
+* Data from The Guardian: albums/singles chart position and weeks in chart.
+* Colors: improve for the colorblind http://tools.medialab.sciences-po.fr/iwanthue/
+* Tooltip: D3 tooltip to hover over the bars and get more information.
+* Create and update grouped bar chart with makeBarChart() and the updateBar() function.
+* Used d3 for adding radio button for switching data from albums to singles and vice versa.
+* Anonymous function for the radio button change: update bar chart and bubble chart         including title of bubble chart and instruction text for donut chart. If singles dataset
 is selected: change instruction donut chart with warning that bubble chart is not available for selecting music.
 
 ### bubble chart ###
@@ -72,8 +72,11 @@ Not every album has data available. The % lead vocalist is only possible for alb
 * Use global variable updateDonut to use update function in other function e.g. radio button in the grouped bar chart and bubbles in the bubble chart.
 
 # challenges #
-* stacked bar chart to grouped bar chart
-* positioning elements on website: grid system
+## From stacked bar chart to grouped bar chart ##
+
+Converting the data to use for the stacked bar chart was a big challenge. Eventually, I decided to use a grouped bar chart, because it was easier to convert the data for this visualization and it would give a clear overview of the different years in which music of The Beatles appeared in the charts. It would have been educational to make a stacked bar chart, but I also had to made the decision to switch to be on schedule.
+
+## positioning elements on website: grid system ##
 * positioning the visualisations to clearly observe the data
 * updating charts especially the pie chart
 

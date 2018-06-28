@@ -78,7 +78,7 @@ The Beatles logo
 * https://freebiesupply.com/logos/the-beatles-logo/
 
 The Beatles drawings
-* https://wallhere.com/en/wallpaper/1360761
+* http://getdrawings.com/beatles-drawing#beatles-drawing-61.jpg
 
 ## Author ##
 * Mercylyn Wiemer
