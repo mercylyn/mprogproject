@@ -10,9 +10,9 @@ Minor Programming, University of Amsterdam
 The Beatles were an English rockband from Liverpool, England. The band is considered as the most influential music band in history. The visualisations will present the number of albums and singles from the year 1963 to 2009 that reached the Official Charts Company. The albums and singles that reached No. 1 are visualised separately. Furthermore, there is the possibility to see the percentage of Lead Vocals per band member of selected albums (chart position no. 1).
 
 Three visualisations:
-1) Grouped bar chart: albums or singles that reached the Charts (The Official Charts Company) with number of weeks in chart
+1) Grouped bar chart: albums or singles that reached the Charts (The Official Charts Company) with number of weeks on the chart
 2) Bubble chart: albums or singles with highest position no. 1
-3) Donut chart: members of the band starring as lead vocals position no. 1 albums only
+3) Donut chart: members of the band starring as lead vocals or instrumental (%) position no. 1 albums only
 
 Source: https://nl.wikipedia.org/wiki/The_Beatles
 
@@ -21,7 +21,7 @@ The Beatles wrote more than 300 songs. The goal of this project is to give an ov
 of albums and singles that reached the top chart in the UK (Official Charts Company).
 
 ### Main features ###
-* Number of albums and singles in top chart per year (options: albums - singles)
+* Number of weeks of albums and singles on chart per year
 * Albums and singles that reached no. 1 in the UK
 * Lead Vocals in percentage per band member by selecting an album that reached no. 1 in the UK
 
