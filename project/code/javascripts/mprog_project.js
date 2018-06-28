@@ -591,7 +591,7 @@ function makeBubbleChart(data) {
     function updateBubbleChart(dataset) {
 
         // transform data to numbers
-        let data = dataset.map(function(d){ d.value = +d["weeks"]; return d; });
+        let data = dataset.map(function(d) { d.value = +d["weeks"]; return d; });
 
         // bubbles needs very specific format, convert data to this
         let nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
@@ -698,10 +698,10 @@ function makeBubbleChart(data) {
         text
             .enter().append("text")
             .attr("class", "names")
-            .attr("x", function(d){ return d.x; })
-            .attr("y", function(d){ return d.y + 5; })
+            .attr("x", function(d) { return d.x; })
+            .attr("y", function(d) { return d.y + 5; })
             .attr("text-anchor", "middle")
-            .text(function(d){ return d["title"]; })
+            .text(function(d) { return d["title"]; })
             .style({
                 "fill":"white",
                 "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
@@ -712,9 +712,9 @@ function makeBubbleChart(data) {
         // update album or single titles to bubbles
         text
             .transition().duration(750)
-            .attr("x", function(d){ return d.x; })
-            .attr("y", function(d){ return d.y + 5; })
-            .text(function(d){ return d["title"]; });
+            .attr("x", function(d) { return d.x; })
+            .attr("y", function(d) { return d.y + 5; })
+            .text(function(d { return d["title"]; });
 
         text.exit().remove();
     };
@@ -786,13 +786,13 @@ function makeDonutChart(data, albumTitle) {
     updateDonut(data, albumTitle);
 
     /* Returns data sorted by category: singers or instrumental. */
-    function mergeWithFirstEqualZero(first, second){
+    function mergeWithFirstEqualZero(first, second) {
         let secondSet = d3.set();
 
         second.forEach(function(d) { secondSet.add(d.singer); });
 
         let onlyFirst = first
-            .filter(function(d){ return !secondSet.has(d.singer) })
+            .filter(function(d) { return !secondSet.has(d.singer) })
             .map(function(d) { return {singer: d.singer, value: 0}; });
 
         // sort by singer
@@ -902,7 +902,7 @@ function makeDonutChart(data, albumTitle) {
         let legend = svg.selectAll(".legend")
             .data(pie(is))
             .enter().append("g")
-            .attr("transform", function(d, i){
+            .attr("transform", function(d, i) {
                 return "translate(" + (width - 600) + "," + (i * 30 + 125) + ")";
             })
             .attr("class", "legend");
@@ -918,10 +918,10 @@ function makeDonutChart(data, albumTitle) {
             });
 
         legend.append("text")
-            .text(function(d){
+            .text(function(d) {
 
                 // remove no data text
-                if (d.data.singer != "no data")  {
+                if (d.data.singer != "no data") {
                     return d.data.singer;
                 }
             })
